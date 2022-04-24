@@ -1,60 +1,148 @@
-import { IWorkoutTypes } from "../../interfaces/IWorkoutTypes";
+import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
 
-export const exercises: { [key: string]: IWorkoutTypes } = {
-  "exercise1": {
-    name: "Выпады вперед с гирями левой ногой",
-    isCardio: false,
-    pairedExercise: "exercise2"
+export const exercises: IBodyPartsForWorkout[] = [
+  {
+    id: "cardio-ex1",
+    label: "Берпи",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise2": {
-    name: "Выпады вперед с гирями правой ногой",
-    isCardio: false,
-    pairedExercise: "exercise1"
+  {
+    id: "cardio-ex2",
+    label: "Jumping Jek",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise3": {
-    name: "Выпады вперед по очереди и назад",
-    isCardio: false
+  {
+    id: "cardio-ex3",
+    label: "Скалолаз",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise4": {
-    name: "Присед на левой ноге на стульчик",
-    isCardio: false
+  {
+    id: "cardio-ex4",
+    label: "Разножка",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise5": {
-    name: "Присед на правой ноге на стульчик",
-    isCardio: false
+  {
+    id: "cardio-ex5",
+    label: "Прижки с гирей",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise6": {
-    name: "Зашагивание на стул левой ногой",
-    isCardio: false,
-    pairedExercise: "exercise7"
+  {
+    id: "cardio-ex6",
+    label: "Присед и удар в сторону, смена",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise7": {
-    name: "Зашагивание на стул правой ногой",
-    isCardio: false,
-    pairedExercise: "exercise6"
+  {
+    id: "cardio-ex7",
+    label: "Прыжки на месте со скакалкой",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise8": {
-    name: "Тяга левой ноги с эспандером",
-    isCardio: false,
-    pairedExercise: "exercise9"
+  {
+    id: "cardio-ex8",
+    label: "Стоя подъем рук вверх и ноги на пресс - типа мельница",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise9": {
-    name: "Тяга правой ноги с эспандером",
-    isCardio: false,
-    pairedExercise: "exercise8"
+  {
+    id: "cardio-ex9",
+    label: "Прыжки со скручиванием на пресс, руки перед собой",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise10": {
-    name: "Сплит-присед с левой ногой на лавке или в кольце",
-    isCardio: false,
-    pairedExercise: "exercise11"
+  {
+    id: "cardio-ex10",
+    label: "В приседе руки перед собой, скручиваемся в стороны и выставляем ногу в сторону",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise11": {
-    name: "Сплит-присед с правой ногой на лавке или в кольце",
-    isCardio: false,
-    pairedExercise: "exercise10"
+  {
+    id: "cardio-ex11",
+    label: "Руки впереди, бег на месте",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   },
-  "exercise12": {
-    name: "Выпрыгивания из приседа",
-    isCardio: true
+  {
+    id: "cardio-ex12",
+    label: "Руки впереди, бежим на месте - как футболист ноги широко",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex13",
+    label: "Присяд и вынос рук в вверх и подьем на носочки",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex14",
+    label: "Стоя, 2 удара вперед, потом руки вверх и 2 скручивания на пресс",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex15",
+    label: "4 удара вперед в приседе, потом 2 прижка - составляем ноги в крест",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex16",
+    label: "Разножка в планке с подьемом рук к плечу по очереди",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex17",
+    label: "В приседе по очереди касаемся рукой противоположной пятки и смена",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex18",
+    label: "Бег на месте, локти прижимаем к туловищу и поднимаем руки на верх по очереди",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex19",
+    label: "Стоя на левой ноге, правая нога стоит сзади, руки вперед. Соеденяем руки и ногу возле пресс и выводим назад",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex20",
+    label: "Стоя на правой ноге, левая нога стоит сзади, руки вперед. Соеденяем руки и ногу возле пресс и выводим назад",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex21",
+    label: "2 шага в сторону и подьем пятки к попе, идем в другую сторону и подьем пятки к попе снова. Руки за головой",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex22",
+    label: "В приседе опускаем в кулаках руки на 1 ногу и на 2 ногу",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex23",
+    label: "Стоя отводим ноги по очереди в сторону, руки сгибаем и заводи назад на спину",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
+  },
+  {
+    id: "cardio-ex24",
+    label: "Стоя отводим ноги по очереди назад, руки разводим когда отставляем ногу",
+    isCardio: true,
+    video: "/assets/gifs/cardio/video-ex24.gif"
   }
-};
+];

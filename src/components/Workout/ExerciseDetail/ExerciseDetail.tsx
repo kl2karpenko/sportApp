@@ -1,15 +1,27 @@
 import React from "react";
 
-import { Box, Paper } from "@mui/material";
+import { Card, CardContent, Typography, Grid } from "@mui/material";
 
-interface ITimerProps {}
+interface IExerciseDetailProps {
+  exerciseName?: string;
+  video?: string;
+  description: string;
+}
 
-export default function NextExercise(props: ITimerProps): React.ReactElement {
+export default function ExerciseDetail({ description, video, exerciseName }: IExerciseDetailProps): React.ReactElement {
   return (
-    <Paper elevation={1}>
-      <Box p={4}>
-        Name of next exercise
-      </Box>
-    </Paper>
+    <Card variant="outlined">
+      <CardContent>
+        <Grid container spacing={2} direction="column">
+          <Grid item xs={12}>
+            <Typography align="center" variant="h6">{description}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            {video ? <img src={video} alt="exerciseName" height={450} width={450} /> : ""}
+            {!video ? <Typography align="center" variant="h5">{exerciseName || "REST!"}</Typography> : ""}
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 }

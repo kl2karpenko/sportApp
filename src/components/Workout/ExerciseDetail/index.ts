@@ -1,1 +1,1 @@
-export { default } from "./NextExercise";
+export { default } from "./ExerciseDetail";

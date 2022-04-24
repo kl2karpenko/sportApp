@@ -1,1 +1,1 @@
-export { default } from "./ExercisesStepper";
+export { default } from "./RoundsStepper";

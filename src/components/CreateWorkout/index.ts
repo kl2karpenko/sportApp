@@ -1,1 +1,1 @@
-import StartWorkout from "./StartWorkout";
+export { default } from "./CreateWorkout";

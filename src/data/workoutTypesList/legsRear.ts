@@ -1,62 +1,44 @@
-import { IWorkoutTypes } from "../../interfaces/IWorkoutTypes";
+import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
 
-export const exercises: { [key: string]: IWorkoutTypes } = {
-  "exercise1": {
-    name: "Выпады вперед с гирями левой ногой",
+export const exercises: IBodyPartsForWorkout[] = [
+  {
+    id: "legsRear-ex1",
+    label: "Тяга левой ноги с эспандером лёжа на животе",
     isCardio: false,
-    pairedExercise: "exercise2"
+    pair: "legsRear-ex2"
   },
-  "exercise2": {
-    name: "Выпады вперед с гирями правой ногой",
+  {
+    id: "legsRear-ex2",
+    label: "Тяга правой ноги с эспандером лёжа на животе",
     isCardio: false,
-    pairedExercise: "exercise1"
+    pair: "legsRear-ex1"
   },
-  "exercise3": {
-    name: "Выпады вперед по очереди и назад",
+  {
+    id: "legsRear-ex3",
+    label: "Становая тяга с резинкой на ногах",
     isCardio: false
   },
-  "exercise4": {
-    name: "Присед на левой ноге на стульчик",
+  {
+    id: "legsRear-ex4",
+    label: "Наклоны с выносом левой ноги назад с гирями, вторая держит равновесие",
     isCardio: false,
-    pairedExercise: "exercise5"
-  },
-  "exercise5": {
-    name: "Присед на правой ноге на стульчик",
+    pair: "legsRear-ex5"
+  }, {
+    id: "legsRear-ex5",
+    label: "Наклоны с выносом правой ноги назад с гирями, вторая держит равновесие",
     isCardio: false,
-    pairedExercise: "exercise4"
+    pair: "legsRear-ex4"
   },
-  "exercise6": {
-    name: "Зашагивание на стул левой ногой",
+  {
+    id: "legsRear-ex6",
+    label: "Наклон к левой ноге, резинка на 2 ноге и делаем наклоны",
     isCardio: false,
-    pairedExercise: "exercise7"
+    pair: "legsRear-ex7"
   },
-  "exercise7": {
-    name: "Зашагивание на стул правой ногой",
+  {
+    id: "legsRear-ex7",
+    label: "Наклон к правой ноге, резинка на 2 ноге и делаем наклоны",
     isCardio: false,
-    pairedExercise: "exercise6"
-  },
-  "exercise8": {
-    name: "Тяга левой ноги с эспандером",
-    isCardio: false,
-    pairedExercise: "exercise9"
-  },
-  "exercise9": {
-    name: "Тяга правой ноги с эспандером",
-    isCardio: false,
-    pairedExercise: "exercise8"
-  },
-  "exercise10": {
-    name: "Сплит-присед с левой ногой на лавке или в кольце",
-    isCardio: false,
-    pairedExercise: "exercise11"
-  },
-  "exercise11": {
-    name: "Сплит-присед с правой ногой на лавке или в кольце",
-    isCardio: false,
-    pairedExercise: "exercise10"
-  },
-  "exercise12": {
-    name: "Выпрыгивания из приседа",
-    isCardio: true
+    pair: "legsRear-ex6"
   }
-};
+];

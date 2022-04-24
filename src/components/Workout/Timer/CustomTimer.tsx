@@ -1,105 +1,111 @@
-import React, {useContext, useEffect, useState} from "react";
-
-import { Box, Paper, Grid, Typography, Button, IconButton, LinearProgress } from "@mui/material";
-
+import React, { useEffect } from "react";
+import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
+import { Box, Grid, Card, CardContent, Typography, IconButton, Theme } from "@mui/material";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import PauseIcon from "@material-ui/icons/Pause";
-import {SportAppContext} from "../../../SportAppContext";
-import {setNextStep} from "../workout-helpers";
+import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@material-ui/icons";
+import LinearProgressWithLabel from "./LinearProgressWithLabel";
+import { makeStyles } from "@mui/styles";
 import {IWorkoutSession} from "../../../interfaces/IWorkoutSession";
-import {IWorkoutType} from "../../../interfaces/IWorkoutType";
 
+const beepStartSound = require("../../../sounds/beep-start.mp3");
+const beepEndSound = require("../../../sounds/beep.mp3");
 
-const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { currentWorkoutSession: IWorkoutSession; workoutSettings: IWorkoutType }): Date => {
-  let interval = 0;
-
-  if (currentWorkoutSession.isResting && currentWorkoutSession.exercise < workoutSettings.exercises) {
-    interval = workoutSettings.rest_between_rounds;
-  }
-
-  if (currentWorkoutSession.isResting && currentWorkoutSession.exercise === workoutSettings.exercises) {
-    interval = workoutSettings.rest_duration;
-  }
-
-  if (currentWorkoutSession.inProgress) {
-    interval = workoutSettings.exercise_duration;
-  }
-
-  const time = new Date();
-  time.setSeconds(time.getSeconds() + interval);
-  return time;
-};
-
-
-function LinearProgressWithLabel({ value }: { value: number }) {
-  return (
-    <Box display="flex" alignItems="center">
-      <Box width="100%" mr={1}>
-        <LinearProgress variant="determinate" value={value} />
-      </Box>
-      <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">{`${Math.round(
-          value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
+interface IMyTimerProps {
+  expiryTimestamp: Date;
+  setNextStepInWorkout: () => Date;
+  getInterval: (newWorkoutSession: IWorkoutSession) => Date;
+  moveToNext: () => IWorkoutSession;
+  moveToPrevious: () => IWorkoutSession;
+  isResting: boolean;
 }
 
-export default function Timer(): React.ReactElement {
-  const { workoutSettings, currentWorkoutSession, setCurrentWorkoutSession } = useContext(SportAppContext);
-  const expiryTimestamp = getIntervalForTimer({ currentWorkoutSession, workoutSettings });
+const useStyles = makeStyles((theme: Theme) => ({
+  bigIcon: {
+    fontSize: "50px"
+  }
+}));
+
+let timeout: any = null;
+export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, getInterval, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
   const {
+    minutes,
     seconds,
     isRunning,
     pause,
-    restart,
-    resume
+    resume,
+    restart
   } = useTimer({
-    autoStart: true,
     expiryTimestamp,
     onExpire: () => {
-      console.log("timer is done");
-      const updatedWorkoutState: IWorkoutSession = setNextStep({
-        currentWorkoutSession, workoutSettings
-      });
-      console.log(updatedWorkoutState, " updatedWorkoutState");
-      setCurrentWorkoutSession(updatedWorkoutState);
-
-      const newInterval = getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
-      console.log(newInterval, " : newInterval");
-      restart(newInterval);
-      // console.log("reset timer and start again with new time:", newInterval);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => restart(setNextStepInWorkout()), 0);
     }
   });
-  // add song when timer ends up
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound);
+  const classes = useStyles();
+
+  useEffect(() => {
+    if (isRunning && seconds <= 3) {
+      playBeep();
+    } else {
+      stopBeep();
+    }
+
+    return () => {
+      stopBeep();
+      clearTimeout(timeout);
+    };
+  }, [isRunning, seconds]);
 
   return (
-    <Paper elevation={1}>
-      <Box p={2}>
-        <Grid container direction="column" spacing={2}>
-          <Grid item xs={12}>
-            <Typography align={"center"} variant={"h2"}>{seconds}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <LinearProgressWithLabel value={seconds} />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              {/*<Grid item xs={12} alignContent={"center"} alignItems={"center"} textAlign={"center"}>*/}
-              {/*  <IconButton color="secondary" aria-label="pause" component="span" onClick={isRunning ? pause : resume}>*/}
-              {/*    {isRunning ? <PauseIcon fontSize={"large"} /> : <PlayArrowIcon fontSize={"large"} />}*/}
-              {/*  </IconButton>*/}
-              {/*</Grid>*/}
+    <Card variant="outlined">
+      <CardContent>
+        <Box p={2}>
+          <Grid container spacing={2} alignItems="center" justifyContent="center">
+            <Grid item>
+              <Typography align="center" color={isResting ? "secondary" : "primary"} variant="h4">{isResting ? "REST: " : "WORK: "}</Typography>
+            </Grid>
+            <Grid item>
+              <Typography align="center" variant="h4">{minutes*60 + seconds}</Typography>
             </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </Paper>
-  )
-}
-
-Timer.defaultProps = {
-  intervalTime: 60
+          <Grid container direction="column" spacing={2}>
+            <Grid item xs={12}>
+              <LinearProgressWithLabel isResting={isResting} value={minutes*60 + seconds} />
+            </Grid>
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item xs={4} alignContent={"center"} alignItems={"center"} textAlign={"center"}>
+                  <IconButton
+                    color="primary"
+                    aria-label="pause"
+                    component="span"
+                    onClick={() => restart(getInterval(moveToPrevious()))}
+                  >
+                    {<SkipPrevious className={classes.bigIcon} />}
+                  </IconButton>
+                </Grid>
+                <Grid item xs={4} alignContent={"center"} alignItems={"center"} textAlign={"center"}>
+                  <IconButton color="secondary" aria-label="pause" component="span" onClick={isRunning ? pause : resume}>
+                    {isRunning ? <PauseIcon className={classes.bigIcon} /> : <PlayArrowIcon className={classes.bigIcon} fontSize={"large"} />}
+                  </IconButton>
+                </Grid>
+                <Grid item xs={4} alignContent={"center"} alignItems={"center"} textAlign={"center"}>
+                  <IconButton
+                    color="primary"
+                    aria-label="pause"
+                    component="span"
+                    onClick={() => restart(getInterval(moveToNext()))}
+                  >
+                    {<SkipNext className={classes.bigIcon} />}
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+      </CardContent>
+    </Card>
+  );
 }

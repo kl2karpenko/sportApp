@@ -1,25 +1,26 @@
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { Step, StepLabel, Stepper } from "@mui/material";
 import React from "react";
 
-import { useStyles } from "../styles";
-import {IWorkoutType} from "../../../interfaces/IWorkoutType";
+import { IWorkoutType } from "../../../interfaces/IWorkoutType";
+import bodyPartsForWorkout from "../../../data/bodyPartsForWorkout";
 
-interface IExercisesStepperProps { workoutSettings: IWorkoutType; currentExercise: number; isResting: boolean }
+interface IRoundsStepperProps { workoutSettings: IWorkoutType; currentRound: number; }
 
-export default function ExercisesStepper({ workoutSettings, isResting, currentExercise }: IExercisesStepperProps) {
-  const classes = useStyles();
+export default function RoundsStepper({ workoutSettings, currentRound }: IRoundsStepperProps) {
+  const { all_exercises_for_generated_list: allExercises } = workoutSettings;
 
   return (
-    <Box ml={1} className={classes.stretchHeight}>
-      <Stepper className={classes.stretchHeight} activeStep={currentExercise - 1} orientation="vertical">
-        {[...Array(workoutSettings.exercises).keys()].map((exercise: number) => {
-          return (
-            <Step key={`exercise-${exercise}`}>
-              <StepLabel>{isResting && exercise === (currentExercise - 1) ? "Rest" : (exercise < (currentExercise - 1) ? "Done" : "Exercise")}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-    </Box>
+    <Stepper activeStep={currentRound - 1}>
+      {[...Array(workoutSettings.rounds).keys()].map((round: number) => {
+        const currentRoundBodyPart = allExercises && allExercises[round];
+        const currentRoundBodyPartLabel = currentRoundBodyPart?.bodyPartName && bodyPartsForWorkout[currentRoundBodyPart?.bodyPartName as any] || "Round";
+
+        return (
+          <Step key={`round-${round}`}>
+            <StepLabel>{round < (currentRound - 1) ? "Round Completed" : currentRoundBodyPartLabel}</StepLabel>
+          </Step>
+        );
+      })}
+    </Stepper>
   );
 }

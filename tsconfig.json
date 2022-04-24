@@ -24,11 +24,8 @@
     "strict": true,
     "target": "es5",
     "module": "commonjs",
-    "paths": {
-      "*": ["types/*"]
-    },
     "allowJs": true
   },
-  "include": ["src/**/*", "src/locales/messages.*.json", "public/index.tsx", "types", "custom.d.ts"],
-  "exclude": ["test/**/*", "setup-tests.ts", "src/testUtils/**/*", "**/*.test.ts", "**/*.test.tsx"]
+  "include": ["src/**"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }

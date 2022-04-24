@@ -1,149 +1,337 @@
-import { IWorkoutSession } from "../interfaces/IWorkoutSession";
-import { IWorkoutType } from "../interfaces/IWorkoutType";
-import workoutParts from "../data/workoutParts";
-import workoutTypes from "../data/workoutTypesList";
-import { exercises as cardioExercises } from "../data/workoutTypesList/cardio";
-import { IWorkoutTypes } from "../interfaces/IWorkoutTypes";
+import {
+  generateListOfBodyPartsForAllRounds,
+  createRandomExercisesForRound,
+  ifExerciseAlreadyIncluded,
+  setupExerciseWithPairIfNeeded,
+  checkIfWorkoutFinished, setNextStep, toNextExercise, toPreviousExercise, isRestTime, createRandomExercisesForAllRounds
+} from "./workoutHelpers";
+import workoutDefaultSettings from "../data/workoutDefaultSettings";
+import workoutTypesList from "../data/workoutTypesList";
+import {IBodyPartsForWorkout} from "../interfaces/IBodyPartsForWorkout";
+import {defaultWorkoutSession} from "../SportApp";
 
-interface IWorkoutSettings {
-  currentWorkoutSession: IWorkoutSession;
-  previousSessionValues?: IWorkoutSession;
-  workoutSettings: IWorkoutType;
-}
+describe("workoutHelpers", () => {
+  describe("ifListIncludeExercise", () => {
+    test("should return true if list include the text", () => {
+      const list: IBodyPartsForWorkout[] = [{
+        id: "ex1",
+        label: "a",
+        isCardio: false
+      }];
 
-export const toNextExercise = ({
-  currentWorkoutSession, workoutSettings
-} : IWorkoutSettings): IWorkoutSession => {
-  if (currentWorkoutSession.exercise < workoutSettings.exercises) {
-    return {
-      ...currentWorkoutSession,
-      exercise: currentWorkoutSession.exercise + 1,
-      isResting: false
-    };
-  }
+      expect(ifExerciseAlreadyIncluded(list, {
+        id: "ex1",
+        label: "a",
+        isCardio: false
+      })).toBe(true);
+    });
 
-  if (currentWorkoutSession.isResting && currentWorkoutSession.exercise === workoutSettings.exercises && currentWorkoutSession.round !== workoutSettings.rounds) {
-    return {
-      ...currentWorkoutSession,
-      exercise: 1,
-      round: currentWorkoutSession.round + 1,
-      isResting: false
-    };
-  }
+    test("should return false if list include the text", () => {
+      const list = [{
+        id: "ex1",
+        label: "a",
+        isCardio: false
+      }];
 
-  return currentWorkoutSession;
-}
-
-export const toPreviousExercise = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): IWorkoutSession => {
-  return {
-    ...currentWorkoutSession,
-    exercise: currentWorkoutSession.exercise + 1,
-    isResting: false
-  };
-}
-
-export const isRestTime = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): boolean => {
-  const beforeWeDidntRest = !currentWorkoutSession.isResting;
-  const exerciseDidntChange = currentWorkoutSession.exercise === previousSessionValues?.exercise;
-  const roundIsNotOver = currentWorkoutSession.round !== workoutSettings.rounds;
-  return !!(previousSessionValues && beforeWeDidntRest && exerciseDidntChange && roundIsNotOver);
-}
-
-const checkIfWorkoutFinished = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): boolean => {
-  return currentWorkoutSession.round === workoutSettings.rounds && currentWorkoutSession.exercise > workoutSettings.exercises;
-}
-
-export const setNextStep = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): IWorkoutSession => {
-  // when need to Stop the timer, as Workout is OVER!!!
-  if (
-    checkIfWorkoutFinished({
-      currentWorkoutSession,
-      workoutSettings,
-      previousSessionValues
-    })
-  ) {
-    return {
-      ...currentWorkoutSession,
-      isDone: true
-    };
-  }
-
-  if (
-    isRestTime({
-      currentWorkoutSession,
-      workoutSettings,
-      previousSessionValues
-    })
-  ) {
-    return {
-      ...currentWorkoutSession,
-      isResting: true
-    };
-  }
-
-  return toNextExercise({
-    currentWorkoutSession,
-    workoutSettings,
-    previousSessionValues
+      expect(ifExerciseAlreadyIncluded(list, {
+        id: "ex2",
+        label: "d",
+        isCardio: false
+      })).toBe(false);
+    });
   });
-}
 
-function getRandomInt(min: number, max: number) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+  describe("generateListOfBodyPartsForAllRounds", () => {
+    test("should create list of exercises for tabata, that are random and there is no repeats", () => {
+      const listOfExercises = generateListOfBodyPartsForAllRounds(workoutDefaultSettings);
 
-export const createRandomRoundExercisesType = (workoutSettings: IWorkoutType) => {
-  const workoutPartsKeys = Object.keys(workoutParts);
-  return [...Array(workoutSettings.rounds).keys()].map((round: number) => {
-    return workoutPartsKeys[getRandomInt(0, workoutPartsKeys.length - 1)];
+      expect(listOfExercises.length).toBe(workoutDefaultSettings.rounds);
+    });
   });
-}
 
-const ifListIncludeExercise = (list: string[], exercise: string) => {
-  return list.includes(exercise);
-}
+  describe("setupExerciseWithPairIfNeeded", () => {
+    test("should create list of exercises for 'hands'", () => {
+      const listOfExercisesForHands = workoutTypesList.hands;
+      const createdList: IBodyPartsForWorkout[] = [];
+      const randomListOfExercises = setupExerciseWithPairIfNeeded(listOfExercisesForHands, createdList, []);
 
-const setupExerciseWithPairIfNeeded = (listOfExercises: { [key: string]: IWorkoutTypes }, randomListOfExercises: []): IWorkoutTypes => {
-  const randomExerciseIndex = getRandomInt(0, Object.keys(listOfExercises).length - 1);
-  const randomExercise = listOfExercises["exercise" + randomExerciseIndex];
+      expect(randomListOfExercises.length).toBeGreaterThanOrEqual(1);
+    });
+  });
 
-  // when to add the cardio
-  if (randomListOfExercises.length === 0 || randomListOfExercises.length % 3 === 0) {
-    const randomExerciseIndexCardio = getRandomInt(0, Object.keys(cardioExercises).length - 1);
-    randomListOfExercises.push(cardioExercises["exercise" + randomExerciseIndexCardio].name);
-  }
+  describe("createRandomExercisesForRound", () => {
+    const workoutTypesListEnums = Object.keys(workoutTypesList);
+    test("should create list of exercises for each round, the same as number of exercises", () => {
+      const result = createRandomExercisesForRound(workoutTypesListEnums[0], workoutDefaultSettings, []);
 
-  if (!ifListIncludeExercise(randomListOfExercises, randomExercise.name)) {
-    randomListOfExercises.push(randomExercise.name);
-  }
+      console.log(result, " result");
 
-  if (randomExercise.pairedExercise && !ifListIncludeExercise(randomListOfExercises, listOfExercises[randomExercise.pairedExercise].name)) {
-    randomListOfExercises.push(listOfExercises[randomExercise.pairedExercise].name)
-  }
-}
+      expect(result.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises);
+    });
+  });
 
-export const createRandomExercisesListForRound = (exerciseType: keyof workoutTypes, workoutSettings?: IWorkoutType = {}) => {
-  const listOfExercises = workoutTypes[exerciseType];
-  let randomListOfExercises = [];
+  describe("createRandomExercisesForAllRounds", () => {
+    const workoutTypesListEnums = Object.keys(workoutTypesList);
+    test("should create list of exercises for all rounds", () => {
+      const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[1]], workoutDefaultSettings);
 
-  console.log(listOfExercises, workoutSettings);
+      expect(result.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises);
+    });
+  });
 
-  if (listOfExercises) {
-    while (randomListOfExercises.length <= workoutSettings.exercises) {
-      setupExerciseWithPairIfNeeded(listOfExercises, randomListOfExercises)
-      console.log(randomListOfExercises, " list ");
-    }
-  }
+  describe("toNextExercise", () => {
+    test("should move to next exercise", () => {
+      const result = toNextExercise({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: true,
+          round: workoutDefaultSettings.rounds,
+          exercise: 1
+        },
+        workoutSettings: workoutDefaultSettings
+      });
 
-  return randomListOfExercises;
-}
+      expect(result.exercise).toBe(2);
+      expect(result.isResting).toBe(false);
+    });
+
+    test("should move to next round", () => {
+      const result = toNextExercise({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: true,
+          round: 1,
+          exercise: workoutDefaultSettings.exercises
+        },
+        workoutSettings: {
+          ...workoutDefaultSettings,
+          rounds: 2
+        }
+      });
+
+      expect(result.round).toBe(2);
+      expect(result.isResting).toBe(false);
+      expect(result.exercise).toBe(1);
+    });
+  });
+
+  describe("toPreviousExercise", () => {
+    test("should move set rest to false, if it is true and stay at the same exercise", () => {
+      const result = toPreviousExercise({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: true,
+          round: 1,
+          exercise: 2
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(result.exercise).toBe(2);
+      expect(result.round).toBe(1);
+      expect(result.isResting).toBe(false);
+    });
+
+    test("should move to previous exercise if not Resting to rest", () => {
+      const result = toPreviousExercise({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: 2
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(result.exercise).toBe(1);
+      expect(result.round).toBe(1);
+      expect(result.isResting).toBe(true);
+    });
+
+    test("should move to previous round if last exercise and not Resting", () => {
+      const result = toPreviousExercise({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 2,
+          exercise: 1
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(result.exercise).toBe(2);
+      expect(result.round).toBe(1);
+      expect(result.isResting).toBe(true);
+    });
+  });
+
+  describe("isRestTime", () => {
+    test("should return true is Rest time", () => {
+      const result = isRestTime({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: 1
+        },
+        workoutSettings: {
+          ...workoutDefaultSettings,
+          exercises: 3
+        },
+        previousSessionValues: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: 1
+        }
+      });
+
+      expect(result).toBe(true);
+    });
+
+    test("should return false if not a Rest time", () => {
+      const result = isRestTime({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: 2
+        },
+        workoutSettings: {
+          ...workoutDefaultSettings,
+          exercises: 3
+        },
+        previousSessionValues: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: 1
+        }
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("setNextStep", () => {
+    test("should move to exercise 2", () => {
+      const result = setNextStep({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: true,
+          round: 1,
+          exercise: 1
+        },
+        workoutSettings: workoutDefaultSettings,
+        previousSessionValues: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: 1
+        }
+      });
+
+      expect(result.exercise).toBe(2);
+      expect(result.isResting).toBe(false);
+    });
+
+    test("should move to next round", () => {
+      const result = setNextStep({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: true,
+          round: 1,
+          exercise: workoutDefaultSettings.exercises
+        },
+        workoutSettings: {
+          ...workoutDefaultSettings,
+          rounds: 2
+        },
+        previousSessionValues: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 1,
+          exercise: workoutDefaultSettings.exercises
+        }
+      });
+
+      expect(result.round).toBe(2);
+      expect(result.exercise).toBe(1);
+    });
+  });
+
+  describe("checkIfWorkoutFinished", () => {
+    test("should return true if exercises and rounds are finished + isResting is true", () => {
+      const isFinished = checkIfWorkoutFinished({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: true,
+          round: workoutDefaultSettings.rounds,
+          exercise: workoutDefaultSettings.exercises
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(isFinished).toBe(true);
+    });
+
+    test("should return false if exercises and rounds are finished + isResting == false", () => {
+      const isFinished = checkIfWorkoutFinished({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: workoutDefaultSettings.rounds,
+          exercise: workoutDefaultSettings.exercises
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(isFinished).toBe(false);
+    });
+
+    test("should return false if exercises is not finished", () => {
+      const isFinished = checkIfWorkoutFinished({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: workoutDefaultSettings.rounds,
+          exercise: 1
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(isFinished).toBe(false);
+    });
+
+    test("should return false if rounds is not finished", () => {
+      const isFinished = checkIfWorkoutFinished({
+        currentWorkoutSession: {
+          ...defaultWorkoutSession,
+          inProgress: true,
+          isResting: false,
+          round: 0,
+          exercise: workoutDefaultSettings.exercises
+        },
+        workoutSettings: workoutDefaultSettings
+      });
+
+      expect(isFinished).toBe(false);
+    });
+  });
+});

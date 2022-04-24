@@ -1,7 +1,9 @@
-export interface IWorkoutTypes {
-  name: string;
+export interface IBodyPartsForWorkout {
+  id: string;
+  label: string;
   isCardio: boolean;
-  pairedExercise?: string;
+  pair?: string;
   intenseRate?: number;
+  video?: string;
 }
 

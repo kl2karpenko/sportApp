@@ -1,6 +1,9 @@
 import { IWorkoutSession } from "../interfaces/IWorkoutSession";
-import { IWorkoutType } from "../interfaces/IWorkoutType";
-import workoutParts from "../data/workout_parts.json";
+import {IWorkoutGeneratedExercisesList, IWorkoutType} from "../interfaces/IWorkoutType";
+import bodyPartsForWorkout from "../data/bodyPartsForWorkout";
+import workoutTypesList from "../data/workoutTypesList";
+import { exercises as cardioExercises } from "../data/workoutTypesList/cardio";
+import { IBodyPartsForWorkout } from "../interfaces/IBodyPartsForWorkout";
 
 interface IWorkoutSettings {
   currentWorkoutSession: IWorkoutSession;
@@ -9,55 +12,9 @@ interface IWorkoutSettings {
 }
 
 export const toNextExercise = ({
-  currentWorkoutSession, workoutSettings
-} : IWorkoutSettings): IWorkoutSession => {
-  if (currentWorkoutSession.exercise < workoutSettings.exercises) {
-    return {
-      ...currentWorkoutSession,
-      exercise: currentWorkoutSession.exercise + 1,
-      isResting: false
-    };
-  }
-
-  if (currentWorkoutSession.isResting && currentWorkoutSession.exercise === workoutSettings.exercises && currentWorkoutSession.round !== workoutSettings.rounds) {
-    return {
-      ...currentWorkoutSession,
-      exercise: 1,
-      round: currentWorkoutSession.round + 1,
-      isResting: false
-    };
-  }
-}
-
-export const toPreviousExercise = ({
   currentWorkoutSession, workoutSettings, previousSessionValues
 } : IWorkoutSettings): IWorkoutSession => {
-  return {
-    ...currentWorkoutSession,
-    exercise: currentWorkoutSession.exercise + 1,
-    isResting: false
-  };
-}
-
-export const isRestTime = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): boolean => {
-  const beforeWeDidntRest = !currentWorkoutSession.isResting;
-  const exerciseDidntChange = currentWorkoutSession.exercise === previousSessionValues?.exercise;
-  const roundIsNotOver = currentWorkoutSession.round !== workoutSettings.rounds;
-  return !!(previousSessionValues && beforeWeDidntRest && exerciseDidntChange && roundIsNotOver);
-}
-
-const checkIfWorkoutFinished = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): boolean => {
-  return currentWorkoutSession.round === workoutSettings.rounds && currentWorkoutSession.exercise > workoutSettings.exercises;
-}
-
-export const setNextStep = ({
-  currentWorkoutSession, workoutSettings, previousSessionValues
-} : IWorkoutSettings): IWorkoutSession => {
-  // when need to Stop the timer, as Workout is OVER!!!
+  // does not set finish when click next
   if (
     checkIfWorkoutFinished({
       currentWorkoutSession,
@@ -67,10 +24,90 @@ export const setNextStep = ({
   ) {
     return {
       ...currentWorkoutSession,
+      isResting: false,
+      inProgress: false,
       isDone: true
     };
   }
 
+  if (currentWorkoutSession.exercise < workoutSettings.exercises) {
+    return {
+      ...currentWorkoutSession,
+      exercise: currentWorkoutSession.exercise + 1,
+      isResting: false
+    };
+  }
+
+  if (currentWorkoutSession.exercise === workoutSettings.exercises && currentWorkoutSession.round !== workoutSettings.rounds) {
+    if (currentWorkoutSession.isResting) {
+      return {
+        ...currentWorkoutSession,
+        exercise: 1,
+        round: currentWorkoutSession.round + 1,
+        isResting: false
+      };
+    }
+
+    return {
+      ...currentWorkoutSession,
+      isResting: true
+    };
+  }
+
+  return currentWorkoutSession;
+}
+
+export const toPreviousExercise = ({
+  currentWorkoutSession, workoutSettings
+} : IWorkoutSettings): IWorkoutSession => {
+  // not rest
+  if (currentWorkoutSession.isResting) {
+    return {
+      ...currentWorkoutSession,
+      isResting: false
+    };
+  }
+
+  // move to previous exercise if it is not 1 one
+  if (currentWorkoutSession.exercise !== 1) {
+    return {
+      ...currentWorkoutSession,
+      exercise: currentWorkoutSession.exercise - 1,
+      isResting: true
+    };
+  }
+
+  // move to previous round if this is not the first round, last exercise
+  if (currentWorkoutSession.round !== 1) {
+    return {
+      ...currentWorkoutSession,
+      round: currentWorkoutSession.round - 1,
+      exercise: workoutSettings.exercises,
+      isResting: true
+    };
+  }
+
+  return currentWorkoutSession;
+}
+
+export const isRestTime = ({
+  currentWorkoutSession, workoutSettings, previousSessionValues
+} : IWorkoutSettings): boolean => {
+  const beforeWeDidntRest = !currentWorkoutSession.isResting;
+  const exerciseDidntChange = currentWorkoutSession.exercise === previousSessionValues?.exercise;
+  const roundIsNotOver = currentWorkoutSession.round <= workoutSettings.rounds;
+  return !!(previousSessionValues && beforeWeDidntRest && exerciseDidntChange && roundIsNotOver);
+}
+
+export const checkIfWorkoutFinished = ({
+  currentWorkoutSession, workoutSettings
+} : IWorkoutSettings): boolean => {
+  return currentWorkoutSession.round === workoutSettings.rounds && currentWorkoutSession.exercise === workoutSettings.exercises && currentWorkoutSession.isResting;
+}
+
+export const setNextStep = ({
+  currentWorkoutSession, workoutSettings, previousSessionValues
+} : IWorkoutSettings): IWorkoutSession => {
   if (
     isRestTime({
       currentWorkoutSession,
@@ -86,15 +123,99 @@ export const setNextStep = ({
 
   return toNextExercise({
     currentWorkoutSession,
-    workoutSettings,
-    previousSessionValues
+    workoutSettings
   });
 }
 
-export const getRandomArbitrary = (min: number, max: number) => {
-  return Math.random() * (max - min) + min;
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export const createRandomRound = (round: number, exerciseNum: number) => {
-  
+export const generateListOfBodyPartsForAllRounds = (workoutSettings: IWorkoutType): string[] => {
+  const workoutPartsKeys = Object.keys(bodyPartsForWorkout);
+  return [...Array(workoutSettings.rounds).keys()].map((round: number) => {
+    return workoutPartsKeys[getRandomInt(0, workoutPartsKeys.length - 1)];
+  });
+}
+
+export const ifExerciseAlreadyIncluded = (list: IBodyPartsForWorkout[], exercise: IBodyPartsForWorkout) => !!list.filter((item: IBodyPartsForWorkout) => item.id === exercise.id).length;
+
+export const getPairExercise = (list: IBodyPartsForWorkout[], pairExId: string): IBodyPartsForWorkout | undefined => {
+  const findPair = list.filter((item: IBodyPartsForWorkout) => {
+    if (item.id === pairExId) return item;
+  });
+
+  return findPair && findPair[0];
+};
+
+export const setupExerciseWithPairIfNeeded =
+  (listOfExercises: IBodyPartsForWorkout[], randomListOfExercises: IBodyPartsForWorkout[], previousExercises: IBodyPartsForWorkout[]): IBodyPartsForWorkout[] =>
+  {
+    let randomExercise: IBodyPartsForWorkout = listOfExercises[getRandomInt(0, Object.keys(listOfExercises).length - 1)];
+
+    // if exercise already exist do 3 times again
+    let counter = 0;
+    while(counter <= 3) {
+      const randomExerciseIndex = getRandomInt(0, Object.keys(listOfExercises).length - 1);
+      randomExercise = listOfExercises[randomExerciseIndex];
+      let ifAlreadyHaveExercise = ifExerciseAlreadyIncluded(previousExercises, randomExercise);
+
+      if (ifAlreadyHaveExercise) {
+        counter++;
+      } else {
+        break;
+      }
+    }
+
+    // when to add the cardio
+    if (randomListOfExercises.length === 0 || randomListOfExercises.length % 3 === 0) {
+      const randomExerciseIndexCardio = getRandomInt(0, Object.keys(cardioExercises).length - 1);
+      randomListOfExercises.push((cardioExercises[randomExerciseIndexCardio]));
+    }
+
+    if (!ifExerciseAlreadyIncluded(randomListOfExercises, randomExercise)) {
+      randomListOfExercises.push(randomExercise);
+    }
+
+    const pairedExercise: "" | undefined | IBodyPartsForWorkout = randomExercise.pair && getPairExercise(listOfExercises, randomExercise.pair);
+
+    if (pairedExercise && !ifExerciseAlreadyIncluded(randomListOfExercises, pairedExercise)) {
+      randomListOfExercises.push(pairedExercise)
+    }
+
+    return randomListOfExercises;
+  }
+
+export const createRandomExercisesForRound = (bodyPartName: string, workoutSettings: IWorkoutType, previousExercises: IBodyPartsForWorkout[]): IBodyPartsForWorkout[] => {
+  const listOfExercises = workoutTypesList[bodyPartName as string];
+  let randomListOfExercises: IBodyPartsForWorkout[] = [];
+
+  if (workoutSettings && listOfExercises && listOfExercises.length && listOfExercises.length >= workoutSettings.exercises) {
+    while (randomListOfExercises.length < workoutSettings.exercises) {
+      setupExerciseWithPairIfNeeded(listOfExercises, randomListOfExercises, previousExercises);
+    }
+  } else {
+    console.log(" not enough exercises");
+  }
+
+  randomListOfExercises.slice(0, workoutSettings.exercises);
+
+  return randomListOfExercises;
+}
+
+export const createRandomExercisesForAllRounds = (bodyPartsList: string[], workoutSettings: IWorkoutType): IWorkoutGeneratedExercisesList[] => {
+  const newWorkoutSettings: IWorkoutGeneratedExercisesList[] = [];
+
+  bodyPartsList.forEach((bodyPartName: string) => {
+    const listOfPreviousExercises: IBodyPartsForWorkout[] = newWorkoutSettings.map((workout: IWorkoutGeneratedExercisesList) => workout.exercises).flat(1);
+    const exercises = createRandomExercisesForRound(bodyPartName, workoutSettings, listOfPreviousExercises);
+    newWorkoutSettings.push({
+      bodyPartName,
+      exercises
+    });
+  });
+
+  return newWorkoutSettings;
 }
