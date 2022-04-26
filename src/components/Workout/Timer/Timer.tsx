@@ -9,11 +9,13 @@ import CustomTimer from "./CustomTimer";
 const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { currentWorkoutSession: IWorkoutSession; workoutSettings: IWorkoutType }): Date => {
   let interval = 0;
 
-  if (currentWorkoutSession.isResting && currentWorkoutSession.exercise < workoutSettings.exercises) {
-    interval = workoutSettings.rest_duration;
-  } else if (currentWorkoutSession.isResting && currentWorkoutSession.exercise === workoutSettings.exercises) {
-    interval = workoutSettings.rest_between_rounds;
-  } else if (currentWorkoutSession.inProgress) {
+  if (currentWorkoutSession.isResting) {
+    if (currentWorkoutSession.exercise < workoutSettings.exercises) {
+      interval = workoutSettings.rest_duration;
+    } else {
+      interval = workoutSettings.rest_between_rounds;
+    }
+  }  else if (currentWorkoutSession.inProgress) {
     interval = workoutSettings.exercise_duration;
   }
 
@@ -34,22 +36,24 @@ export default function Timer(): React.ReactElement {
 
     return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
   };
-  const moveToNext = (): IWorkoutSession => {
+  const moveToNext = (): Date => {
     const previousSessionValues = JSON.parse(JSON.stringify(currentWorkoutSession));
     const updatedWorkoutState: IWorkoutSession = setNextStep({
       currentWorkoutSession, workoutSettings, previousSessionValues
     });
     setCurrentWorkoutSession(updatedWorkoutState);
 
-    return updatedWorkoutState;
+    console.log("moveToNext", updatedWorkoutState);
+
+    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
   };
-  const moveToPrevious = (): IWorkoutSession => {
+  const moveToPrevious = (): Date => {
     const updatedWorkoutState: IWorkoutSession = toPreviousExercise({
       currentWorkoutSession, workoutSettings
     });
     setCurrentWorkoutSession(updatedWorkoutState);
 
-    return updatedWorkoutState;
+    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
   };
 
   return (
@@ -60,7 +64,6 @@ export default function Timer(): React.ReactElement {
       isResting={currentWorkoutSession.isResting}
       moveToNext={moveToNext}
       moveToPrevious={moveToPrevious}
-      getInterval={(newWorkoutSession: IWorkoutSession) => getIntervalForTimer({ currentWorkoutSession: newWorkoutSession, workoutSettings })}
     />
   )
 }

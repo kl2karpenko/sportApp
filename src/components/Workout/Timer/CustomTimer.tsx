@@ -14,9 +14,8 @@ const beepEndSound = require("../../../sounds/beep.mp3");
 interface IMyTimerProps {
   expiryTimestamp: Date;
   setNextStepInWorkout: () => Date;
-  getInterval: (newWorkoutSession: IWorkoutSession) => Date;
-  moveToNext: () => IWorkoutSession;
-  moveToPrevious: () => IWorkoutSession;
+  moveToNext: () => Date;
+  moveToPrevious: () => Date;
   isResting: boolean;
 }
 
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 let timeout: any = null;
-export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, getInterval, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
+export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
   const {
     minutes,
     seconds,
@@ -38,24 +37,20 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, getInte
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => restart(setNextStepInWorkout()), 0);
+      setTimeout(() => restart(setNextStepInWorkout()), 0);
     }
   });
   const [playBeep, { stop: stopBeep }] = useSound(beepEndSound);
   const classes = useStyles();
 
   useEffect(() => {
-    if (isRunning && seconds <= 3) {
+    if (isRunning && (minutes*60 + seconds) <= 3) {
       playBeep();
     } else {
       stopBeep();
     }
 
-    return () => {
-      stopBeep();
-      clearTimeout(timeout);
-    };
+    return () => stopBeep();
   }, [isRunning, seconds]);
 
   return (
@@ -81,7 +76,7 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, getInte
                     color="primary"
                     aria-label="pause"
                     component="span"
-                    onClick={() => restart(getInterval(moveToPrevious()))}
+                    onClick={() => restart(moveToPrevious())}
                   >
                     {<SkipPrevious className={classes.bigIcon} />}
                   </IconButton>
@@ -96,7 +91,7 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, getInte
                     color="primary"
                     aria-label="pause"
                     component="span"
-                    onClick={() => restart(getInterval(moveToNext()))}
+                    onClick={() => restart(moveToNext())}
                   >
                     {<SkipNext className={classes.bigIcon} />}
                   </IconButton>

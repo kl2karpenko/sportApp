@@ -98,27 +98,38 @@ export default function CurrentWorkout(): React.ReactElement {
   return (
     <Box p={10} minHeight="100%">
       <Grid container direction="column" alignContent="center" alignItems="stretch" className={classes.stretchHeight}>
+        <Grid item xs={12} alignContent={"center"}>
+          <Grid container>
+            <Grid item>
+              <Typography align="center" variant="h5">{workoutSettings.label} in Progress:&nbsp;</Typography>
+            </Grid>
+            <Grid item>
+              <Typography align="center" variant="h5">{bodyPartsForWorkout[workoutSettings.generated_body_parts_list[(currentRound - 1)]]}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid item xs={12}>
           <Card variant="outlined" style={{ height: "calc(100% - 160px)" }}>
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
-                <Grid item xs={4} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
+                <Grid item xs={12} alignSelf={"flex-end"}>
+                  <RoundsStepper workoutSettings={workoutSettings} currentRound={currentRound} />
+                </Grid>
+                <Grid item xs={3} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
                   <ExercisesStepper isResting={isResting} workoutSettings={workoutSettings} currentWorkoutSession={currentWorkoutSession} currentExercise={currentExercise} />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={9}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Grid container spacing={3} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
-                        <Grid item xs={3} alignContent={"center"}>
-                          <Typography align="center" color={isResting ? "secondary" : "primary"} variant="h5">{workoutSettings.label} in Progress</Typography>
-                          <Typography align="center" color={isResting ? "secondary" : "primary"} variant="h4">{bodyPartsForWorkout[workoutSettings.generated_body_parts_list[(currentRound - 1)]]}</Typography>
+                        <Grid item xs={3}>
+                          <Timer />
                         </Grid>
                         <Grid item xs={9}>
-                          <Grid container spacing={3}>
-                            <Grid item xs={12}>
-                              {<Timer />}
-                            </Grid>
-                          </Grid>
+                          <iframe width="100%" height="400" src={currentWorkoutSession.url || "https://www.youtube.com/embed/IgSn1Z2rq6E"}
+                            title="YouTube video player" frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen></iframe>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -140,16 +151,7 @@ export default function CurrentWorkout(): React.ReactElement {
                         </Grid>
                       </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                      <iframe width={"100%"} height="315" src={currentWorkoutSession.url || "https://www.youtube.com/embed/IgSn1Z2rq6E"}
-                        title="YouTube video player" frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen></iframe>
-                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid item xs={12} alignSelf={"flex-end"}>
-                  <RoundsStepper workoutSettings={workoutSettings} currentRound={currentRound} />
                 </Grid>
               </Grid>
             </CardContent>

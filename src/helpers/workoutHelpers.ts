@@ -30,6 +30,9 @@ export const toNextExercise = ({
     };
   }
 
+  console.log(currentWorkoutSession.exercise, " currentWorkoutSession.exercise");
+  console.log(workoutSettings.exercises, "workoutSettings.exercises");
+
   if (currentWorkoutSession.exercise < workoutSettings.exercises) {
     return {
       ...currentWorkoutSession,
@@ -123,7 +126,8 @@ export const setNextStep = ({
 
   return toNextExercise({
     currentWorkoutSession,
-    workoutSettings
+    workoutSettings,
+    previousSessionValues
   });
 }
 

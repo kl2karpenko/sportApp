@@ -18,7 +18,7 @@ export default function ExerciseDetail({ description, video, exerciseName }: IEx
           </Grid>
           <Grid item xs={12}>
             {video ? <img src={video} alt="exerciseName" height={450} width={450} /> : ""}
-            {!video ? <Typography align="center" variant="h5">{exerciseName || "REST!"}</Typography> : ""}
+            {!video ? <Typography align="center" variant="h4">{exerciseName || "REST!"}</Typography> : ""}
           </Grid>
         </Grid>
       </CardContent>
