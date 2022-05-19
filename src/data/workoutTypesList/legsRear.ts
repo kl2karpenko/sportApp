@@ -23,7 +23,8 @@ export const exercises: IBodyPartsForWorkout[] = [
     label: "Наклоны с выносом левой ноги назад с гирями, вторая держит равновесие",
     isCardio: false,
     pair: "legsRear-ex5"
-  }, {
+  },
+  {
     id: "legsRear-ex5",
     label: "Наклоны с выносом правой ноги назад с гирями, вторая держит равновесие",
     isCardio: false,
@@ -40,5 +41,10 @@ export const exercises: IBodyPartsForWorkout[] = [
     label: "Наклон к правой ноге, резинка на 2 ноге и делаем наклоны",
     isCardio: false,
     pair: "legsRear-ex6"
-  }
+  },
+  {
+    id: "legsRear-ex8",
+    label: "Наклон с гантелями вниз и поднимаемся вверх",
+    isCardio: false
+  },
 ];

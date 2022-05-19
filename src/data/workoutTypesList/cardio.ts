@@ -143,4 +143,9 @@ export const exercises: IBodyPartsForWorkout[] = [
     isCardio: true,
     video: "/assets/gifs/cardio/video-ex27.gif"
   },
+  {
+    id: "cardio-ex28",
+    label: "Стоя выкидываем по очереди ногу вперед по 1",
+    isCardio: true
+  },
 ];

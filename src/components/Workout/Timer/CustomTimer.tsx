@@ -6,10 +6,8 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@material-ui/icons";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
 import { makeStyles } from "@mui/styles";
-import {IWorkoutSession} from "../../../interfaces/IWorkoutSession";
 
-const beepStartSound = require("../../../sounds/beep-start.mp3");
-const beepEndSound = require("../../../sounds/beep.mp3");
+const beepEndSound = require("../../../sounds/mixkit-repeating-arcade-beep-1084.wav");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
@@ -25,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-let timeout: any = null;
 export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
   const {
     minutes,
@@ -40,11 +37,12 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResti
       setTimeout(() => restart(setNextStepInWorkout()), 0);
     }
   });
-  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound);
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.15 });
   const classes = useStyles();
+  const totalTimerTime = minutes*60 + seconds;
 
   useEffect(() => {
-    if (isRunning && (minutes*60 + seconds) <= 3) {
+    if (isRunning && (totalTimerTime) <= 3) {
       playBeep();
     } else {
       stopBeep();
@@ -62,12 +60,12 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResti
               <Typography align="center" color={isResting ? "secondary" : "primary"} variant="h4">{isResting ? "REST: " : "WORK: "}</Typography>
             </Grid>
             <Grid item>
-              <Typography align="center" variant="h4">{minutes*60 + seconds}</Typography>
+              <Typography align="center" variant="h4">{totalTimerTime}</Typography>
             </Grid>
           </Grid>
           <Grid container direction="column" spacing={2}>
             <Grid item xs={12}>
-              <LinearProgressWithLabel isResting={isResting} value={minutes*60 + seconds} />
+              <LinearProgressWithLabel isResting={isResting} value={totalTimerTime} />
             </Grid>
             <Grid item xs={12}>
               <Grid container>

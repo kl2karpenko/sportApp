@@ -28,7 +28,7 @@ export default function ExercisesStepper({ workoutSettings, isResting, currentEx
             <Step key={`exercise-${exercise}`} completed={isCompleted} color={isCompleted ? "secondary" : "primary"}>
               <StepLabel>
                 <Typography className={!isCompleted && !isRestStep && classes.bold || ""}>
-                  {isCompleted ? "Exercise Completed" : currentExerciseName}
+                  {currentExerciseName}
                 </Typography>
               </StepLabel>
               <StepLabel>

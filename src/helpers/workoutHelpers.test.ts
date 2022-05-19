@@ -9,6 +9,7 @@ import workoutDefaultSettings from "../data/workoutDefaultSettings";
 import workoutTypesList from "../data/workoutTypesList";
 import {IBodyPartsForWorkout} from "../interfaces/IBodyPartsForWorkout";
 import {defaultWorkoutSession} from "../SportApp";
+import {IWorkoutGeneratedExercisesList} from "../interfaces/IWorkoutType";
 
 describe("workoutHelpers", () => {
   describe("ifListIncludeExercise", () => {
@@ -50,7 +51,7 @@ describe("workoutHelpers", () => {
   });
 
   describe("setupExerciseWithPairIfNeeded", () => {
-    test("should create list of exercises for 'hands'", () => {
+    test("should create random list of exercises for 'hands'", () => {
       const listOfExercisesForHands = workoutTypesList.hands;
       const createdList: IBodyPartsForWorkout[] = [];
       const randomListOfExercises = setupExerciseWithPairIfNeeded(listOfExercisesForHands, createdList, []);
@@ -75,7 +76,17 @@ describe("workoutHelpers", () => {
     test("should create list of exercises for all rounds", () => {
       const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[1]], workoutDefaultSettings);
 
+      result.forEach(({ exercises }: IWorkoutGeneratedExercisesList, index) =>
+        expect(exercises.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises)
+      );
+
       expect(result.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises);
+    });
+
+    test("should create list of exercises for all rounds without repeating the exercises", () => {
+      const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[0], workoutTypesListEnums[2], workoutTypesListEnums[1]], workoutDefaultSettings);
+
+      result.forEach(({ exercises }: IWorkoutGeneratedExercisesList, index) => expect(exercises.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises));
     });
   });
 

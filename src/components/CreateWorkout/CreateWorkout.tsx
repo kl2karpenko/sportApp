@@ -16,34 +16,23 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import bodyPartsForWorkout from "../../data/bodyPartsForWorkout";
-import { filterSelectedExercises, COLUMN_NAMES, default as DraggableDnd } from "../Draggable";
+import bodyPartsForWorkout, {BodyParts} from "../../data/bodyPartsForWorkout";
 import { IWorkoutGeneratedExercisesList, IWorkoutType } from "../../interfaces/IWorkoutType";
 import { SportAppContext } from "../../SportAppContext";
 import {
   createRandomExercisesForAllRounds,
-  generateListOfBodyPartsForAllRounds
+  generateListOfBodyPartsForAllRounds, getRandomInt
 } from "../../helpers/workoutHelpers";
 import { IWorkoutSession } from "../../interfaces/IWorkoutSession";
-import workoutTypesList from "../../data/workoutTypesList";
 import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
 import WorkoutPreview from "./WorkoutPreview";
+import workoutTypes from "../../data/workoutTypesList";
 
-const getItemsForDraggableList = (bodyPartName: string, currentBodyPartsExercises: IWorkoutGeneratedExercisesList, selectedExercisesForRound: IBodyPartsForWorkout[]): IBodyPartsForWorkout[] => {
-  const fromListForExercises = bodyPartName !== "cardio" ? [...workoutTypesList[bodyPartName] || [], ...workoutTypesList.cardio] : workoutTypesList[bodyPartName];
-  const selected = selectedExercisesForRound?.length ? selectedExercisesForRound : (currentBodyPartsExercises?.exercises || []);
-  const items = filterSelectedExercises(fromListForExercises, selected);
-
-  return [
-    ...items.map((exercise: IBodyPartsForWorkout) => ({
-      ...exercise,
-      column: COLUMN_NAMES.AVAILABLE_EXERCISES
-    })),
-    ...selected.map((exercise: IBodyPartsForWorkout) => ({
-      ...exercise,
-      column: COLUMN_NAMES.SELECTED_EXERCISES
-    }))
-  ];
+const allExercisesList = Object.values(workoutTypes).reduce((workoutTypesExercises: IBodyPartsForWorkout[], acc: IBodyPartsForWorkout[]) => {
+  return [ ...acc, ...workoutTypesExercises ];
+}, []);
+const getWorkoutExercise = (exId: string) => {
+  return allExercisesList.filter((ex: IBodyPartsForWorkout) => ex.id === exId)[0];
 };
 
 export default function CreateWorkout(): React.ReactElement {
@@ -59,8 +48,7 @@ export default function CreateWorkout(): React.ReactElement {
 
       if (stateName === "rounds") {
         newVal.generated_body_parts_list = generateListOfBodyPartsForAllRounds(newVal);
-        const newWorkoutSettings: IWorkoutGeneratedExercisesList[] = createRandomExercisesForAllRounds(newVal.generated_body_parts_list, workoutSettings);
-        newVal.all_exercises_for_generated_list = newWorkoutSettings;
+        newVal.all_exercises_for_generated_list = createRandomExercisesForAllRounds(newVal.generated_body_parts_list, workoutSettings);
       }
 
       if (stateName === "exercises") {
@@ -79,6 +67,27 @@ export default function CreateWorkout(): React.ReactElement {
       ...state,
       generated_body_parts_list: exercises
     }))
+  };
+
+  const handleChangeExerciseForRound = (round: number, exerciseNum: number, value: string) => {
+    const allExercises = workoutSettings.all_exercises_for_generated_list;
+
+    // workoutTypes find this exercise
+    allExercises[round].exercises[exerciseNum] = getWorkoutExercise(value);
+    setWorkoutSettings((state: IWorkoutType) => ({
+      ...state,
+      all_exercises_for_generated_list: allExercises
+    }))
+  };
+
+  const handleRandomChangeExerciseForRound = (round: number, exerciseNum: number) => {
+    const allExercises = workoutSettings.all_exercises_for_generated_list;
+    const thisRoundObj = allExercises[round];
+    const thisExercise = thisRoundObj.exercises[exerciseNum];
+    const allExercisesOfThisType = workoutTypes[thisExercise.id.includes("cardio") ? BodyParts.cardio : thisRoundObj.bodyPartName];
+    let randomExercise: IBodyPartsForWorkout = allExercisesOfThisType[getRandomInt(0, allExercisesOfThisType.length - 1)];
+
+    handleChangeExerciseForRound(round, exerciseNum, randomExercise.id);
   };
 
   return (
@@ -117,20 +126,12 @@ export default function CreateWorkout(): React.ReactElement {
                         open: true,
                         title: "Workout preview",
                         content: (
-                          <Grid container spacing={2} direction={"column"}>
+                          <Grid container spacing={2} direction="column">
                             <Grid item xs={12}>
-                              <FormControl fullWidth>
-                                <FormLabel component="legend">Set URL for youtube stream:</FormLabel>
-                                <TextField
-                                  id="url"
-                                  type="text"
-                                  onChange={(e: ChangeEvent<HTMLInputElement>) => setUrl(e.target.value)}
-                                  value={url}
-                                />
-                              </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <WorkoutPreview workoutSettings={workoutSettings} />
+                              <WorkoutPreview
+                                handleChangeExerciseForRound={handleChangeExerciseForRound}
+                                handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound}
+                              />
                             </Grid>
                           </Grid>
                         ),

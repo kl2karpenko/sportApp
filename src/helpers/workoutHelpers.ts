@@ -131,7 +131,7 @@ export const setNextStep = ({
   });
 }
 
-function getRandomInt(min: number, max: number) {
+export function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -157,12 +157,14 @@ export const getPairExercise = (list: IBodyPartsForWorkout[], pairExId: string):
 export const setupExerciseWithPairIfNeeded =
   (listOfExercises: IBodyPartsForWorkout[], randomListOfExercises: IBodyPartsForWorkout[], previousExercises: IBodyPartsForWorkout[]): IBodyPartsForWorkout[] =>
   {
-    let randomExercise: IBodyPartsForWorkout = listOfExercises[getRandomInt(0, Object.keys(listOfExercises).length - 1)];
+    const exercisesLen = Object.keys(listOfExercises).length;
+    const cardioExercisesLen = Object.keys(cardioExercises).length;
+    let randomExercise: IBodyPartsForWorkout = listOfExercises[getRandomInt(0, exercisesLen - 1)];
 
     // if exercise already exist do 3 times again
     let counter = 0;
-    while(counter <= 3) {
-      const randomExerciseIndex = getRandomInt(0, Object.keys(listOfExercises).length - 1);
+    while(counter <= (exercisesLen - 2)) {
+      const randomExerciseIndex = getRandomInt(0, exercisesLen - 1);
       randomExercise = listOfExercises[randomExerciseIndex];
       let ifAlreadyHaveExercise = ifExerciseAlreadyIncluded(previousExercises, randomExercise);
 
@@ -174,8 +176,8 @@ export const setupExerciseWithPairIfNeeded =
     }
 
     // when to add the cardio
-    if (randomListOfExercises.length === 0 || randomListOfExercises.length % 3 === 0) {
-      const randomExerciseIndexCardio = getRandomInt(0, Object.keys(cardioExercises).length - 1);
+    if (randomListOfExercises.length % 3 === 0) {
+      const randomExerciseIndexCardio = getRandomInt(0, cardioExercisesLen - 1);
       randomListOfExercises.push((cardioExercises[randomExerciseIndexCardio]));
     }
 
@@ -201,10 +203,10 @@ export const createRandomExercisesForRound = (bodyPartName: string, workoutSetti
       setupExerciseWithPairIfNeeded(listOfExercises, randomListOfExercises, previousExercises);
     }
   } else {
-    console.log(" not enough exercises");
+    console.log("not enough exercises");
   }
 
-  randomListOfExercises.slice(0, workoutSettings.exercises);
+  randomListOfExercises.slice(0, workoutSettings.exercises + 1);
 
   return randomListOfExercises;
 }
@@ -214,6 +216,7 @@ export const createRandomExercisesForAllRounds = (bodyPartsList: string[], worko
 
   bodyPartsList.forEach((bodyPartName: string) => {
     const listOfPreviousExercises: IBodyPartsForWorkout[] = newWorkoutSettings.map((workout: IWorkoutGeneratedExercisesList) => workout.exercises).flat(1);
+
     const exercises = createRandomExercisesForRound(bodyPartName, workoutSettings, listOfPreviousExercises);
     newWorkoutSettings.push({
       bodyPartName,

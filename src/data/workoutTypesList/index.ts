@@ -21,7 +21,7 @@ const workoutTypes: { [key: string]: IBodyPartsForWorkout[] } = {
   [BodyParts.abs_left_right]: abs_left_right,
   [BodyParts.back]: back,
   [BodyParts.hands]: hands,
-  [BodyParts.cardio]: cardio,
+  [BodyParts.cardio]: cardio
 };
 
 export type TWorkoutTypes = typeof workoutTypes;

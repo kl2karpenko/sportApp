@@ -61,5 +61,17 @@ export const exercises: IBodyPartsForWorkout[] = [
     label: "В боковой правой планке стоим на локте, сгибаем локоть к ноге и выносим прямую ногу к руке вперед",
     isCardio: false,
     pair: "abs_left_right-ex10"
+  },
+  {
+    id: "abs_left_right-ex12",
+    label: "В боковой левой планке стоим на локте, сгибаем локоть к ноге и с локтем наклоняемся вперед",
+    isCardio: false,
+    pair: "abs_left_right-ex13"
+  },
+  {
+    id: "abs_left_right-ex13",
+    label: "В боковой правой планке стоим на локте, сгибаем локоть к ноге и с локтем наклоняемся вперед",
+    isCardio: false,
+    pair: "abs_left_right-ex12"
   }
 ];
