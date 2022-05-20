@@ -1,8 +1,7 @@
 export default interface IExercise {
-  index: number;
   id: string;
-  duration: number;
+  label: string;
   isCardio: boolean;
-  pairExercise?: string;
+  pair?: string;
   video?: string;
 }

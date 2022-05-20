@@ -8,7 +8,7 @@ import ExerciseDetail from "./ExerciseDetail";
 import ExercisesStepper from "./ExercisesStepper";
 import RoundsStepper from "./RoundsStepper";
 import { useStyles } from "./styles";
-import { IWorkoutGeneratedExercisesList } from "../../interfaces/IWorkoutType";
+import { IWorkoutGeneratedExercisesList } from "../../interfaces/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../data/bodyPartsForWorkout";
 import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
 

@@ -9,9 +9,9 @@ import { exercises as abs_left_right } from "./abs_left_right";
 import { exercises as hands } from "./hands";
 import { exercises as back } from "./back";
 import { BodyParts } from "../bodyPartsForWorkout";
-import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
+import IExercise from "../../models/Exercise/IExercise";
 
-const workoutTypes: { [key: string]: IBodyPartsForWorkout[] } = {
+const workoutTypes: { [key: string]: IExercise[] } = {
   [BodyParts.legsFront]: legsFront,
   [BodyParts.legsRear]: legsRear,
   [BodyParts.legsInside]: legsInside,

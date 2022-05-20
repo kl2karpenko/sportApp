@@ -1,6 +1,6 @@
 import { IBodyPartsForWorkout } from "./IBodyPartsForWorkout";
 
-export interface IWorkoutType {
+export interface IWorkoutDeprecatedObj {
   label: string;
   value: string;
   rounds: number;

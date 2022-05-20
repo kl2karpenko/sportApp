@@ -1,10 +1,10 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
 import React from "react";
 
-import { IWorkoutType } from "../../../interfaces/IWorkoutType";
+import { IWorkoutDeprecatedObj } from "../../../interfaces/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../../data/bodyPartsForWorkout";
 
-interface IRoundsStepperProps { workoutSettings: IWorkoutType; currentRound: number; }
+interface IRoundsStepperProps { workoutSettings: IWorkoutDeprecatedObj; currentRound: number; }
 
 export default function RoundsStepper({ workoutSettings, currentRound }: IRoundsStepperProps) {
   const { all_exercises_for_generated_list: allExercises } = workoutSettings;

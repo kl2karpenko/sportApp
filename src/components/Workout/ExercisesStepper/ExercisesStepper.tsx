@@ -2,10 +2,10 @@ import { Box, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import React from "react";
 
 import { useStyles } from "../styles";
-import {IWorkoutType} from "../../../interfaces/IWorkoutType";
+import {IWorkoutDeprecatedObj} from "../../../interfaces/IWorkoutDeprecatedObj";
 import {IWorkoutSession} from "../../../interfaces/IWorkoutSession";
 
-interface IExercisesStepperProps { workoutSettings: IWorkoutType; currentExercise: number; isResting: boolean; currentWorkoutSession: IWorkoutSession }
+interface IExercisesStepperProps { workoutSettings: IWorkoutDeprecatedObj; currentExercise: number; isResting: boolean; currentWorkoutSession: IWorkoutSession }
 
 const ifCurrentStepIsRest = (isResting: boolean, exercise: number, currentExercise: number): boolean => isResting && (exercise + 1) === currentExercise;
 const ifCurrentStepIsCompleted = (isResting: boolean, exercise: number, currentExercise: number): boolean => (exercise + 1) < currentExercise;

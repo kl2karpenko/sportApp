@@ -1,6 +1,6 @@
-import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
+import IExercise from "../../models/Exercise/IExercise";
 
-export const exercises: IBodyPartsForWorkout[] = [
+export const exercises: IExercise[] = [
   {
     id: "abs_left_right-ex1",
     label: "Стоя подъем руки к той же руке, смена",

@@ -3,10 +3,10 @@ import React, { useContext } from "react";
 import { SportAppContext } from "../../../SportAppContext";
 import {setNextStep, toNextExercise, toPreviousExercise} from "../../../helpers/workoutHelpers";
 import { IWorkoutSession } from "../../../interfaces/IWorkoutSession";
-import { IWorkoutType } from "../../../interfaces/IWorkoutType";
+import { IWorkoutDeprecatedObj } from "../../../interfaces/IWorkoutDeprecatedObj";
 import CustomTimer from "./CustomTimer";
 
-const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { currentWorkoutSession: IWorkoutSession; workoutSettings: IWorkoutType }): Date => {
+const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { currentWorkoutSession: IWorkoutSession; workoutSettings: IWorkoutDeprecatedObj }): Date => {
   let interval = 0;
 
   if (currentWorkoutSession.isResting) {

@@ -1,6 +1,6 @@
-import { IWorkoutType } from "../interfaces/IWorkoutType";
+import { IWorkoutDeprecatedObj } from "../interfaces/IWorkoutDeprecatedObj";
 
-const workoutDefaultSettings: IWorkoutType = {
+const workoutDefaultSettings: IWorkoutDeprecatedObj = {
   "label": "Workout",
   "value": "workout",
   "rounds": 1,

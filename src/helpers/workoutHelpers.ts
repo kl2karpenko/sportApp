@@ -1,5 +1,5 @@
 import { IWorkoutSession } from "../interfaces/IWorkoutSession";
-import {IWorkoutGeneratedExercisesList, IWorkoutType} from "../interfaces/IWorkoutType";
+import {IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj} from "../interfaces/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../data/bodyPartsForWorkout";
 import workoutTypesList from "../data/workoutTypesList";
 import { exercises as cardioExercises } from "../data/workoutTypesList/cardio";
@@ -8,7 +8,7 @@ import { IBodyPartsForWorkout } from "../interfaces/IBodyPartsForWorkout";
 interface IWorkoutSettings {
   currentWorkoutSession: IWorkoutSession;
   previousSessionValues?: IWorkoutSession;
-  workoutSettings: IWorkoutType;
+  workoutSettings: IWorkoutSettings;
 }
 
 export const toNextExercise = ({
@@ -137,7 +137,7 @@ export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export const generateListOfBodyPartsForAllRounds = (workoutSettings: IWorkoutType): string[] => {
+export const generateListOfBodyPartsForAllRounds = (workoutSettings: IWorkoutDeprecatedObj): string[] => {
   const workoutPartsKeys = Object.keys(bodyPartsForWorkout);
   return [...Array(workoutSettings.rounds).keys()].map((round: number) => {
     return workoutPartsKeys[getRandomInt(0, workoutPartsKeys.length - 1)];
@@ -194,7 +194,7 @@ export const setupExerciseWithPairIfNeeded =
     return randomListOfExercises;
   }
 
-export const createRandomExercisesForRound = (bodyPartName: string, workoutSettings: IWorkoutType, previousExercises: IBodyPartsForWorkout[]): IBodyPartsForWorkout[] => {
+export const createRandomExercisesForRound = (bodyPartName: string, workoutSettings: IWorkoutDeprecatedObj, previousExercises: IBodyPartsForWorkout[]): IBodyPartsForWorkout[] => {
   const listOfExercises = workoutTypesList[bodyPartName as string];
   let randomListOfExercises: IBodyPartsForWorkout[] = [];
 
@@ -211,7 +211,7 @@ export const createRandomExercisesForRound = (bodyPartName: string, workoutSetti
   return randomListOfExercises;
 }
 
-export const createRandomExercisesForAllRounds = (bodyPartsList: string[], workoutSettings: IWorkoutType): IWorkoutGeneratedExercisesList[] => {
+export const createRandomExercisesForAllRounds = (bodyPartsList: string[], workoutSettings: IWorkoutDeprecatedObj): IWorkoutGeneratedExercisesList[] => {
   const newWorkoutSettings: IWorkoutGeneratedExercisesList[] = [];
 
   bodyPartsList.forEach((bodyPartName: string) => {

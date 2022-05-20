@@ -1,19 +1,21 @@
-import React, { useState } from "react";
-import { ThemeProvider } from "@mui/material/styles";
+import React, {useEffect, useMemo, useState} from "react";
+import {ThemeProvider} from "@mui/material/styles";
 
-import { BrowserRouter as Router } from "react-router-dom";
-import { Route, Routes } from "react-router";
+import {BrowserRouter as Router} from "react-router-dom";
+import {Route, Routes} from "react-router";
 
 import theme from "./theme";
 import CreateWorkout from "./components/CreateWorkout";
-import { IWorkoutType } from "./interfaces/IWorkoutType";
 import workoutDefaultSettings from "./data/workoutDefaultSettings";
-import { IWorkoutSession } from "./interfaces/IWorkoutSession";
 import { SportAppContext } from "./SportAppContext";
 import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
 import {IDialogProps} from "./interfaces/IDialogProps";
 import ModalDialog from "./components/Dialog";
+import Workout from "./models/Workout/Workout";
+import WorkoutFactory from "./models/WorkoutFactory";
+import {WorkoutType} from "./interfaces/WorkoutType";
+import WorkoutSession from "./models/WorkoutSession/WorkoutSession";
 
 export const defaultWorkoutSession = {
   round: 0,
@@ -23,19 +25,32 @@ export const defaultWorkoutSession = {
   isDone: false
 };
 
+const workoutFactory = new WorkoutFactory();
+
 function SportApp() {
-  const [workoutSettings, setWorkoutSettings] = useState<IWorkoutType>(workoutDefaultSettings);
+  const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
+  const [workoutSettings, setWorkoutSettings] = useState<Workout | null>(null);
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
-  const [currentWorkoutSession, setCurrentWorkoutSession] = useState<IWorkoutSession>(defaultWorkoutSession);
+
+  useEffect(() => {
+    const workout = workoutFactory.getWorkout(WorkoutType.HIIT, {
+      exerciseDuration: workoutDefaultSettings.exercise_duration,
+      exercisesLength: workoutDefaultSettings.exercises,
+      roundsLength: workoutDefaultSettings.rounds,
+      restDuration: workoutDefaultSettings.rest_duration,
+      betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
+    });
+    setWorkoutSettings(workout);
+  }, [workoutType]);
 
   return (
     <ThemeProvider theme={theme}>
       <SportAppContext.Provider
         value={{
+          workoutType,
+          setWorkoutType,
           setWorkoutSettings,
-          setCurrentWorkoutSession,
-          workoutSettings: workoutSettings || workoutDefaultSettings,
-          currentWorkoutSession: currentWorkoutSession || defaultWorkoutSession,
+          workoutSettings,
           dialogProps,
           setDialogProps
         }}

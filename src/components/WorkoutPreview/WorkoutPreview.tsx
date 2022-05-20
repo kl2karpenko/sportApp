@@ -1,5 +1,5 @@
 import React, {ChangeEvent, Fragment, useContext} from "react";
-import { IWorkoutGeneratedExercisesList, IWorkoutType } from "../../interfaces/IWorkoutType";
+import { IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj } from "../../interfaces/IWorkoutDeprecatedObj";
 
 import { Typography, Grid, MenuItem, Box, Select, FormControl, Button } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Cached";

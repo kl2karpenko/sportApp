@@ -1,9 +1,9 @@
-import IRound from "../Round/IRound";
+import WorkoutBuilder from "../../builders/Workout/WorkoutBuilder";
+import WorkoutSession from "../WorkoutSession/WorkoutSession";
 
 export default interface IWorkout {
-  rounds: IRound[];
-  restDuration: number;
+  workoutBuilder: WorkoutBuilder;
+  workoutSession: WorkoutSession;
 
-  getRounds(): IRound[];
-  getRestDuration(): number;
+  generateWorkoutSession(): void;
 }
