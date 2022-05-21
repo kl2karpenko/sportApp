@@ -1,4 +1,5 @@
 import IRound from "../Round/IRound";
+import {WorkoutSessionFields} from "./WorkoutSessionFields";
 
 export default interface IWorkoutSession {
   rounds: IRound[];
@@ -11,4 +12,5 @@ export default interface IWorkoutSession {
 
   getRoundByIndex(index: number): IRound;
   setActiveRoundIndex(index: number): void;
+  updateValue(field: WorkoutSessionFields, value: number): void;
 }

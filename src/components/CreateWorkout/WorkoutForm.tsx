@@ -1,20 +1,27 @@
 import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
-import React, { ChangeEvent } from "react";
+import React, {ChangeEvent, useContext, useMemo} from "react";
 import Workout from "../../models/Workout/Workout";
 import { WorkoutSessionFields } from "../../models/WorkoutSession/WorkoutSessionFields";
+import {SportAppContext} from "../../SportAppContext";
 
-interface ICreateWorkoutFormProps { updateState: Function; workoutSettings: Workout | null; }
+interface ICreateWorkoutFormProps {
+  updateState: (stateName: string, stateVal: number) => void;
+}
 
-
-export default function WorkoutForm({ updateState, workoutSettings }: ICreateWorkoutFormProps) {
+export default function WorkoutForm({ updateState }: ICreateWorkoutFormProps) {
+  const { workoutSettings } = useContext(SportAppContext);
+  const currentWorkoutSession = workoutSettings?.workoutSession;
   // @ts-ignore
-  const WorkoutSessionFieldsPairs: { [key: WorkoutSessionFields]: number } = {
-    [WorkoutSessionFields.roundsLength]: workoutSettings?.workoutSession?.roundsLength,
-    [WorkoutSessionFields.exercisesLength]: workoutSettings?.workoutSession?.exercisesLength,
-    [WorkoutSessionFields.exerciseDuration]: workoutSettings?.workoutSession?.exerciseDuration,
-    [WorkoutSessionFields.restDuration]: workoutSettings?.workoutSession?.restDuration,
-    [WorkoutSessionFields.betweenRoundsDuration]: workoutSettings?.workoutSession?.betweenRoundsDuration
+  const WorkoutSessionFieldsPairs: { [key: WorkoutSessionFields]: number } = useMemo(() => ({
+    [WorkoutSessionFields.roundsLength]: currentWorkoutSession?.roundsLength,
+    [WorkoutSessionFields.exercisesLength]: currentWorkoutSession?.exercisesLength,
+    [WorkoutSessionFields.exerciseDuration]: currentWorkoutSession?.exerciseDuration,
+    [WorkoutSessionFields.restDuration]: currentWorkoutSession?.restDuration,
+    [WorkoutSessionFields.betweenRoundsDuration]: currentWorkoutSession?.betweenRoundsDuration
   }
+  ), [currentWorkoutSession]);
+
+  console.log(workoutSettings, " workoutSettings ");
 
   return (
     <Grid item xs={6}>
@@ -25,7 +32,7 @@ export default function WorkoutForm({ updateState, workoutSettings }: ICreateWor
               <FormLabel component="legend">Choose number of {field}</FormLabel>
               <TextField
                 id={field}
-                value={WorkoutSessionFieldsPairs[field]}
+                defaultValue={currentWorkoutSession[field]}
                 type="number"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(field, Number(e.target.value))}
               />

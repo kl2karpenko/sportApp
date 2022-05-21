@@ -7,6 +7,7 @@ import { IWorkoutSettings } from "../../interfaces/IWorkoutSettings";
 import RoundBuilder from "../../builders/Round/RoundBuilder";
 import IWorkoutSession from "./IWorkoutSession";
 import workoutDefaultSettings from "../../data/workoutDefaultSettings";
+import {WorkoutSessionFields} from "./WorkoutSessionFields";
 
 export default class WorkoutSession implements IWorkoutSession {
   rounds: IRound[] = [];
@@ -17,11 +18,12 @@ export default class WorkoutSession implements IWorkoutSession {
   exerciseDuration: number = workoutDefaultSettings.exercise_duration;
   exercisesLength: number = workoutDefaultSettings.exercises;
 
-  constructor({ exerciseDuration, exercisesLength, roundsLength, restDuration }: IWorkoutSettings) {
+  constructor({ exerciseDuration, exercisesLength, roundsLength, restDuration, betweenRoundsDuration }: IWorkoutSettings) {
     this.exercisesLength = exercisesLength;
     this.exerciseDuration = exerciseDuration;
     this.roundsLength = roundsLength;
     this.restDuration = restDuration;
+    this.betweenRoundsDuration = betweenRoundsDuration;
   }
 
   getRoundByIndex(index: number): IRound {
@@ -31,4 +33,6 @@ export default class WorkoutSession implements IWorkoutSession {
   setActiveRoundIndex(index: number): void {
     this.activeRoundIndex = index;
   }
+
+  updateValue(field: WorkoutSessionFields, value: number): void {}
 }

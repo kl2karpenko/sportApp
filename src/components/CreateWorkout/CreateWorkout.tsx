@@ -30,6 +30,7 @@ import WorkoutForm from "./WorkoutForm";
 import HIITWorkout from "../../models/Workout/HIITWorkout";
 import TabataWorkout from "../../models/Workout/TabataWorkout";
 import Workout from "../../models/Workout/Workout";
+import {WorkoutSessionFields} from "../../models/WorkoutSession/WorkoutSessionFields";
 
 const allExercisesList = Object.values(workoutTypes).reduce((workoutTypesExercises: IBodyPartsForWorkout[], acc: IBodyPartsForWorkout[]) => {
   return [ ...acc, ...workoutTypesExercises ];
@@ -41,36 +42,14 @@ const getWorkoutExercise = (exId: string) => {
 export default function CreateWorkout(): React.ReactElement {
   const { workoutSettings, setWorkoutSettings, setDialogProps } = useContext(SportAppContext);
   const currentWorkoutSession = workoutSettings?.workoutSession;
+  console.log(currentWorkoutSession, " currentWorkoutSession ");
   const navigate = useNavigate();
   const [url, setUrl] = useState<string>("");
-  const updateState = (stateName: string, stateVal: number | string) => {
-    console.log(stateName, stateVal);
-    setWorkoutSettings((state: Workout | null) => {
-      console.log(state);
-      // let newVal = {
-      //   ...state,
-      //   workoutSession: {
-      //     ...state.workoutSession,
-      //     [stateName]: stateVal
-      //   }
-      // };
+  const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
+    workoutSettings?.updateWorkoutSessionValue(stateName, stateVal);
 
-      //
-      // if (stateName === "rounds") {
-      //   newVal.generated_body_parts_list = generateListOfBodyPartsForAllRounds(newVal);
-      //   newVal.all_exercises_for_generated_list = createRandomExercisesForAllRounds(newVal.generated_body_parts_list, workoutSettings);
-      // }
-      //
-      // if (stateName === "exercises") {
-      //   newVal.all_exercises_for_generated_list = createRandomExercisesForAllRounds(newVal.generated_body_parts_list || generateListOfBodyPartsForAllRounds(newVal), workoutSettings);
-      // }
-
-      // @ts-ignore
-      state.workoutSession[stateName] = stateVal;
-
-      console.log(state, stateName, stateVal, " state ");
-      return state;
-    });
+    console.log(workoutSettings, " new workoutSettings")
+    setWorkoutSettings(workoutSettings);
   }
 
   // const handleChangeTypeOfWorkoutForTheRound = (exerciseNum: number, value: string) => {
@@ -173,7 +152,7 @@ export default function CreateWorkout(): React.ReactElement {
           <Grid container spacing={2} direction={"column"}>
             <Grid item xs={12}>
               <Grid container spacing={2}>
-                <WorkoutForm updateState={updateState} workoutSettings={workoutSettings} />
+                <WorkoutForm updateState={updateState} />
                 <Grid item xs={6}>
                   <Grid container spacing={2} direction="column">
                     {/*{workoutSettings.generated_body_parts_list?.map((bodyPartName: string, index: number) => {*/}

@@ -26,6 +26,13 @@ export const defaultWorkoutSession = {
 };
 
 const workoutFactory = new WorkoutFactory();
+const defaultHiitWorkout = workoutFactory.getWorkout(WorkoutType.HIIT, {
+  exerciseDuration: workoutDefaultSettings.exercise_duration,
+  exercisesLength: workoutDefaultSettings.exercises,
+  roundsLength: workoutDefaultSettings.rounds,
+  restDuration: workoutDefaultSettings.rest_duration,
+  betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
+});
 
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
@@ -33,14 +40,13 @@ function SportApp() {
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
 
   useEffect(() => {
-    const workout = workoutFactory.getWorkout(WorkoutType.HIIT, {
+    setWorkoutSettings(workoutFactory.getWorkout(workoutType, {
       exerciseDuration: workoutDefaultSettings.exercise_duration,
       exercisesLength: workoutDefaultSettings.exercises,
       roundsLength: workoutDefaultSettings.rounds,
       restDuration: workoutDefaultSettings.rest_duration,
       betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
-    });
-    setWorkoutSettings(workout);
+    }));
   }, [workoutType]);
 
   return (
