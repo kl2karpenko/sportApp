@@ -15,13 +15,13 @@ export default class HIITWorkout extends Workout {
     this.workoutSession = new HIITWorkoutSession(props);
   }
 
-  updateWorkoutSessionValue(field: WorkoutSessionFields, value: number): void {
+  updateWorkoutSessionValue(field: WorkoutSessionFields, value: any): void {
     this.workoutSession.updateValue(field, value);
   }
 
   generateWorkoutSession(): void {
-    const roundsEntities = this.workoutBuilder.getRandomBodyParts(this.workoutSession.roundsLength);
+    const roundsBodyParts = this.workoutBuilder.getRandomBodyParts(this.workoutSession.roundsLength);
 
-    console.log(roundsEntities, " roundsEntities");
+    this.updateWorkoutSessionValue(WorkoutSessionFields.roundsBodyParts, roundsBodyParts);
   }
 }

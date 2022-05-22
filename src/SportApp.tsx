@@ -34,19 +34,21 @@ const defaultHiitWorkout = workoutFactory.getWorkout(WorkoutType.HIIT, {
   betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
 });
 
+const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFactory.getWorkout(workoutType, {
+  exerciseDuration: workoutDefaultSettings.exercise_duration,
+  exercisesLength: workoutDefaultSettings.exercises,
+  roundsLength: workoutDefaultSettings.rounds,
+  restDuration: workoutDefaultSettings.rest_duration,
+  betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
+})
+
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
-  const [workoutSettings, setWorkoutSettings] = useState<Workout | null>(null);
+  const [workoutSettings, setWorkoutSettings] = useState<Workout | null>(getWorkoutWithDefaultSettings(workoutType));
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
 
   useEffect(() => {
-    setWorkoutSettings(workoutFactory.getWorkout(workoutType, {
-      exerciseDuration: workoutDefaultSettings.exercise_duration,
-      exercisesLength: workoutDefaultSettings.exercises,
-      roundsLength: workoutDefaultSettings.rounds,
-      restDuration: workoutDefaultSettings.rest_duration,
-      betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
-    }));
+    setWorkoutSettings(getWorkoutWithDefaultSettings(workoutType));
   }, [workoutType]);
 
   return (

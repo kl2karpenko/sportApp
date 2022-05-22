@@ -8,5 +8,6 @@ export default abstract class Workout implements IWorkout {
   abstract workoutSession: WorkoutSession;
 
   abstract generateWorkoutSession(): void;
-  abstract updateWorkoutSessionValue(field: WorkoutSessionFields, value: number): void;
+
+  abstract updateWorkoutSessionValue(field: WorkoutSessionFields, value: any): void;
 }

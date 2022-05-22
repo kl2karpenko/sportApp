@@ -1,6 +1,8 @@
 import WorkoutBuilder from "./WorkoutBuilder";
 import RoundBuilder from "../Round/RoundBuilder";
 import HIITRoundBuilder from "../Round/HIITRoundBuilder";
+import {TValues} from "../../interfaces/TValues";
+import {BodyParts} from "../../data/bodyPartsForWorkout";
 
 export default class HIITWorkoutBuilder extends WorkoutBuilder {
   public roundBuilder: HIITRoundBuilder = new HIITRoundBuilder();
@@ -9,7 +11,7 @@ export default class HIITWorkoutBuilder extends WorkoutBuilder {
 
   }
 
-  public getRandomBodyParts(rounds: number): string[] {
+  public getRandomBodyParts(rounds: number): TValues<typeof BodyParts>[] {
     if (rounds === 0) throw new Error();
 
     const bodyPartsListLength = this.bodyPartsList.length;

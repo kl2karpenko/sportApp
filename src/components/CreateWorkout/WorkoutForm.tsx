@@ -12,7 +12,7 @@ export default function WorkoutForm({ updateState }: ICreateWorkoutFormProps) {
   const { workoutSettings } = useContext(SportAppContext);
   const currentWorkoutSession = workoutSettings?.workoutSession;
   // @ts-ignore
-  const WorkoutSessionFieldsPairs: { [key: WorkoutSessionFields]: number } = useMemo(() => ({
+  const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = useMemo(() => ({
     [WorkoutSessionFields.roundsLength]: currentWorkoutSession?.roundsLength,
     [WorkoutSessionFields.exercisesLength]: currentWorkoutSession?.exercisesLength,
     [WorkoutSessionFields.exerciseDuration]: currentWorkoutSession?.exerciseDuration,
@@ -20,8 +20,6 @@ export default function WorkoutForm({ updateState }: ICreateWorkoutFormProps) {
     [WorkoutSessionFields.betweenRoundsDuration]: currentWorkoutSession?.betweenRoundsDuration
   }
   ), [currentWorkoutSession]);
-
-  console.log(workoutSettings, " workoutSettings ");
 
   return (
     <Grid item xs={6}>
@@ -32,9 +30,11 @@ export default function WorkoutForm({ updateState }: ICreateWorkoutFormProps) {
               <FormLabel component="legend">Choose number of {field}</FormLabel>
               <TextField
                 id={field}
-                defaultValue={currentWorkoutSession[field]}
+                defaultValue={workoutSettings?.workoutSession.getValue(field)}
                 type="number"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(field, Number(e.target.value))}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  updateState(field, Number(e.target.value));
+                }}
               />
             </FormControl>
           </Grid>

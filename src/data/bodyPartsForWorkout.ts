@@ -1,3 +1,5 @@
+import {TValues} from "../interfaces/TValues";
+
 export const BodyParts = {
   "legsFront": "legsFront",
   "legsInside": "legsInside",
@@ -11,7 +13,7 @@ export const BodyParts = {
   "cardio": "cardio"
 } as const;
 
-const bodyPartsForWorkout = {
+const bodyPartsForWorkout: { [key in TValues<typeof BodyParts>]: string } = {
   [BodyParts.legsFront]: "Ноги передняя часть",
   [BodyParts.legsInside]: "Ноги внутренняя часть",
   [BodyParts.legsOutside]: "Ноги внешняя часть",
