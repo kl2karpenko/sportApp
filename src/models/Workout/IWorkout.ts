@@ -1,4 +1,4 @@
-import WorkoutBuilder from "../../builders/Workout/WorkoutBuilder";
+import WorkoutBuilder from "../WorkoutBuilder/WorkoutBuilder";
 import WorkoutSession from "../WorkoutSession/WorkoutSession";
 import {WorkoutSessionFields} from "../WorkoutSession/WorkoutSessionFields";
 

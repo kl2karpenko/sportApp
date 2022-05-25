@@ -1,13 +1,13 @@
 import WorkoutBuilder from "./WorkoutBuilder";
-import RoundBuilder from "../Round/RoundBuilder";
-import HIITRoundBuilder from "../Round/HIITRoundBuilder";
+import RoundBuilder from "../RoundBuilder/RoundBuilder";
+import HIITRoundBuilder from "../RoundBuilder/HIITRoundBuilder";
 import {TValues} from "../../interfaces/TValues";
 import {BodyParts} from "../../data/bodyPartsForWorkout";
 
 export default class HIITWorkoutBuilder extends WorkoutBuilder {
   public roundBuilder: HIITRoundBuilder = new HIITRoundBuilder();
 
-  public generateRandomRound(exercisesLen: number) {
+  public generateExercisesForRound(exercisesLen: number) {
 
   }
 

@@ -1,5 +1,5 @@
 import RandomizerService from "../../services/RandomizerService";
-import RoundBuilder from "../Round/RoundBuilder";
+import RoundBuilder from "../RoundBuilder/RoundBuilder";
 import bodyPartsForWorkout, { BodyParts } from "../../data/bodyPartsForWorkout";
 import { TValues } from "../../interfaces/TValues";
 
@@ -12,4 +12,6 @@ export default class WorkoutBuilder {
   getLabelForBodyList(bodyName: TValues<typeof BodyParts>): string {
     return this.bodyPartsListLabels[bodyName];
   }
+
+  generateExercisesForRound(exercisesLen: number): void {}
 }

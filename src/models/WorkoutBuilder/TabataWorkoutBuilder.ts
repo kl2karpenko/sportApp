@@ -1,7 +1,7 @@
 import WorkoutBuilder from "./WorkoutBuilder";
-import RoundBuilder from "../Round/RoundBuilder";
-import HIITRoundBuilder from "../Round/HIITRoundBuilder";
-import TabataRoundBuilder from "../Round/TabataRoundBuilder";
+import RoundBuilder from "../RoundBuilder/RoundBuilder";
+import HIITRoundBuilder from "../RoundBuilder/HIITRoundBuilder";
+import TabataRoundBuilder from "../RoundBuilder/TabataRoundBuilder";
 
 export default class TabataWorkoutBuilder extends WorkoutBuilder {
   public roundBuilder: TabataRoundBuilder = new TabataRoundBuilder();

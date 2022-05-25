@@ -41,16 +41,12 @@ const getWorkoutExercise = (exId: string) => {
 };
 
 export default function CreateWorkout(): React.ReactElement {
-  const { workoutSettings, setWorkoutSettings, setDialogProps } = useContext(SportAppContext);
+  const { workoutSettings, setWorkoutSession, setDialogProps } = useContext(SportAppContext);
   const navigate = useNavigate();
   const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
     workoutSettings?.updateWorkoutSessionValue(stateName, stateVal);
-    // @ts-ignore
-    // TODO: need to set the state as an object not as a class, because prototype lost!!!
-    setWorkoutSettings(() => ({
-      ...workoutSettings
-    }));
+    setWorkoutSession(workoutSettings?.getWorkoutSessionValue()!);
   }
 
   console.log(workoutSettings, "  workoutSettings");
@@ -101,12 +97,7 @@ export default function CreateWorkout(): React.ReactElement {
                 <Grid item>
                   <Button variant="contained" color="secondary" onClick={() => {
                     workoutSettings?.generateWorkoutSession();
-
-                    console.log(workoutSettings, " workoutSettings");
-                    // @ts-ignore
-                    setWorkoutSettings(() => ({
-                      ...workoutSettings
-                    }));
+                    setWorkoutSession(workoutSettings?.getWorkoutSessionValue()!);
                     // const { generated_body_parts_list = [] } = workoutSettings;
                     // const bodyPartsForAllRounds = generated_body_parts_list.length ? generated_body_parts_list : generateListOfBodyPartsForAllRounds(workoutSettings);
                     // const newWorkoutSettings: IWorkoutGeneratedExercisesList[] = createRandomExercisesForAllRounds(bodyPartsForAllRounds, workoutSettings);

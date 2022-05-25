@@ -16,6 +16,7 @@ import Workout from "./models/Workout/Workout";
 import WorkoutFactory from "./models/WorkoutFactory";
 import {WorkoutType} from "./interfaces/WorkoutType";
 import WorkoutSession from "./models/WorkoutSession/WorkoutSession";
+import IWorkoutSessionForState from "./models/WorkoutSession/IWorkoutSessionForState";
 
 export const defaultWorkoutSession = {
   round: 0,
@@ -40,15 +41,18 @@ const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFacto
   roundsLength: workoutDefaultSettings.rounds,
   restDuration: workoutDefaultSettings.rest_duration,
   betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
-})
+});
 
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
   const [workoutSettings, setWorkoutSettings] = useState<Workout | null>(getWorkoutWithDefaultSettings(workoutType));
+  const [workoutSession, setWorkoutSession] = useState<IWorkoutSessionForState | null>(null);
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
 
   useEffect(() => {
-    setWorkoutSettings(getWorkoutWithDefaultSettings(workoutType));
+    const workoutSettingsInstance = getWorkoutWithDefaultSettings(workoutType);
+    setWorkoutSettings(workoutSettingsInstance);
+    setWorkoutSession(workoutSettingsInstance.getWorkoutSessionValue());
   }, [workoutType]);
 
   return (
@@ -58,7 +62,9 @@ function SportApp() {
           workoutType,
           setWorkoutType,
           setWorkoutSettings,
+          setWorkoutSession,
           workoutSettings,
+          workoutSession,
           dialogProps,
           setDialogProps
         }}

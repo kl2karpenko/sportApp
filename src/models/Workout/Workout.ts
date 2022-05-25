@@ -1,7 +1,8 @@
 import IWorkout from "./IWorkout";
-import WorkoutBuilder from "../../builders/Workout/WorkoutBuilder";
+import WorkoutBuilder from "../WorkoutBuilder/WorkoutBuilder";
 import WorkoutSession from "../WorkoutSession/WorkoutSession";
 import { WorkoutSessionFields } from "../WorkoutSession/WorkoutSessionFields";
+import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
 
 export default abstract class Workout implements IWorkout {
   abstract workoutBuilder: WorkoutBuilder;
@@ -10,4 +11,5 @@ export default abstract class Workout implements IWorkout {
   abstract generateWorkoutSession(): void;
 
   abstract updateWorkoutSessionValue(field: WorkoutSessionFields, value: any): void;
+  abstract getWorkoutSessionValue(): IWorkoutSessionForState;
 }

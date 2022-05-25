@@ -1,5 +1,5 @@
 import workoutTypes from "../../data/workoutTypesList";
-import IExercise from "../../models/Exercise/IExercise";
+import IExercise from "../Exercise/IExercise";
 import RandomizerService from "../../services/RandomizerService";
 
 export default class RoundBuilder {

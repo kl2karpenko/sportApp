@@ -1,8 +1,9 @@
 import Workout from "./Workout";
-import HIITWorkoutBuilder from "../../builders/Workout/HIITWorkoutBuilder";
+import HIITWorkoutBuilder from "../WorkoutBuilder/HIITWorkoutBuilder";
 import { IWorkoutSettings } from "../../interfaces/IWorkoutSettings";
 import HIITWorkoutSession from "../WorkoutSession/HIITWorkoutSession";
 import {WorkoutSessionFields} from "../WorkoutSession/WorkoutSessionFields";
+import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
 
 export default class HIITWorkout extends Workout {
   workoutBuilder: HIITWorkoutBuilder;
@@ -17,6 +18,10 @@ export default class HIITWorkout extends Workout {
 
   updateWorkoutSessionValue(field: WorkoutSessionFields, value: any): void {
     this.workoutSession.updateValue(field, value);
+  }
+
+  getWorkoutSessionValue(): IWorkoutSessionForState {
+    return this.workoutSession.getValues();
   }
 
   generateWorkoutSession(): void {
