@@ -3,13 +3,12 @@ import RoundBuilder from "../RoundBuilder/RoundBuilder";
 import HIITRoundBuilder from "../RoundBuilder/HIITRoundBuilder";
 import {TValues} from "../../interfaces/TValues";
 import {BodyParts} from "../../data/bodyPartsForWorkout";
+import workoutTypesList from "../../data/workoutTypesList";
+import {IBodyPartsForWorkout} from "../../interfaces/IBodyPartsForWorkout";
+import {setupExerciseWithPairIfNeeded} from "../../helpers/workoutHelpers";
 
 export default class HIITWorkoutBuilder extends WorkoutBuilder {
   public roundBuilder: HIITRoundBuilder = new HIITRoundBuilder();
-
-  public generateExercisesForRound(exercisesLen: number) {
-
-  }
 
   public getRandomBodyParts(rounds: number): TValues<typeof BodyParts>[] {
     if (rounds === 0) throw new Error();

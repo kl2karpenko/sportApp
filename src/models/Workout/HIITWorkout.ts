@@ -1,11 +1,11 @@
-import Workout from "./Workout";
+import BasicWorkout from "./BasicWorkout";
 import HIITWorkoutBuilder from "../WorkoutBuilder/HIITWorkoutBuilder";
 import { IWorkoutSettings } from "../../interfaces/IWorkoutSettings";
 import HIITWorkoutSession from "../WorkoutSession/HIITWorkoutSession";
 import {WorkoutSessionFields} from "../WorkoutSession/WorkoutSessionFields";
 import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
 
-export default class HIITWorkout extends Workout {
+export default class HIITWorkout extends BasicWorkout {
   workoutBuilder: HIITWorkoutBuilder;
   workoutSession: HIITWorkoutSession;
 

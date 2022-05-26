@@ -1,14 +1,13 @@
 import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
 import React, {ChangeEvent, useContext, useMemo} from "react";
-import Workout from "../../models/Workout/Workout";
 import { WorkoutSessionFields } from "../../models/WorkoutSession/WorkoutSessionFields";
 import {SportAppContext} from "../../SportAppContext";
 
-interface ICreateWorkoutFormProps {
-  updateState: (stateName: string, stateVal: number) => void;
+interface ITabataWorkoutFormProps {
+  updateState: (stateName: WorkoutSessionFields, stateVal: number) => void;
 }
 
-export default function WorkoutForm({ updateState }: ICreateWorkoutFormProps) {
+export default function TabataWorkoutForm({ updateState }: ITabataWorkoutFormProps) {
   const { workoutSettings } = useContext(SportAppContext);
   const currentWorkoutSession = workoutSettings?.workoutSession;
   // @ts-ignore
@@ -32,9 +31,8 @@ export default function WorkoutForm({ updateState }: ICreateWorkoutFormProps) {
                 id={field}
                 defaultValue={workoutSettings?.workoutSession.getValue(field)}
                 type="number"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  updateState(field, Number(e.target.value));
-                }}
+                min="1"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(field, Number(e.target.value))}
               />
             </FormControl>
           </Grid>

@@ -12,7 +12,7 @@ import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
 import {IDialogProps} from "./interfaces/IDialogProps";
 import ModalDialog from "./components/Dialog";
-import Workout from "./models/Workout/Workout";
+import BasicWorkout from "./models/Workout/BasicWorkout";
 import WorkoutFactory from "./models/WorkoutFactory";
 import {WorkoutType} from "./interfaces/WorkoutType";
 import WorkoutSession from "./models/WorkoutSession/WorkoutSession";
@@ -45,7 +45,7 @@ const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFacto
 
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
-  const [workoutSettings, setWorkoutSettings] = useState<Workout | null>(getWorkoutWithDefaultSettings(workoutType));
+  const [workoutSettings, setWorkoutSettings] = useState<BasicWorkout | null>(getWorkoutWithDefaultSettings(workoutType));
   const [workoutSession, setWorkoutSession] = useState<IWorkoutSessionForState | null>(null);
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
 

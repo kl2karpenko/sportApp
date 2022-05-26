@@ -12,6 +12,4 @@ export default class WorkoutBuilder {
   getLabelForBodyList(bodyName: TValues<typeof BodyParts>): string {
     return this.bodyPartsListLabels[bodyName];
   }
-
-  generateExercisesForRound(exercisesLen: number): void {}
 }

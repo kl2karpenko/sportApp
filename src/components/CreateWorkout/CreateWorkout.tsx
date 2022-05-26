@@ -1,37 +1,29 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useMemo, useState} from "react";
 
 import {
+  Box,
+  Button,
   Card,
   CardContent,
-  Select,
-  Box,
-  Typography,
-  Grid,
-  Button,
   FormControl,
   FormLabel,
-  MenuItem
+  Grid,
+  MenuItem,
+  Select,
+  Typography
 } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-import bodyPartsForWorkout, {BodyParts} from "../../data/bodyPartsForWorkout";
-import { IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj } from "../../interfaces/IWorkoutDeprecatedObj";
-import { SportAppContext } from "../../SportAppContext";
-import WorkoutPreview from "../WorkoutPreview";
-import {
-  createRandomExercisesForAllRounds,
-  generateListOfBodyPartsForAllRounds
-} from "../../helpers/workoutHelpers";
-import { IWorkoutSession } from "../../interfaces/IWorkoutSession";
-import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
+import {BodyParts} from "../../data/bodyPartsForWorkout";
+import {SportAppContext} from "../../SportAppContext";
+import {IBodyPartsForWorkout} from "../../interfaces/IBodyPartsForWorkout";
 import workoutTypes from "../../data/workoutTypesList";
-import WorkoutForm from "./WorkoutForm";
-import HIITWorkout from "../../models/Workout/HIITWorkout";
-import TabataWorkout from "../../models/Workout/TabataWorkout";
-import Workout from "../../models/Workout/Workout";
+import HIITWorkoutForm from "./HIITWorkoutForm";
+import TabataWorkoutForm from "./TabataWorkoutForm";
 import {WorkoutSessionFields} from "../../models/WorkoutSession/WorkoutSessionFields";
 import {TValues} from "../../interfaces/TValues";
+import {WorkoutType} from "../../interfaces/WorkoutType";
 
 const allExercisesList = Object.values(workoutTypes).reduce((workoutTypesExercises: IBodyPartsForWorkout[], acc: IBodyPartsForWorkout[]) => {
   return [ ...acc, ...workoutTypesExercises ];
@@ -41,7 +33,7 @@ const getWorkoutExercise = (exId: string) => {
 };
 
 export default function CreateWorkout(): React.ReactElement {
-  const { workoutSettings, setWorkoutSession, setDialogProps } = useContext(SportAppContext);
+  const { workoutSettings, setWorkoutSession, workoutType, setDialogProps } = useContext(SportAppContext);
   const navigate = useNavigate();
   const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
@@ -82,6 +74,15 @@ export default function CreateWorkout(): React.ReactElement {
   //   handleChangeExerciseForRound(round, exerciseNum, randomExercise.id);
   // };
 
+  const FormComponent = useMemo(() => {
+    if (workoutType === WorkoutType.Tabata) {
+      return <HIITWorkoutForm updateState={updateState} />;
+    }
+
+    return <TabataWorkoutForm updateState={updateState} />;
+  }, [workoutType]);
+
+
   return (
     <Box p={10}>
       <Card variant="outlined">
@@ -98,15 +99,6 @@ export default function CreateWorkout(): React.ReactElement {
                   <Button variant="contained" color="secondary" onClick={() => {
                     workoutSettings?.generateWorkoutSession();
                     setWorkoutSession(workoutSettings?.getWorkoutSessionValue()!);
-                    // const { generated_body_parts_list = [] } = workoutSettings;
-                    // const bodyPartsForAllRounds = generated_body_parts_list.length ? generated_body_parts_list : generateListOfBodyPartsForAllRounds(workoutSettings);
-                    // const newWorkoutSettings: IWorkoutGeneratedExercisesList[] = createRandomExercisesForAllRounds(bodyPartsForAllRounds, workoutSettings);
-                    //
-                    // setWorkoutSettings((state: IWorkoutType) => ({
-                    //   ...state,
-                    //   generated_body_parts_list: bodyPartsForAllRounds,
-                    //   all_exercises_for_generated_list: newWorkoutSettings
-                    // }));
                   }}>
                     Create a workout!
                   </Button>
@@ -152,7 +144,7 @@ export default function CreateWorkout(): React.ReactElement {
           <Grid container spacing={2} direction={"column"}>
             <Grid item xs={12}>
               <Grid container spacing={2}>
-                <WorkoutForm updateState={updateState} />
+                {FormComponent}
                 <Grid item xs={6}>
                   <Grid container spacing={2} direction="column">
                     {workoutSettings?.workoutSession?.roundsBodyParts?.map((bodyPartName: string, index: number) => {
@@ -173,7 +165,7 @@ export default function CreateWorkout(): React.ReactElement {
                                 >
                                   {workoutSettings?.workoutBuilder.bodyPartsList.map((bodyPartsNameInside: TValues<typeof BodyParts>) => (
                                     <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{
-                                      workoutSettings?.workoutBuilder.getLabelForBodyList(bodyPartName)
+                                      workoutSettings?.workoutBuilder.getLabelForBodyList(bodyPartsNameInside)
                                     }</MenuItem>
                                   ))}
                                 </Select>

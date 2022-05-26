@@ -4,7 +4,7 @@ import WorkoutSession from "../WorkoutSession/WorkoutSession";
 import { WorkoutSessionFields } from "../WorkoutSession/WorkoutSessionFields";
 import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
 
-export default abstract class Workout implements IWorkout {
+export default abstract class BasicWorkout implements IWorkout {
   abstract workoutBuilder: WorkoutBuilder;
   abstract workoutSession: WorkoutSession;
 

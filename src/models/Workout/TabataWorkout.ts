@@ -1,9 +1,9 @@
-import Workout from "./Workout";
+import BasicWorkout from "./BasicWorkout";
 import { IWorkoutSettings } from "../../interfaces/IWorkoutSettings";
 import TabataWorkoutBuilder from "../WorkoutBuilder/TabataWorkoutBuilder";
 import TabataWorkoutSession from "../WorkoutSession/TabataWorkoutSession";
 
-export default class TabataWorkout extends Workout {
+export default class TabataWorkout extends BasicWorkout {
   workoutBuilder: TabataWorkoutBuilder;
   workoutSession: TabataWorkoutSession;
 
