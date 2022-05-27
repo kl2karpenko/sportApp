@@ -26,8 +26,7 @@ export default class TabataWorkout extends BasicWorkout {
 
   generateWorkoutSession(): void {
     // const bodyPartsList = this.workoutBuilder.getRandomBodyParts(this.workoutSession.roundsLength);
-    //
-    // console.log(bodyPartsList, " bodyPartsList");
+
 
     // this.rounds =
   }

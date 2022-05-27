@@ -8,9 +8,7 @@ export default abstract class BasicWorkout implements IWorkout {
   abstract workoutBuilder: IWorkoutBuilder;
   abstract workoutSession: IWorkoutSession;
 
-  updateWorkoutSessionValue(field: WorkoutSessionFields, value: any): void {
-    this.workoutSession.updateValue(field, value);
-  }
+  abstract updateWorkoutSessionValue(field: WorkoutSessionFields, value: any): void;
 
   getWorkoutSessionValues(): IWorkoutSessionForState {
     return this.workoutSession.getValues();

@@ -23,7 +23,9 @@ import HIITWorkoutForm from "./HIITWorkoutForm";
 import TabataWorkoutForm from "./TabataWorkoutForm";
 import {WorkoutSessionFields} from "../../models/WorkoutSession/WorkoutSessionFields";
 import {TValues} from "../../interfaces/TValues";
-import {WorkoutType} from "../../interfaces/WorkoutType";
+import {WorkoutType, WorkoutTypesList} from "../../interfaces/WorkoutType";
+import IWorkoutSessionForState from "../../models/WorkoutSession/IWorkoutSessionForState";
+import IRound from "../../models/Round/IRound";
 
 const allExercisesList = Object.values(workoutTypes).reduce((workoutTypesExercises: IBodyPartsForWorkout[], acc: IBodyPartsForWorkout[]) => {
   return [ ...acc, ...workoutTypesExercises ];
@@ -33,16 +35,13 @@ const getWorkoutExercise = (exId: string) => {
 };
 
 export default function CreateWorkout(): React.ReactElement {
-  const { workoutSettings, setWorkoutSession, workoutType, setWorkoutType, setDialogProps } = useContext(SportAppContext);
+  const { workoutSettings, workoutSession, setWorkoutSession, workoutType, setWorkoutType, setDialogProps } = useContext(SportAppContext);
   const navigate = useNavigate();
   const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
-    console.log(stateName, stateVal);
     workoutSettings?.updateWorkoutSessionValue(stateName, stateVal);
     setWorkoutSession(workoutSettings?.getWorkoutSessionValues()!);
   }
-
-  console.log(workoutSettings, "  workoutSettings");
 
   // const handleChangeTypeOfWorkoutForTheRound = (exerciseNum: number, value: string) => {
   //   let exercises = [...workoutSettings.generated_body_parts_list];
@@ -81,7 +80,7 @@ export default function CreateWorkout(): React.ReactElement {
     }
 
     return <TabataWorkoutForm updateState={updateState} />;
-  }, [workoutType]);
+  }, [workoutType, workoutSession]);
 
 
   return (
@@ -151,11 +150,9 @@ export default function CreateWorkout(): React.ReactElement {
                     <Select
                       id="workoutType"
                       value={workoutType}
-                      onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => {
-                        setWorkoutType(value);
-                      }}
+                      onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => setWorkoutType(value)}
                     >
-                      {[WorkoutType.HIIT, WorkoutType.Tabata].map((workoutTypeInside: WorkoutType) => (
+                      {WorkoutTypesList.map((workoutTypeInside: WorkoutType) => (
                         <MenuItem key={workoutTypeInside} value={workoutTypeInside}>{
                           workoutTypeInside
                         }</MenuItem>
@@ -168,22 +165,24 @@ export default function CreateWorkout(): React.ReactElement {
             </Grid>
             <Grid item xs={6}>
               <Grid container spacing={2} direction="column">
-                {workoutSettings?.workoutSession?.roundsBodyParts?.map((bodyPartName: string, index: number) => {
+                {workoutSession?.rounds?.map((round: IRound, index: number) => {
+                  const { bodyId } = round;
                   // const allExercises = workoutSettings.all_exercises_for_generated_list || [];
 
                   return (
-                    <Grid key={`${bodyPartName}-${index}`} item xs={12}>
+                    <Grid key={`${bodyId}-${index}`} item xs={12}>
                       <Grid container spacing={1} alignItems={"center"} justifyContent={"center"}>
-                        <Grid item xs={12} key={`${bodyPartName}-round-${index}`}>
+                        <Grid item xs={12} key={`${bodyId}-round-${index}`}>
                           <FormControl fullWidth>
                             <FormLabel component="legend" id={`workout_parts-${index}`}>R: {index + 1}</FormLabel>
                             <Select
                               id={`workout_parts-${index}`}
-                              value={bodyPartName}
+                              defaultValue={bodyId}
                               // onChange={(e: ChangeEvent, { props: { value } }: { props: { value: string }}) => {
                               //   handleChangeTypeOfWorkoutForTheRound(index, value)
                               // }}
                             >
+                              {/* TODO: change the part where we take bodyPartsList */}
                               {workoutSettings?.workoutBuilder.bodyPartsList.map((bodyPartsNameInside: TValues<typeof BodyParts>) => (
                                 <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{
                                   workoutSettings?.workoutBuilder.getLabelForBodyList(bodyPartsNameInside)

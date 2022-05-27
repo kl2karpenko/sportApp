@@ -25,8 +25,9 @@ export default class HIITWorkout extends BasicWorkout {
   }
 
   generateWorkoutSession(): void {
+    console.log("getWorkoutSessionValues", this.workoutSession.getValues());
     console.log(this.workoutSession.roundsLength, " generateWorkoutSession this.workoutSession.roundsLength ");
-    const roundsBodyParts = this.workoutBuilder.getRandomBodyParts(this.workoutSession.roundsLength);
+    const roundsBodyParts = this.workoutBuilder.generateWorkout(this.workoutSession.getValues());
 
     this.updateWorkoutSessionValue(WorkoutSessionFields.roundsBodyParts, roundsBodyParts);
   }

@@ -17,6 +17,7 @@ import WorkoutFactory from "./models/WorkoutFactory";
 import {WorkoutType} from "./interfaces/WorkoutType";
 import WorkoutSession from "./models/WorkoutSession/WorkoutSession";
 import IWorkoutSessionForState from "./models/WorkoutSession/IWorkoutSessionForState";
+import IWorkout from "./models/Workout/IWorkout";
 
 export const defaultWorkoutSession = {
   round: 0,
@@ -27,7 +28,6 @@ export const defaultWorkoutSession = {
 };
 
 const workoutFactory = new WorkoutFactory();
-
 const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFactory.getWorkout(workoutType, {
   exerciseDuration: workoutDefaultSettings.exercise_duration,
   exercisesLength: workoutDefaultSettings.exercises,
@@ -38,15 +38,18 @@ const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFacto
 
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
-  const [workoutSettings, setWorkoutSettings] = useState<BasicWorkout | null>(getWorkoutWithDefaultSettings(workoutType));
+  const [workoutSettings, setWorkoutSettings] = useState<IWorkout>(getWorkoutWithDefaultSettings(workoutType));
   const [workoutSession, setWorkoutSession] = useState<IWorkoutSessionForState | null>(null);
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
 
-  useEffect(() => {
+  const setWorkout = () => {
     const workoutSettingsInstance = getWorkoutWithDefaultSettings(workoutType);
     setWorkoutSettings(workoutSettingsInstance);
     setWorkoutSession(workoutSettingsInstance.getWorkoutSessionValues());
-  }, [workoutType]);
+  };
+
+  useEffect(setWorkout, []);
+  useEffect(setWorkout, [workoutType]);
 
   return (
     <ThemeProvider theme={theme}>

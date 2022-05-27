@@ -4,6 +4,8 @@ import { TValues } from "../../interfaces/TValues";
 import { IWorkoutBuilder } from "./IWorkoutBuilder";
 import { IRandomizerService } from "../../services/IRandomizerService";
 import { IRoundBuilder } from "../RoundBuilder/IRoundBuilder";
+import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
+import IRound from "../Round/IRound";
 
 export default abstract class WorkoutBuilder implements IWorkoutBuilder {
   public randomizer: IRandomizerService = new RandomizerService();
@@ -14,4 +16,6 @@ export default abstract class WorkoutBuilder implements IWorkoutBuilder {
   getLabelForBodyList(bodyName: TValues<typeof BodyParts>): string {
     return this.bodyPartsListLabels[bodyName];
   }
+
+  abstract generateWorkout(workoutSession: IWorkoutSessionForState): IRound[];
 }

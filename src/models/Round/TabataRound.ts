@@ -1,8 +1,10 @@
 import IRound from "./IRound";
-import IExercise from "../Exercise/IExercise";
 import Exercise from "../Exercise/Exercise";
+import {TValues} from "../../interfaces/TValues";
+import {BodyParts} from "../../data/bodyPartsForWorkout";
 
-export default abstract class TabataRound implements IRound {
+export default class TabataRound implements IRound {
+  bodyId: TValues<typeof BodyParts>;
   isActive: boolean = false;
   exercisesList: Exercise[];
   restDuration: number;

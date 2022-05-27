@@ -1,4 +1,4 @@
-import {TValues} from "../interfaces/TValues";
+import { TValues } from "../interfaces/TValues";
 
 export const BodyParts = {
   "legsFront": "legsFront",

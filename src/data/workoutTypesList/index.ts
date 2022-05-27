@@ -10,8 +10,9 @@ import { exercises as hands } from "./hands";
 import { exercises as back } from "./back";
 import { BodyParts } from "../bodyPartsForWorkout";
 import IExercise from "../../models/Exercise/IExercise";
+import {TValues} from "../../interfaces/TValues";
 
-const workoutTypes: { [key: string]: IExercise[] } = {
+const workoutTypes: { [key in TValues<typeof BodyParts>]: IExercise[] } = {
   [BodyParts.legsFront]: legsFront,
   [BodyParts.legsRear]: legsRear,
   [BodyParts.legsInside]: legsInside,
@@ -23,7 +24,5 @@ const workoutTypes: { [key: string]: IExercise[] } = {
   [BodyParts.hands]: hands,
   [BodyParts.cardio]: cardio
 };
-
-export type TWorkoutTypes = typeof workoutTypes;
 
 export default workoutTypes;
