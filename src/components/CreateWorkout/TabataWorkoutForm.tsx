@@ -21,23 +21,19 @@ export default function TabataWorkoutForm({ updateState }: ITabataWorkoutFormPro
   ), [currentWorkoutSession]);
 
   return (
-    <Grid item xs={6}>
-      <Grid container direction="column" spacing={2}>
-        {Object.keys(WorkoutSessionFieldsPairs).map((field: WorkoutSessionFields) => (
-          <Grid item xs={12} key={field}>
-            <FormControl fullWidth>
-              <FormLabel component="legend">Choose number of {field}</FormLabel>
-              <TextField
-                id={field}
-                defaultValue={workoutSettings?.workoutSession.getValue(field)}
-                type="number"
-                min="1"
-                onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(field, Number(e.target.value))}
-              />
-            </FormControl>
-          </Grid>
-        ))}
+    Object.keys(WorkoutSessionFieldsPairs).map((field: WorkoutSessionFields) => (
+      <Grid item xs={12} key={field}>
+        <FormControl fullWidth>
+          <FormLabel component="legend">Choose number of {field}</FormLabel>
+          <TextField
+            id={field}
+            defaultValue={workoutSettings?.workoutSession.getValue(field)}
+            type="number"
+            min="1"
+            onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(field, Number(e.target.value))}
+          />
+        </FormControl>
       </Grid>
-    </Grid>
+    ))
   )
 }

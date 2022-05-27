@@ -27,13 +27,6 @@ export const defaultWorkoutSession = {
 };
 
 const workoutFactory = new WorkoutFactory();
-const defaultHiitWorkout = workoutFactory.getWorkout(WorkoutType.HIIT, {
-  exerciseDuration: workoutDefaultSettings.exercise_duration,
-  exercisesLength: workoutDefaultSettings.exercises,
-  roundsLength: workoutDefaultSettings.rounds,
-  restDuration: workoutDefaultSettings.rest_duration,
-  betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
-});
 
 const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFactory.getWorkout(workoutType, {
   exerciseDuration: workoutDefaultSettings.exercise_duration,
@@ -52,7 +45,7 @@ function SportApp() {
   useEffect(() => {
     const workoutSettingsInstance = getWorkoutWithDefaultSettings(workoutType);
     setWorkoutSettings(workoutSettingsInstance);
-    setWorkoutSession(workoutSettingsInstance.getWorkoutSessionValue());
+    setWorkoutSession(workoutSettingsInstance.getWorkoutSessionValues());
   }, [workoutType]);
 
   return (

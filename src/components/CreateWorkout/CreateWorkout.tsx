@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState} from "react";
+import React, {ChangeEvent, useContext, useMemo, useState} from "react";
 
 import {
   Box,
@@ -33,12 +33,13 @@ const getWorkoutExercise = (exId: string) => {
 };
 
 export default function CreateWorkout(): React.ReactElement {
-  const { workoutSettings, setWorkoutSession, workoutType, setDialogProps } = useContext(SportAppContext);
+  const { workoutSettings, setWorkoutSession, workoutType, setWorkoutType, setDialogProps } = useContext(SportAppContext);
   const navigate = useNavigate();
   const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
+    console.log(stateName, stateVal);
     workoutSettings?.updateWorkoutSessionValue(stateName, stateVal);
-    setWorkoutSession(workoutSettings?.getWorkoutSessionValue()!);
+    setWorkoutSession(workoutSettings?.getWorkoutSessionValues()!);
   }
 
   console.log(workoutSettings, "  workoutSettings");
@@ -98,7 +99,7 @@ export default function CreateWorkout(): React.ReactElement {
                 <Grid item>
                   <Button variant="contained" color="secondary" onClick={() => {
                     workoutSettings?.generateWorkoutSession();
-                    setWorkoutSession(workoutSettings?.getWorkoutSessionValue()!);
+                    setWorkoutSession(workoutSettings?.getWorkoutSessionValues()!);
                   }}>
                     Create a workout!
                   </Button>
@@ -141,42 +142,60 @@ export default function CreateWorkout(): React.ReactElement {
             </Grid>
           </Grid>
           <Box mt={2}></Box>
-          <Grid container spacing={2} direction={"column"}>
-            <Grid item xs={12}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
               <Grid container spacing={2}>
-                {FormComponent}
-                <Grid item xs={6}>
-                  <Grid container spacing={2} direction="column">
-                    {workoutSettings?.workoutSession?.roundsBodyParts?.map((bodyPartName: string, index: number) => {
-                      // const allExercises = workoutSettings.all_exercises_for_generated_list || [];
-
-                      return (
-                        <Grid key={`${bodyPartName}-${index}`} item xs={12}>
-                          <Grid container spacing={1} alignItems={"center"} justifyContent={"center"}>
-                            <Grid item xs={12} key={`${bodyPartName}-round-${index}`}>
-                              <FormControl fullWidth>
-                                <FormLabel component="legend" id={`workout_parts-${index}`}>R: {index + 1}</FormLabel>
-                                <Select
-                                  id={`workout_parts-${index}`}
-                                  value={bodyPartName}
-                                  // onChange={(e: ChangeEvent, { props: { value } }: { props: { value: string }}) => {
-                                  //   handleChangeTypeOfWorkoutForTheRound(index, value)
-                                  // }}
-                                >
-                                  {workoutSettings?.workoutBuilder.bodyPartsList.map((bodyPartsNameInside: TValues<typeof BodyParts>) => (
-                                    <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{
-                                      workoutSettings?.workoutBuilder.getLabelForBodyList(bodyPartsNameInside)
-                                    }</MenuItem>
-                                  ))}
-                                </Select>
-                              </FormControl>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      )
-                    })}
-                  </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <FormLabel component="legend" id="workoutType">Workout Type</FormLabel>
+                    <Select
+                      id="workoutType"
+                      value={workoutType}
+                      onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => {
+                        setWorkoutType(value);
+                      }}
+                    >
+                      {[WorkoutType.HIIT, WorkoutType.Tabata].map((workoutTypeInside: WorkoutType) => (
+                        <MenuItem key={workoutTypeInside} value={workoutTypeInside}>{
+                          workoutTypeInside
+                        }</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Grid>
+                {FormComponent}
+              </Grid>
+            </Grid>
+            <Grid item xs={6}>
+              <Grid container spacing={2} direction="column">
+                {workoutSettings?.workoutSession?.roundsBodyParts?.map((bodyPartName: string, index: number) => {
+                  // const allExercises = workoutSettings.all_exercises_for_generated_list || [];
+
+                  return (
+                    <Grid key={`${bodyPartName}-${index}`} item xs={12}>
+                      <Grid container spacing={1} alignItems={"center"} justifyContent={"center"}>
+                        <Grid item xs={12} key={`${bodyPartName}-round-${index}`}>
+                          <FormControl fullWidth>
+                            <FormLabel component="legend" id={`workout_parts-${index}`}>R: {index + 1}</FormLabel>
+                            <Select
+                              id={`workout_parts-${index}`}
+                              value={bodyPartName}
+                              // onChange={(e: ChangeEvent, { props: { value } }: { props: { value: string }}) => {
+                              //   handleChangeTypeOfWorkoutForTheRound(index, value)
+                              // }}
+                            >
+                              {workoutSettings?.workoutBuilder.bodyPartsList.map((bodyPartsNameInside: TValues<typeof BodyParts>) => (
+                                <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{
+                                  workoutSettings?.workoutBuilder.getLabelForBodyList(bodyPartsNameInside)
+                                }</MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )
+                })}
               </Grid>
             </Grid>
           </Grid>

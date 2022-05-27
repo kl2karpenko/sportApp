@@ -1,11 +1,13 @@
 import RandomizerService from "../../services/RandomizerService";
-import RoundBuilder from "../RoundBuilder/RoundBuilder";
 import bodyPartsForWorkout, { BodyParts } from "../../data/bodyPartsForWorkout";
 import { TValues } from "../../interfaces/TValues";
+import { IWorkoutBuilder } from "./IWorkoutBuilder";
+import { IRandomizerService } from "../../services/IRandomizerService";
+import { IRoundBuilder } from "../RoundBuilder/IRoundBuilder";
 
-export default class WorkoutBuilder {
-  public randomizer: RandomizerService = new RandomizerService();
-  public roundBuilder: RoundBuilder | null = null;
+export default abstract class WorkoutBuilder implements IWorkoutBuilder {
+  public randomizer: IRandomizerService = new RandomizerService();
+  public abstract roundBuilder: IRoundBuilder;
   public bodyPartsList: TValues<typeof BodyParts>[] = Object.keys(bodyPartsForWorkout) as TValues<typeof BodyParts>[];
   public bodyPartsListLabels: { [key in TValues<typeof BodyParts>]: string } = bodyPartsForWorkout;
 

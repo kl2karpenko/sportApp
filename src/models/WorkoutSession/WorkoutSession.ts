@@ -46,16 +46,7 @@ export default class WorkoutSession implements IWorkoutSession {
     return this[field];
   }
 
-  getValues(): IWorkoutSessionForState {
-    return {
-      rounds: this.rounds,
-      roundsBodyParts: this.roundsBodyParts,
-      roundsLength: this.roundsLength,
-      activeRoundIndex: this.activeRoundIndex,
-      restDuration: this.restDuration,
-      betweenRoundsDuration: this.betweenRoundsDuration,
-      exerciseDuration: this.exerciseDuration,
-      exercisesLength: this.exercisesLength
-    };
+  getValues(): any {
+    return {};
   }
 }

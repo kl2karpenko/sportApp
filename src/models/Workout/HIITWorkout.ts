@@ -20,11 +20,12 @@ export default class HIITWorkout extends BasicWorkout {
     this.workoutSession.updateValue(field, value);
   }
 
-  getWorkoutSessionValue(): IWorkoutSessionForState {
+  getWorkoutSessionValues(): IWorkoutSessionForState {
     return this.workoutSession.getValues();
   }
 
   generateWorkoutSession(): void {
+    console.log(this.workoutSession.roundsLength, " generateWorkoutSession this.workoutSession.roundsLength ");
     const roundsBodyParts = this.workoutBuilder.getRandomBodyParts(this.workoutSession.roundsLength);
 
     this.updateWorkoutSessionValue(WorkoutSessionFields.roundsBodyParts, roundsBodyParts);
