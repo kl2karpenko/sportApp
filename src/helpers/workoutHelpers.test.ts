@@ -7,9 +7,9 @@ import {
 } from "./workoutHelpers";
 import workoutDefaultSettings from "../data/workoutDefaultSettings";
 import workoutTypesList from "../data/workoutTypesList";
-import {IBodyPartsForWorkout} from "../interfaces/IBodyPartsForWorkout";
+import {IBodyPartsForWorkout} from "../interfaces_deprecated/IBodyPartsForWorkout";
 import {defaultWorkoutSession} from "../SportApp";
-import {IWorkoutGeneratedExercisesList} from "../interfaces/IWorkoutDeprecatedObj";
+import {IWorkoutGeneratedExercisesList} from "../interfaces_deprecated/IWorkoutDeprecatedObj";
 
 describe("workoutHelpers", () => {
   describe("ifListIncludeExercise", () => {

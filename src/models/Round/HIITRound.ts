@@ -1,19 +1,19 @@
 import IRound from "./IRound";
 import IExercise from "../Exercise/IExercise";
 import Exercise from "../Exercise/Exercise";
-import {TValues} from "../../interfaces/TValues";
+import {TValues} from "../../interfaces_deprecated/TValues";
 import { BodyParts } from "../../data/bodyPartsForWorkout";
 
 export default class HIITRound implements IRound {
   bodyId: TValues<typeof BodyParts>;
-  private isActive: boolean = false;
+  isActive: boolean = false;
   exercisesList: Exercise[];
   restDuration: number;
   workDuration: number;
 
   constructor(props: {
     exercisesList: IExercise[];
-    bodyId: string;
+    bodyId: TValues<typeof BodyParts>;
     restDuration: number;
     workDuration: number
   }) {

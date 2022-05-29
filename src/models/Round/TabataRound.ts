@@ -1,6 +1,6 @@
 import IRound from "./IRound";
 import Exercise from "../Exercise/Exercise";
-import {TValues} from "../../interfaces/TValues";
+import {TValues} from "../../interfaces_deprecated/TValues";
 import {BodyParts} from "../../data/bodyPartsForWorkout";
 
 export default class TabataRound implements IRound {
@@ -15,8 +15,10 @@ export default class TabataRound implements IRound {
     exercisesList: Exercise[];
     exerciseRepeatTimes: number;
     restDuration: number;
+    bodyId: TValues<typeof BodyParts>;
     workDuration: number
   }) {
+    this.bodyId = props.bodyId;
     this.exerciseRepeatTimes = props.exerciseRepeatTimes;
     this.restDuration = props.restDuration;
     this.workDuration = props.workDuration;

@@ -1,13 +1,13 @@
-import RoundBuilder from "./RoundBuilder";
-import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
-import {TValues} from "../../interfaces/TValues";
-import {BodyParts} from "../../data/bodyPartsForWorkout";
-import IRound from "../Round/IRound";
-import HIITRound from "../Round/HIITRound";
-import IExercise from "../Exercise/IExercise";
+import RoundBuilderService from "./RoundBuilderService";
+import IWorkoutSession from "../WorkoutSessionService/IWorkoutSession";
+import { TValues } from "../../interfaces_deprecated/TValues";
+import { BodyParts } from "../../data/bodyPartsForWorkout";
+import IRound from "../../models/Round/IRound";
+import HIITRound from "../../models/Round/HIITRound";
+import IExercise from "../../models/Exercise/IExercise";
 
-export default class HIITRoundBuilder extends RoundBuilder {
-  public generate(workoutSession: IWorkoutSessionForState, bodyPartsIdForEachRound: TValues<typeof BodyParts>[]): IRound[] {
+export default class HIITRoundBuilderService extends RoundBuilderService {
+  public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof BodyParts>[]): IRound[] {
     const {
       roundsLength
     } = workoutSession;
@@ -26,7 +26,7 @@ export default class HIITRoundBuilder extends RoundBuilder {
     return allRounds;
   }
 
-  private generateRound(workoutSession: IWorkoutSessionForState, bodyPartName: TValues<typeof BodyParts>): IRound {
+  private generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof BodyParts>): IRound {
     const { exercisesLength, restDuration, exerciseDuration } = workoutSession;
     const round: IRound = {
       bodyId: bodyPartName,
@@ -42,7 +42,7 @@ export default class HIITRoundBuilder extends RoundBuilder {
 
     // TODO: move this to the separate logic
     for (let ex = 0; ex < exercisesLength; ex ++) {
-      round.exercisesList.push(listOfExercisesForThisBodyPart[this.randomizer.getRandomInt(1, allExercisesForThisBodyLen - 1)])
+      round.exercisesList.push(listOfExercisesForThisBodyPart[this.randomizerService.getRandomInt(1, allExercisesForThisBodyLen - 1)])
       // setupExerciseWithPairIfNeeded(listOfExercisesForThisBodyPart, randomListOfExercises, []);
     }
     // TODO: move this to the separate logic

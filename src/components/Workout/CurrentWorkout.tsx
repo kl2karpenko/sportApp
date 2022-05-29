@@ -8,9 +8,9 @@ import ExerciseDetail from "./ExerciseDetail";
 import ExercisesStepper from "./ExercisesStepper";
 import RoundsStepper from "./RoundsStepper";
 import { useStyles } from "./styles";
-import { IWorkoutGeneratedExercisesList } from "../../interfaces/IWorkoutDeprecatedObj";
+import { IWorkoutGeneratedExercisesList } from "../../interfaces_deprecated/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../data/bodyPartsForWorkout";
-import { IBodyPartsForWorkout } from "../../interfaces/IBodyPartsForWorkout";
+import { IBodyPartsForWorkout } from "../../interfaces_deprecated/IBodyPartsForWorkout";
 
 const getCurrentExercise = (
   {

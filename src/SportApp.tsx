@@ -10,14 +10,12 @@ import workoutDefaultSettings from "./data/workoutDefaultSettings";
 import { SportAppContext } from "./SportAppContext";
 import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
-import {IDialogProps} from "./interfaces/IDialogProps";
+import {IDialogProps} from "./interfaces_deprecated/IDialogProps";
 import ModalDialog from "./components/Dialog";
-import BasicWorkout from "./models/Workout/BasicWorkout";
-import WorkoutFactory from "./models/WorkoutFactory";
-import {WorkoutType} from "./interfaces/WorkoutType";
-import WorkoutSession from "./models/WorkoutSession/WorkoutSession";
-import IWorkoutSessionForState from "./models/WorkoutSession/IWorkoutSessionForState";
-import IWorkout from "./models/Workout/IWorkout";
+import WorkoutFactory from "./services/WorkoutFactory";
+import {WorkoutType} from "./interfaces_deprecated/WorkoutType";
+import IWorkoutSession from "./services/WorkoutSessionService/IWorkoutSession";
+import IWorkoutService from "./services/WorkoutService/IWorkoutService";
 
 export const defaultWorkoutSession = {
   round: 0,
@@ -38,8 +36,8 @@ const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFacto
 
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
-  const [workoutSettings, setWorkoutSettings] = useState<IWorkout>(getWorkoutWithDefaultSettings(workoutType));
-  const [workoutSession, setWorkoutSession] = useState<IWorkoutSessionForState | null>(null);
+  const [workoutSettings, setWorkoutSettings] = useState<IWorkoutService>(getWorkoutWithDefaultSettings(workoutType));
+  const [workoutSession, setWorkoutSession] = useState<IWorkoutSession | null>(null);
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
 
   const setWorkout = () => {
@@ -48,8 +46,12 @@ function SportApp() {
     setWorkoutSession(workoutSettingsInstance.getWorkoutSessionValues());
   };
 
-  useEffect(setWorkout, []);
-  useEffect(setWorkout, [workoutType]);
+  useEffect(() => {
+    setWorkout();
+  }, []);
+  useEffect(() => {
+    setWorkout();
+  }, [workoutType]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -68,9 +70,9 @@ function SportApp() {
         <Router>
           <Routes>
             <Route index element={<CreateWorkout key="startWorkout"/>} />
-            <Route path="workout" element={<CurrentWorkout />} />
-            <Route path="done" element={<span>Workout is DONE!!!! Congratulations!)</span>} />
-            <Route path="*" element={<NoMatch />} />
+            <Route path="workout" element={<CurrentWorkout key="currentWorkout" />} />
+            <Route path="done" element={<span key="workoutDone">Workout is DONE!!!! Congratulations!)</span>} />
+            <Route path="*" element={<NoMatch key="noMatch" />} />
           </Routes>
         </Router>
         <ModalDialog />

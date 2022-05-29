@@ -1,10 +1,10 @@
 import React, {ChangeEvent, Fragment, useContext} from "react";
-import { IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj } from "../../interfaces/IWorkoutDeprecatedObj";
+import { IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj } from "../../interfaces_deprecated/IWorkoutDeprecatedObj";
 
 import { Typography, Grid, MenuItem, Box, Select, FormControl, Button } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Cached";
 import bodyPartsForWorkout, {BodyParts} from "../../data/bodyPartsForWorkout";
-import {IBodyPartsForWorkout} from "../../interfaces/IBodyPartsForWorkout";
+import {IBodyPartsForWorkout} from "../../interfaces_deprecated/IBodyPartsForWorkout";
 import workoutTypes from "../../data/workoutTypesList";
 import {SportAppContext} from "../../SportAppContext";
 

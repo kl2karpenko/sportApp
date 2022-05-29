@@ -1,13 +1,13 @@
-import IRound from "../Round/IRound";
+import IRound from "../../models/Round/IRound";
 import { WorkoutSessionFields } from "./WorkoutSessionFields";
-import { TValues } from "../../interfaces/TValues";
+import { TValues } from "../../interfaces_deprecated/TValues";
 import { BodyParts } from "../../data/bodyPartsForWorkout";
-import IWorkoutSessionForState from "./IWorkoutSessionForState";
+import IWorkoutSession from "./IWorkoutSession";
 
-export default interface IWorkoutSession extends IWorkoutSessionForState {
+export default interface IWorkoutSessionService extends IWorkoutSession {
   getRoundByIndex(index: number): IRound;
   setActiveRoundIndex(index: number): void;
   updateValue(field: WorkoutSessionFields, value: any): void;
-  getValues(): IWorkoutSessionForState;
+  getValues(): IWorkoutSession;
   getValue(field: WorkoutSessionFields): any;
 }

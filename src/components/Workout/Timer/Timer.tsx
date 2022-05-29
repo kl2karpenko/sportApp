@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 
 import { SportAppContext } from "../../../SportAppContext";
 import {setNextStep, toNextExercise, toPreviousExercise} from "../../../helpers/workoutHelpers";
-import { IWorkoutSession } from "../../../interfaces/IWorkoutSession";
-import { IWorkoutDeprecatedObj } from "../../../interfaces/IWorkoutDeprecatedObj";
+import { IWorkoutSession } from "../../../interfaces_deprecated/IWorkoutSession";
+import { IWorkoutDeprecatedObj } from "../../../interfaces_deprecated/IWorkoutDeprecatedObj";
 import CustomTimer from "./CustomTimer";
 
 const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { currentWorkoutSession: IWorkoutSession; workoutSettings: IWorkoutDeprecatedObj }): Date => {

@@ -1,15 +1,15 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-import { IDialogProps } from "./interfaces/IDialogProps";
-import { WorkoutType } from "./interfaces/WorkoutType";
-import IWorkoutSessionForState from "./models/WorkoutSession/IWorkoutSessionForState";
-import IWorkout from "./models/Workout/IWorkout";
+import { IDialogProps } from "./interfaces_deprecated/IDialogProps";
+import { WorkoutType } from "./interfaces_deprecated/WorkoutType";
+import IWorkoutSession from "./services/WorkoutSessionService/IWorkoutSession";
+import IWorkoutService from "./services/WorkoutService/IWorkoutService";
 
 export interface ISportAppContext {
-  workoutSettings: IWorkout;
-  setWorkoutSettings: Dispatch<SetStateAction<IWorkout>>;
-  workoutSession: IWorkoutSessionForState | null;
-  setWorkoutSession: Dispatch<SetStateAction<IWorkoutSessionForState | null>>;
+  workoutSettings: IWorkoutService;
+  setWorkoutSettings: Dispatch<SetStateAction<IWorkoutService>>;
+  workoutSession: IWorkoutSession | null;
+  setWorkoutSession: Dispatch<SetStateAction<IWorkoutSession | null>>;
   workoutType: WorkoutType;
   setWorkoutType: Dispatch<SetStateAction<WorkoutType>>;
   dialogProps: IDialogProps;

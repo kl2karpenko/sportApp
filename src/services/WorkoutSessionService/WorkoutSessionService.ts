@@ -1,20 +1,19 @@
-import IRound from "../Round/IRound";
-import IWorkout from "../Workout/IWorkout";
-import WorkoutBuilder from "../WorkoutBuilder/WorkoutBuilder";
+import IRound from "../../models/Round/IRound";
+import IWorkoutService from "../WorkoutService/IWorkoutService";
+import WorkoutBuilderService from "../WorkoutBuilderService/WorkoutBuilderService";
 import WorkoutFactory from "../WorkoutFactory";
-import { WorkoutType } from "../../interfaces/WorkoutType";
-import { IWorkoutSettings } from "../../interfaces/IWorkoutSettings";
-import RoundBuilder from "../RoundBuilder/RoundBuilder";
-import IWorkoutSession from "./IWorkoutSession";
+import { WorkoutType } from "../../interfaces_deprecated/WorkoutType";
+import { IWorkoutSettings } from "../../interfaces_deprecated/IWorkoutSettings";
+import RoundBuilderService from "../RoundBuilderService/RoundBuilderService";
+import IWorkoutSessionService from "./IWorkoutSessionService";
 import workoutDefaultSettings from "../../data/workoutDefaultSettings";
 import {WorkoutSessionFields} from "./WorkoutSessionFields";
-import {TValues} from "../../interfaces/TValues";
+import {TValues} from "../../interfaces_deprecated/TValues";
 import {BodyParts} from "../../data/bodyPartsForWorkout";
-import IWorkoutSessionForState from "./IWorkoutSessionForState";
+import IWorkoutSession from "./IWorkoutSession";
 
-export default class WorkoutSession implements IWorkoutSession {
+export default class WorkoutSessionService implements IWorkoutSessionService {
   rounds: IRound[] = [];
-  roundsBodyParts: TValues<typeof BodyParts>[] = [];
   activeRoundIndex: number = 0;
   roundsLength: number = workoutDefaultSettings.rounds;
   exercisesLength: number = workoutDefaultSettings.exercises;

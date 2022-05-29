@@ -1,12 +1,12 @@
-import WorkoutBuilder from "./WorkoutBuilder";
-import HIITRoundBuilder from "../RoundBuilder/HIITRoundBuilder";
-import { TValues } from "../../interfaces/TValues";
+import WorkoutBuilderService from "./WorkoutBuilderService";
+import HIITRoundBuilderService from "../RoundBuilderService/HIITRoundBuilderService";
+import { TValues } from "../../interfaces_deprecated/TValues";
 import { BodyParts } from "../../data/bodyPartsForWorkout";
-import IWorkoutSessionForState from "../WorkoutSession/IWorkoutSessionForState";
-import IRound from "../Round/IRound";
+import IWorkoutSession from "../WorkoutSessionService/IWorkoutSession";
+import IRound from "../../models/Round/IRound";
 
-export default class HIITWorkoutBuilder extends WorkoutBuilder {
-  public roundBuilder: HIITRoundBuilder = new HIITRoundBuilder();
+export default class HIITWorkoutBuilderService extends WorkoutBuilderService {
+  public roundBuilder: HIITRoundBuilderService = new HIITRoundBuilderService();
 
   public generateBodyParts(roundsLength: number): TValues<typeof BodyParts>[] {
     const bodyPartsListLength = this.bodyPartsList.length;
@@ -16,7 +16,7 @@ export default class HIITWorkoutBuilder extends WorkoutBuilder {
     });
   }
 
-  public generateWorkout(workoutSession: IWorkoutSessionForState): IRound[] {
+  public generateWorkout(workoutSession: IWorkoutSession): IRound[] {
     const {
       roundsLength
     } = workoutSession;

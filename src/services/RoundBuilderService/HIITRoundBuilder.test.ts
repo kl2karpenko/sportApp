@@ -1,12 +1,12 @@
-import HIITWorkoutSession from "../WorkoutSession/HIITWorkoutSession";
+import HIITWorkoutSessionService from "../WorkoutSessionService/HIITWorkoutSessionService";
 import workoutDefaultSettings from "../../data/workoutDefaultSettings";
-import HIITRoundBuilder from "./HIITRoundBuilder";
-import HIITWorkoutBuilder from "../WorkoutBuilder/HIITWorkoutBuilder";
+import HIITRoundBuilderService from "./HIITRoundBuilderService";
+import HIITWorkoutBuilderService from "../WorkoutBuilderService/HIITWorkoutBuilderService";
 
-describe("HIITRoundBuilder", () => {
-  const testHiitWB = new HIITWorkoutBuilder();
-  const testHiitRB = new HIITRoundBuilder();
-  const testHiitWorkoutSession = new HIITWorkoutSession({
+describe("HIITRoundBuilderService", () => {
+  const testHiitWB = new HIITWorkoutBuilderService();
+  const testHiitRB = new HIITRoundBuilderService();
+  const testHiitWorkoutSession = new HIITWorkoutSessionService({
     exerciseDuration: workoutDefaultSettings.exercise_duration,
     exercisesLength: workoutDefaultSettings.exercises,
     roundsLength: workoutDefaultSettings.rounds,

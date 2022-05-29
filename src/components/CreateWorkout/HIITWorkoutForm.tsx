@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
-import React, { ChangeEvent, useContext, useMemo } from "react";
-import { WorkoutSessionFields } from "../../models/WorkoutSession/WorkoutSessionFields";
+import React, { ChangeEvent, useContext } from "react";
+import { WorkoutSessionFields } from "../../services/WorkoutSessionService/WorkoutSessionFields";
 import { SportAppContext } from "../../SportAppContext";
 
 interface IHIITWorkoutFormProps {
@@ -9,16 +9,15 @@ interface IHIITWorkoutFormProps {
 
 export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) {
   const { workoutSession } = useContext(SportAppContext);
+  console.log(workoutSession, " workoutSession HIITWorkoutForm ");
   // @ts-ignore
   const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = {
-    [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength,
-    [WorkoutSessionFields.exercisesLength]: workoutSession?.exercisesLength,
-    [WorkoutSessionFields.exerciseDuration]: workoutSession?.exerciseDuration,
-    [WorkoutSessionFields.restDuration]: workoutSession?.restDuration,
-    [WorkoutSessionFields.betweenRoundsDuration]: workoutSession?.betweenRoundsDuration
+    [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0,
+    [WorkoutSessionFields.exercisesLength]: workoutSession?.exercisesLength || 0,
+    [WorkoutSessionFields.exerciseDuration]: workoutSession?.exerciseDuration || 0,
+    [WorkoutSessionFields.restDuration]: workoutSession?.restDuration || 0,
+    [WorkoutSessionFields.betweenRoundsDuration]: workoutSession?.betweenRoundsDuration || 0
   };
-
-  console.log(workoutSession, " workoutSession");
 
   return (
     <>
@@ -28,7 +27,7 @@ export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) 
             <FormLabel component="legend">Choose number of {field}</FormLabel>
             <TextField
               id={field}
-              defaultValue={workoutSession && workoutSession[field]}
+              value={WorkoutSessionFieldsPairs[field]}
               type="number"
               min="1"
               onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(field, Number(e.target.value))}

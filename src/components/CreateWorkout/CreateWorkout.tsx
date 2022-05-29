@@ -17,22 +17,44 @@ import {useNavigate} from "react-router-dom";
 
 import {BodyParts} from "../../data/bodyPartsForWorkout";
 import {SportAppContext} from "../../SportAppContext";
-import {IBodyPartsForWorkout} from "../../interfaces/IBodyPartsForWorkout";
-import workoutTypes from "../../data/workoutTypesList";
-import HIITWorkoutForm from "./HIITWorkoutForm";
-import TabataWorkoutForm from "./TabataWorkoutForm";
-import {WorkoutSessionFields} from "../../models/WorkoutSession/WorkoutSessionFields";
-import {TValues} from "../../interfaces/TValues";
-import {WorkoutType, WorkoutTypesList} from "../../interfaces/WorkoutType";
-import IWorkoutSessionForState from "../../models/WorkoutSession/IWorkoutSessionForState";
+import {WorkoutSessionFields} from "../../services/WorkoutSessionService/WorkoutSessionFields";
+import {TValues} from "../../interfaces_deprecated/TValues";
+import {WorkoutType, WorkoutTypesList} from "../../interfaces_deprecated/WorkoutType";
 import IRound from "../../models/Round/IRound";
+import FormComponent from "./FormComponent";
 
-const allExercisesList = Object.values(workoutTypes).reduce((workoutTypesExercises: IBodyPartsForWorkout[], acc: IBodyPartsForWorkout[]) => {
-  return [ ...acc, ...workoutTypesExercises ];
-}, []);
-const getWorkoutExercise = (exId: string) => {
-  return allExercisesList.filter((ex: IBodyPartsForWorkout) => ex.id === exId)[0];
-};
+
+// const handleChangeTypeOfWorkoutForTheRound = (exerciseNum: number, value: string) => {
+//   let exercises = [...workoutSettings.generated_body_parts_list];
+//   exercises[exerciseNum] = value;
+//
+//   setWorkoutSettings((state: IWorkoutType) => ({
+//     ...state,
+//     generated_body_parts_list: exercises
+//   }))
+// };
+//
+// const handleChangeExerciseForRound = (round: number, exerciseNum: number, value: string) => {
+//   const allExercises = workoutSettings.all_exercises_for_generated_list;
+//
+//   // workoutTypes find this exercise
+//   allExercises[round].exercises[exerciseNum] = getWorkoutExercise(value);
+//   setWorkoutSettings((state: IWorkoutType) => ({
+//     ...state,
+//     all_exercises_for_generated_list: allExercises
+//   }))
+// };
+
+// const handleRandomChangeExerciseForRound = (round: number, exerciseNum: number) => {
+//   const allExercises = workoutSettings.all_exercises_for_generated_list;
+//   const thisRoundObj = allExercises[round];
+//   const thisExercise = thisRoundObj.exercises[exerciseNum];
+//   const allExercisesOfThisType = workoutTypes[thisExercise.id.includes("cardio") ? BodyParts.cardio : thisRoundObj.bodyPartName];
+//   let randomExercise: IBodyPartsForWorkout = allExercisesOfThisType[getRandomInt(0, allExercisesOfThisType.length - 1)];
+//
+//   handleChangeExerciseForRound(round, exerciseNum, randomExercise.id);
+// };
+
 
 export default function CreateWorkout(): React.ReactElement {
   const { workoutSettings, workoutSession, setWorkoutSession, workoutType, setWorkoutType, setDialogProps } = useContext(SportAppContext);
@@ -41,47 +63,8 @@ export default function CreateWorkout(): React.ReactElement {
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
     workoutSettings?.updateWorkoutSessionValue(stateName, stateVal);
     setWorkoutSession(workoutSettings?.getWorkoutSessionValues()!);
-  }
-
-  // const handleChangeTypeOfWorkoutForTheRound = (exerciseNum: number, value: string) => {
-  //   let exercises = [...workoutSettings.generated_body_parts_list];
-  //   exercises[exerciseNum] = value;
-  //
-  //   setWorkoutSettings((state: IWorkoutType) => ({
-  //     ...state,
-  //     generated_body_parts_list: exercises
-  //   }))
-  // };
-  //
-  // const handleChangeExerciseForRound = (round: number, exerciseNum: number, value: string) => {
-  //   const allExercises = workoutSettings.all_exercises_for_generated_list;
-  //
-  //   // workoutTypes find this exercise
-  //   allExercises[round].exercises[exerciseNum] = getWorkoutExercise(value);
-  //   setWorkoutSettings((state: IWorkoutType) => ({
-  //     ...state,
-  //     all_exercises_for_generated_list: allExercises
-  //   }))
-  // };
-
-  // const handleRandomChangeExerciseForRound = (round: number, exerciseNum: number) => {
-  //   const allExercises = workoutSettings.all_exercises_for_generated_list;
-  //   const thisRoundObj = allExercises[round];
-  //   const thisExercise = thisRoundObj.exercises[exerciseNum];
-  //   const allExercisesOfThisType = workoutTypes[thisExercise.id.includes("cardio") ? BodyParts.cardio : thisRoundObj.bodyPartName];
-  //   let randomExercise: IBodyPartsForWorkout = allExercisesOfThisType[getRandomInt(0, allExercisesOfThisType.length - 1)];
-  //
-  //   handleChangeExerciseForRound(round, exerciseNum, randomExercise.id);
-  // };
-
-  const FormComponent = useMemo(() => {
-    if (workoutType === WorkoutType.Tabata) {
-      return <HIITWorkoutForm updateState={updateState} />;
-    }
-
-    return <TabataWorkoutForm updateState={updateState} />;
-  }, [workoutType, workoutSession]);
-
+  };
+  console.log(workoutSession, " workoutSession");
 
   return (
     <Box p={10}>
@@ -160,7 +143,7 @@ export default function CreateWorkout(): React.ReactElement {
                     </Select>
                   </FormControl>
                 </Grid>
-                {FormComponent}
+                <FormComponent updateState={updateState} />
               </Grid>
             </Grid>
             <Grid item xs={6}>

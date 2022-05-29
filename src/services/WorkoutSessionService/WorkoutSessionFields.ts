@@ -1,5 +1,5 @@
 export enum WorkoutSessionFields {
-  roundsBodyParts = "roundsBodyParts",
+  rounds = "rounds",
   roundsLength = "roundsLength",
   exerciseDuration = "exerciseDuration",
   exercisesLength = "exercisesLength",

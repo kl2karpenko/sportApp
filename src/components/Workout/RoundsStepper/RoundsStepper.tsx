@@ -1,7 +1,7 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
 import React from "react";
 
-import { IWorkoutDeprecatedObj } from "../../../interfaces/IWorkoutDeprecatedObj";
+import { IWorkoutDeprecatedObj } from "../../../interfaces_deprecated/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../../data/bodyPartsForWorkout";
 
 interface IRoundsStepperProps { workoutSettings: IWorkoutDeprecatedObj; currentRound: number; }

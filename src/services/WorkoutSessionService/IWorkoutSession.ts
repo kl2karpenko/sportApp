@@ -1,11 +1,10 @@
-import IRound from "../Round/IRound";
+import IRound from "../../models/Round/IRound";
 import { WorkoutSessionFields } from "./WorkoutSessionFields";
-import { TValues } from "../../interfaces/TValues";
+import { TValues } from "../../interfaces_deprecated/TValues";
 import { BodyParts } from "../../data/bodyPartsForWorkout";
 
-export default interface IWorkoutSessionForState {
+export default interface IWorkoutSession {
   rounds: IRound[];
-  roundsBodyParts: TValues<typeof BodyParts>[];
   roundsLength: number;
   activeRoundIndex: number;
   restDuration: number;

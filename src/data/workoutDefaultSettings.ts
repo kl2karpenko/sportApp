@@ -1,4 +1,4 @@
-import { IWorkoutDeprecatedObj } from "../interfaces/IWorkoutDeprecatedObj";
+import { IWorkoutDeprecatedObj } from "../interfaces_deprecated/IWorkoutDeprecatedObj";
 
 const workoutDefaultSettings: IWorkoutDeprecatedObj = {
   "label": "Workout",

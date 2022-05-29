@@ -1,11 +1,10 @@
-import WorkoutSession from "./WorkoutSession";
-import IWorkoutSessionForState from "./IWorkoutSessionForState";
+import WorkoutSessionService from "./WorkoutSessionService";
+import IWorkoutSession from "./IWorkoutSession";
 
-export default class HIITWorkoutSession extends WorkoutSession {
-  getValues(): IWorkoutSessionForState {
+export default class HIITWorkoutSessionService extends WorkoutSessionService {
+  getValues(): IWorkoutSession {
     return {
       rounds: this.rounds,
-      roundsBodyParts: this.roundsBodyParts,
       roundsLength: this.roundsLength,
       activeRoundIndex: this.activeRoundIndex,
       restDuration: this.restDuration,
