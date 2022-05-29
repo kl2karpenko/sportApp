@@ -4,7 +4,8 @@ import { TValues } from "../../interfaces_deprecated/TValues";
 import { BodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import HIITRound from "../../models/Round/HIITRound";
-import IExercise from "../../models/Exercise/IExercise";
+import HIITWorkoutAlgorithmService from "../WorkoutAlgorithmService/HIITWorkoutAlgorithmService";
+import {WorkoutAlgorithms} from "../WorkoutAlgorithmService/WorkoutAlgorithms";
 
 export default class HIITRoundBuilderService extends RoundBuilderService {
   public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof BodyParts>[]): IRound[] {
@@ -28,28 +29,13 @@ export default class HIITRoundBuilderService extends RoundBuilderService {
 
   private generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof BodyParts>): IRound {
     const { exercisesLength, restDuration, exerciseDuration } = workoutSession;
-    const round: IRound = {
+    const hiitAlgorithmService: HIITWorkoutAlgorithmService = new HIITWorkoutAlgorithmService(exercisesLength, bodyPartName);
+
+    return new HIITRound({
       bodyId: bodyPartName,
-      isActive: false,
       restDuration,
       workDuration: exerciseDuration,
-      exercisesList: []
-    };
-
-    const listOfExercisesForThisBodyPart = this.exercisesList[bodyPartName];
-    const allExercisesForThisBodyLen = listOfExercisesForThisBodyPart.length;
-    let randomExercises: IExercise[] = [];
-
-    // TODO: move this to the separate logic
-    for (let ex = 0; ex < exercisesLength; ex ++) {
-      round.exercisesList.push(listOfExercisesForThisBodyPart[this.randomizerService.getRandomInt(1, allExercisesForThisBodyLen - 1)])
-      // setupExerciseWithPairIfNeeded(listOfExercisesForThisBodyPart, randomListOfExercises, []);
-    }
-    // TODO: move this to the separate logic
-
-    console.log(this.cardioExercisesList, this.cardioExercisesListLength, " listOfCardioExercises ");
-    console.log(listOfExercisesForThisBodyPart, " listOfExercisesForThisBodyPart ");
-
-    return new HIITRound(round);
+      exercisesList: hiitAlgorithmService.getExercisesList(WorkoutAlgorithms.simple)
+    });
   }
 }

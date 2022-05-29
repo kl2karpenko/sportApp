@@ -1,40 +1,42 @@
 import {WorkoutAlgorithms} from "./WorkoutAlgorithms";
 import IExercise from "../../models/Exercise/IExercise";
 import WorkoutAlgorithmService from "./WorkoutAlgorithmService";
-import {TValues} from "../../interfaces_deprecated/TValues";
-import {BodyParts} from "../../data/bodyPartsForWorkout";
 
 export default class HIITWorkoutAlgorithmService extends WorkoutAlgorithmService {
-  getExercisesList(algorithm: WorkoutAlgorithms, exercisesLength: number, bodyPartName: TValues<typeof BodyParts>): IExercise[] {
-    if (exercisesLength === 0) return [];
-
+  getExercisesList(algorithm: WorkoutAlgorithms): IExercise[] {
     switch (algorithm) {
     case WorkoutAlgorithms.simple:
-      return this.getExercisesListForSimpleAlgorithm(exercisesLength);
+      return this.getExercisesListForSimpleAlgorithm();
     case WorkoutAlgorithms.noRepeat:
-      return this.getExercisesListForNoRepeatAlgorithm(exercisesLength);
+      return this.getExercisesListForNoRepeatAlgorithm();
     default:
       return [];
     }
   }
 
   protected getExercisesListForSimpleAlgorithm(): IExercise[] {
+    if (this.exercisesLength === 0) return [];
     const exercisesList: IExercise[] = [];
 
     for (let ex = 0; ex < this.exercisesLength; ex ++) {
-      exercisesList.push(this.listOfExercisesForCurrentBodyPart[this.randomizerService.getRandomInt(1, this.allExercisesForThisBodyLen - 1)])
+      exercisesList.push(this.getRandomExercise())
     }
 
     return exercisesList;
   }
 
   protected getExercisesListForNoRepeatAlgorithm(): IExercise[] {
+    if (this.exercisesLength === 0) return [];
     const exercisesList: IExercise[] = [];
 
     for (let ex = 0; ex < this.exercisesLength; ex ++) {
-      const randomExercise = this.generateExclusiveExercise(exercisesList);
-
-      exercisesList.push(randomExercise);
+      try {
+        const randomExercise = this.generateExclusiveExercise(exercisesList);
+        exercisesList.push(randomExercise)
+      } catch (e) {
+        exercisesList.push(this.getRandomExercise());
+        // throw e;
+      }
     }
 
     return exercisesList;
@@ -44,7 +46,7 @@ export default class HIITWorkoutAlgorithmService extends WorkoutAlgorithmService
     let repeatsLen = 0;
 
     while (repeatsLen < this.allExercisesForThisBodyLen) {
-      const randomExercise = this.listOfExercisesForCurrentBodyPart[this.randomizerService.getRandomInt(1, this.allExercisesForThisBodyLen - 1)];
+      const randomExercise = this.getRandomExercise();
 
       if (!exercisesList.includes(randomExercise)) {
         return randomExercise;
@@ -53,6 +55,10 @@ export default class HIITWorkoutAlgorithmService extends WorkoutAlgorithmService
     }
 
     throw Error("Cannot generate an exclusive exercise");
+  }
+
+  protected getRandomExercise(): IExercise {
+    return this.listOfExercisesForCurrentBodyPart[this.randomizerService.getRandomInt(1, this.allExercisesForThisBodyLen - 1)];
   }
 
   protected checkIfExerciseAlreadyInTheList(exercise: IExercise, exercisesList: IExercise[]): boolean {

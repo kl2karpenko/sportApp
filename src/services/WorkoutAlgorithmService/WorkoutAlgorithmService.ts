@@ -24,7 +24,7 @@ export default class WorkoutAlgorithmService implements IWorkoutAlgorithmService
     this.allExercisesForThisBodyLen = this.listOfExercisesForCurrentBodyPart.length;
   }
 
-  getExercisesList(algorithm: WorkoutAlgorithms, exercisesLength: number, bodyPartName: TValues<typeof BodyParts>): IExercise[] {
+  getExercisesList(algorithm: WorkoutAlgorithms): IExercise[] {
     return [];
   }
 }

@@ -1,8 +1,8 @@
 import IExercise from "../../models/Exercise/IExercise";
-import {WorkoutAlgorithms} from "./WorkoutAlgorithms";
-import {TValues} from "../../interfaces_deprecated/TValues";
-import {BodyParts} from "../../data/bodyPartsForWorkout";
-import {IRandomizerService} from "../RandomizerService/IRandomizerService";
+import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
+import { TValues } from "../../interfaces_deprecated/TValues";
+import { BodyParts } from "../../data/bodyPartsForWorkout";
+import { IRandomizerService } from "../RandomizerService/IRandomizerService";
 
 export interface IWorkoutAlgorithmService {
   exercisesList: { [key in TValues<typeof BodyParts>]: IExercise[] };
@@ -14,5 +14,5 @@ export interface IWorkoutAlgorithmService {
   bodyPartName: TValues<typeof BodyParts>;
   exercisesLength: number;
 
-  getExercisesList(algorithm: WorkoutAlgorithms, exercisesLength: number, bodyPartName: TValues<typeof BodyParts>): IExercise[];
+  getExercisesList(algorithm: WorkoutAlgorithms): IExercise[];
 }
