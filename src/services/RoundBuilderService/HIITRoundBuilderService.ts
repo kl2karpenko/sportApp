@@ -4,8 +4,8 @@ import { TValues } from "../../interfaces_deprecated/TValues";
 import { BodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import HIITRound from "../../models/Round/HIITRound";
-import HIITWorkoutAlgorithmService from "../WorkoutAlgorithmService/HIITWorkoutAlgorithmService";
-import {WorkoutAlgorithms} from "../WorkoutAlgorithmService/WorkoutAlgorithms";
+import { WorkoutAlgorithms } from "../WorkoutExercisesGeneratorService/WorkoutAlgorithms";
+import WorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/WorkoutExercisesGeneratorService";
 
 export default class HIITRoundBuilderService extends RoundBuilderService {
   public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof BodyParts>[]): IRound[] {
@@ -29,13 +29,13 @@ export default class HIITRoundBuilderService extends RoundBuilderService {
 
   private generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof BodyParts>): IRound {
     const { exercisesLength, restDuration, exerciseDuration } = workoutSession;
-    const hiitAlgorithmService: HIITWorkoutAlgorithmService = new HIITWorkoutAlgorithmService(exercisesLength, bodyPartName);
+    const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
 
     return new HIITRound({
       bodyId: bodyPartName,
       restDuration,
       workDuration: exerciseDuration,
-      exercisesList: hiitAlgorithmService.getExercisesList(WorkoutAlgorithms.simple)
+      exercisesList: workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple)
     });
   }
 }

@@ -9,7 +9,6 @@ interface IHIITWorkoutFormProps {
 
 export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) {
   const { workoutSession } = useContext(SportAppContext);
-  console.log(workoutSession, " workoutSession HIITWorkoutForm ");
   // @ts-ignore
   const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = {
     [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0,

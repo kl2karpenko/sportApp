@@ -64,7 +64,6 @@ export default function CreateWorkout(): React.ReactElement {
     workoutSettings?.updateWorkoutSessionValue(stateName, stateVal);
     setWorkoutSession(workoutSettings?.getWorkoutSessionValues()!);
   };
-  console.log(workoutSession, " workoutSession");
 
   return (
     <Box p={10}>

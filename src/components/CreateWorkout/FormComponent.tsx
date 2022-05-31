@@ -12,8 +12,6 @@ interface IFormComponentProps {
 export default function FormComponent ({ updateState }: IFormComponentProps) {
   const { workoutType } = useContext(SportAppContext);
 
-  console.log(workoutType, " workoutType");
-
   if (workoutType === WorkoutType.HIIT) {
     return <HIITWorkoutForm key="hiitWorkoutForm" updateState={updateState} />;
   }

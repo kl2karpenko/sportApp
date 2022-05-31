@@ -25,8 +25,7 @@ export const defaultWorkoutSession = {
   isDone: false
 };
 
-const workoutFactory = new WorkoutFactory();
-const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => workoutFactory.getWorkout(workoutType, {
+const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => WorkoutFactory(workoutType, {
   exerciseDuration: workoutDefaultSettings.exercise_duration,
   exercisesLength: workoutDefaultSettings.exercises,
   roundsLength: workoutDefaultSettings.rounds,

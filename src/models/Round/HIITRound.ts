@@ -7,12 +7,12 @@ import { BodyParts } from "../../data/bodyPartsForWorkout";
 export default class HIITRound implements IRound {
   bodyId: TValues<typeof BodyParts>;
   isActive: boolean = false;
-  exercisesList: Exercise[];
+  exercisesList: Set<IExercise>;
   restDuration: number;
   workDuration: number;
 
   constructor(props: {
-    exercisesList: IExercise[];
+    exercisesList: Set<IExercise>;
     bodyId: TValues<typeof BodyParts>;
     restDuration: number;
     workDuration: number
@@ -24,7 +24,7 @@ export default class HIITRound implements IRound {
   }
 
   public getExercisesLength(): number {
-    return this.exercisesList.length;
+    return this.exercisesList.size;
   }
 
   private setIsActive(): void {

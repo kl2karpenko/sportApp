@@ -5,7 +5,7 @@ import { BodyParts } from "../../data/bodyPartsForWorkout";
 export default interface IRound {
   bodyId: TValues<typeof BodyParts>;
   isActive: boolean;
-  exercisesList: IExercise[];
+  exercisesList: Set<IExercise>;
   restDuration: number;
   workDuration: number;
 }

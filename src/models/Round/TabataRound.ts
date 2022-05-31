@@ -2,17 +2,18 @@ import IRound from "./IRound";
 import Exercise from "../Exercise/Exercise";
 import {TValues} from "../../interfaces_deprecated/TValues";
 import {BodyParts} from "../../data/bodyPartsForWorkout";
+import IExercise from "../Exercise/IExercise";
 
 export default class TabataRound implements IRound {
   bodyId: TValues<typeof BodyParts>;
   isActive: boolean = false;
-  exercisesList: Exercise[];
+  exercisesList: Set<IExercise>;
   restDuration: number;
   workDuration: number;
   exerciseRepeatTimes: number;
 
   constructor(props: {
-    exercisesList: Exercise[];
+    exercisesList: Set<IExercise>;
     exerciseRepeatTimes: number;
     restDuration: number;
     bodyId: TValues<typeof BodyParts>;
@@ -26,6 +27,6 @@ export default class TabataRound implements IRound {
   }
 
   getExercisesLength(): number {
-    return this.exercisesList.length;
+    return this.exercisesList.size;
   }
 }
