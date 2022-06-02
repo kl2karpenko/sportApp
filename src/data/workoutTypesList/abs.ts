@@ -1,6 +1,6 @@
 import IExercise from "../../models/Exercise/IExercise";
 
-export const exercises: IExercise[] = [
+export const exercises: Partial<IExercise>[] = [
   {
     id: "abs-ex1",
     label: "На спине подъем ног вверх и вынос вперед",

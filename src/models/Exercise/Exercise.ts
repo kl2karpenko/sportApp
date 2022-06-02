@@ -7,10 +7,10 @@ export default class Exercise implements IExercise {
   pair?: string;
   video?: string;
 
-  constructor(props: IExercise) {
-    this.id = props.id;
-    this.label = props.label;
-    this.isCardio = props.isCardio;
+  constructor(props: Partial<IExercise>) {
+    this.id = props.id!;
+    this.label = props.label!;
+    this.isCardio = props.isCardio!;
     this.pair = props.pair;
     this.video = props.video;
   }

@@ -6,16 +6,16 @@ import {Route, Routes} from "react-router";
 
 import theme from "./theme";
 import CreateWorkout from "./components/CreateWorkout";
-import workoutDefaultSettings from "./data/workoutDefaultSettings";
+import workoutsDefaultSettings from "./data/workoutsDefaultSettings";
 import { SportAppContext } from "./SportAppContext";
 import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
 import {IDialogProps} from "./interfaces_deprecated/IDialogProps";
 import ModalDialog from "./components/Dialog";
-import WorkoutFactory from "./services/WorkoutFactory";
+import WorkoutCreatorServiceFactory from "./services/WorkoutCreatorServiceFactory";
 import {WorkoutType} from "./interfaces_deprecated/WorkoutType";
 import IWorkoutSession from "./services/WorkoutSessionService/IWorkoutSession";
-import IWorkoutService from "./services/WorkoutService/IWorkoutService";
+import IWorkoutCreatorService from "./services/WorkoutCreatorService/IWorkoutCreatorService";
 
 export const defaultWorkoutSession = {
   round: 0,
@@ -25,31 +25,25 @@ export const defaultWorkoutSession = {
   isDone: false
 };
 
-const getWorkoutWithDefaultSettings = (workoutType: WorkoutType) => WorkoutFactory(workoutType, {
-  exerciseDuration: workoutDefaultSettings.exercise_duration,
-  exercisesLength: workoutDefaultSettings.exercises,
-  roundsLength: workoutDefaultSettings.rounds,
-  restDuration: workoutDefaultSettings.rest_duration,
-  betweenRoundsDuration: workoutDefaultSettings.rest_between_rounds
-});
-
 function SportApp() {
   const [workoutType, setWorkoutType] = useState<WorkoutType>(WorkoutType.HIIT);
-  const [workoutSettings, setWorkoutSettings] = useState<IWorkoutService>(getWorkoutWithDefaultSettings(workoutType));
-  const [workoutSession, setWorkoutSession] = useState<IWorkoutSession | null>(null);
+  const [workoutSession, setWorkoutSession] = useState<IWorkoutSession>({
+    rounds: [],
+    activeRoundIndex: 0,
+    exerciseDuration: workoutsDefaultSettings.exercise_duration,
+    exercisesLength: workoutsDefaultSettings.exercises,
+    roundsLength: workoutsDefaultSettings.rounds,
+    restDuration: workoutsDefaultSettings.rest_duration,
+    betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
+  });
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
-
-  const setWorkout = () => {
-    const workoutSettingsInstance = getWorkoutWithDefaultSettings(workoutType);
-    setWorkoutSettings(workoutSettingsInstance);
-    setWorkoutSession(workoutSettingsInstance.getWorkoutSessionValues());
-  };
+  const workoutCreatorService = useMemo(() => WorkoutCreatorServiceFactory(workoutType, workoutSession), [workoutType]);
 
   useEffect(() => {
-    setWorkout();
+    setWorkoutSession(workoutCreatorService.getCurrentWorkoutSession());
   }, []);
   useEffect(() => {
-    setWorkout();
+    setWorkoutSession(workoutCreatorService.getCurrentWorkoutSession());
   }, [workoutType]);
 
   return (
@@ -58,9 +52,7 @@ function SportApp() {
         value={{
           workoutType,
           setWorkoutType,
-          setWorkoutSettings,
           setWorkoutSession,
-          workoutSettings,
           workoutSession,
           dialogProps,
           setDialogProps
@@ -68,8 +60,8 @@ function SportApp() {
       >
         <Router>
           <Routes>
-            <Route index element={<CreateWorkout key="startWorkout"/>} />
-            <Route path="workout" element={<CurrentWorkout key="currentWorkout" />} />
+            <Route index element={<CreateWorkout workoutCreatorService={workoutCreatorService} key="startWorkout"/>} />
+            <Route path="workout" element={<CurrentWorkout workoutCreatorService={workoutCreatorService} key="currentWorkout" />} />
             <Route path="done" element={<span key="workoutDone">Workout is DONE!!!! Congratulations!)</span>} />
             <Route path="*" element={<NoMatch key="noMatch" />} />
           </Routes>

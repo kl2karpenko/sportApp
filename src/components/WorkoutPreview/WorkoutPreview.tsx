@@ -1,72 +1,34 @@
-import React, {ChangeEvent, Fragment, useContext} from "react";
-import { IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj } from "../../interfaces_deprecated/IWorkoutDeprecatedObj";
+import React, { useContext } from "react";
 
-import { Typography, Grid, MenuItem, Box, Select, FormControl, Button } from "@mui/material";
-import ShuffleIcon from "@material-ui/icons/Cached";
-import bodyPartsForWorkout, {BodyParts} from "../../data/bodyPartsForWorkout";
-import {IBodyPartsForWorkout} from "../../interfaces_deprecated/IBodyPartsForWorkout";
-import workoutTypes from "../../data/workoutTypesList";
-import {SportAppContext} from "../../SportAppContext";
+import { Grid } from "@mui/material";
+import { SportAppContext } from "../../SportAppContext";
+import IRound from "../../models/Round/IRound";
+import WorkoutRoundExercisesPreview from "./WorkoutRoundExercisesPreview";
+import WorkoutCreatorService from "../../services/WorkoutCreatorService/WorkoutCreatorService";
 
 interface IWorkoutPreviewProps {
-  handleChangeExerciseForRound: (round: number, exerciseNum: number, value: string) => void;
+  workoutCreatorService: WorkoutCreatorService;
   handleRandomChangeExerciseForRound: (round: number, exerciseNum: number) => void;
+  handleChangeExerciseForRound(roundIndex: number, exerciseIndex: number, value: string): void;
 }
 
-export default function WorkoutPreview({ handleChangeExerciseForRound, handleRandomChangeExerciseForRound }: IWorkoutPreviewProps) {
-  const { workoutSettings } = useContext(SportAppContext);
-  const allCardio: IBodyPartsForWorkout[] = workoutTypes[BodyParts.cardio] || [];
+export default function WorkoutPreview({ workoutCreatorService, handleRandomChangeExerciseForRound, handleChangeExerciseForRound }: IWorkoutPreviewProps) {
+  const { workoutSession } = useContext(SportAppContext);
 
   return (
     <Grid container direction="column">
-      {workoutSettings.all_exercises_for_generated_list?.map((allExercises: IWorkoutGeneratedExercisesList, roundIndex: number) => (
-        <Fragment key={allExercises.bodyPartName}>
-          <Grid item xs={12}>
-            <Typography variant="body1" color={"primary"}>{bodyPartsForWorkout[allExercises.bodyPartName as any]}</Typography>
-          </Grid>
-          {allExercises.exercises.map((exercise: IBodyPartsForWorkout, index: number) => {
-            const allExercisesForThisBP: IBodyPartsForWorkout[] = workoutTypes[allExercises.bodyPartName] || [];
-            const isCardio = exercise.id.includes("cardio");
-            return (
-              <Grid key={exercise.id + index} item xs={12}>
-                <Grid container alignItems={"center"} spacing={1} justifyItems={"flex-start"}>
-                  <Grid item>
-                    <Typography variant={"body2"}>{`${index + 1}.`}</Typography>
-                  </Grid>
-                  <Grid item>
-                    <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 700 }} size="small">
-                      <Select
-                        id={`workout_parts-${index}`}
-                        value={exercise.id}
-                        onChange={(e: ChangeEvent, { props: { value } }: { props: { value: string }}) => {
-                          handleChangeExerciseForRound(roundIndex, index, value)
-                        }}
-                      >
-                        {(isCardio ? allCardio : allExercisesForThisBP).map((bodyPartWorkout: IBodyPartsForWorkout) => (
-                          <MenuItem key={bodyPartWorkout.id} value={bodyPartWorkout.id}>{bodyPartWorkout.label}</MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item>
-                    <Box
-                      minWidth={30}
-                      pl={2}
-                      pr={0.5}
-                      component={Button}
-                      color="secondary"
-                      size="large"
-                      startIcon={<ShuffleIcon fontSize="large" />}
-                      variant={"outlined"}
-                      onClick={() => handleRandomChangeExerciseForRound(roundIndex, index)}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            );
-          })}
-        </Fragment>
-      ))}
+      {
+        workoutSession?.rounds?.map((round: IRound, roundIndex: number) => (
+          <WorkoutRoundExercisesPreview
+            key={round.bodyId + roundIndex}
+            round={round}
+            roundIndex={roundIndex}
+            workoutCreatorService={workoutCreatorService}
+            handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound}
+            handleChangeExerciseForRound={handleChangeExerciseForRound}
+          />
+        ))
+      }
     </Grid>
   )
 }

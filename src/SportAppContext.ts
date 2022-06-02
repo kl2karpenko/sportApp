@@ -3,13 +3,10 @@ import React, { Dispatch, SetStateAction } from "react";
 import { IDialogProps } from "./interfaces_deprecated/IDialogProps";
 import { WorkoutType } from "./interfaces_deprecated/WorkoutType";
 import IWorkoutSession from "./services/WorkoutSessionService/IWorkoutSession";
-import IWorkoutService from "./services/WorkoutService/IWorkoutService";
 
 export interface ISportAppContext {
-  workoutSettings: IWorkoutService;
-  setWorkoutSettings: Dispatch<SetStateAction<IWorkoutService>>;
-  workoutSession: IWorkoutSession | null;
-  setWorkoutSession: Dispatch<SetStateAction<IWorkoutSession | null>>;
+  workoutSession: IWorkoutSession;
+  setWorkoutSession: Dispatch<SetStateAction<IWorkoutSession>>;
   workoutType: WorkoutType;
   setWorkoutType: Dispatch<SetStateAction<WorkoutType>>;
   dialogProps: IDialogProps;

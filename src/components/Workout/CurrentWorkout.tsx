@@ -11,6 +11,7 @@ import { useStyles } from "./styles";
 import { IWorkoutGeneratedExercisesList } from "../../interfaces_deprecated/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../data/bodyPartsForWorkout";
 import { IBodyPartsForWorkout } from "../../interfaces_deprecated/IBodyPartsForWorkout";
+import WorkoutCreatorService from "../../services/WorkoutCreatorService/WorkoutCreatorService";
 
 const getCurrentExercise = (
   {
@@ -66,9 +67,13 @@ const getCurrentExerciseVideo = (
   return exercise?.video;
 }
 
-export default function CurrentWorkout(): React.ReactElement {
+interface ICurrentWorkoutProps {
+  workoutCreatorService: WorkoutCreatorService;
+}
+
+export default function CurrentWorkout({ workoutCreatorService }: ICurrentWorkoutProps): React.ReactElement {
   const classes = useStyles();
-  const { workoutSettings, currentWorkoutSession } = useContext(SportAppContext);
+  const { workoutSession } = useContext(SportAppContext);
   // stop reload the page
   useEffect(() => {
     window.onbeforeunload = (event) => {
@@ -87,17 +92,17 @@ export default function CurrentWorkout(): React.ReactElement {
   }, []);
 
   const {
-    exercise: currentExercise,
-    round: currentRound,
-    isResting
-  } = currentWorkoutSession;
+    activeExerciseIndex: currentExercise,
+    activeRoundIndex
+  } = workoutSession;
   const {
     all_exercises_for_generated_list,
     exercises
-  } = workoutSettings;
+  } = workoutCreatorService;
+  const isResting = false;
 
   const nextExercise = currentExercise + 1 > exercises ? 1 : currentExercise + 1;
-  const nextRound = currentExercise + 1 > exercises ? currentRound + 1 : currentRound;
+  const nextRound = currentExercise + 1 > exercises ? activeRoundIndex + 1 : activeRoundIndex;
 
   return (
     <Box p={2} minHeight="100%">
@@ -106,10 +111,10 @@ export default function CurrentWorkout(): React.ReactElement {
           <Grid item xs={12} alignContent={"center"}>
             <Grid container>
               <Grid item>
-                <Typography align="center" variant="h5">{workoutSettings.label} in Progress:&nbsp;</Typography>
+                <Typography align="center" variant="h5">Workout in Progress:</Typography>
               </Grid>
               <Grid item>
-                <Typography align="center" variant="h5">{bodyPartsForWorkout[workoutSettings.generated_body_parts_list[(currentRound - 1)]]}</Typography>
+                <Typography align="center" variant="h5">{bodyPartsForWorkout[workoutCreatorService.generated_body_parts_list[(activeRoundIndex - 1)]]}</Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -117,10 +122,10 @@ export default function CurrentWorkout(): React.ReactElement {
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
                 <Grid item xs={12} alignSelf={"flex-end"}>
-                  <RoundsStepper workoutSettings={workoutSettings} currentRound={currentRound} />
+                  <RoundsStepper workoutSession={workoutSession} workoutCreatorService={workoutCreatorService} activeRoundIndex={activeRoundIndex} />
                 </Grid>
                 <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper isResting={isResting} workoutSettings={workoutSettings} currentWorkoutSession={currentWorkoutSession} currentExercise={currentExercise} />
+                  <ExercisesStepper isResting={isResting} workoutCreatorService={workoutCreatorService} workoutSession={workoutSession} currentExercise={currentExercise} />
                 </Grid>
                 <Grid item xs={10}>
                   <Grid container spacing={2}>
@@ -131,22 +136,22 @@ export default function CurrentWorkout(): React.ReactElement {
                         </Grid>
                         <Grid item xs={4}>
                           <ExerciseDetail
-                            video={getCurrentExerciseVideo({ currentRound, currentExercise, all_exercises_for_generated_list })}
-                            exerciseName={getCurrentExerciseLabel({ currentRound, currentExercise, all_exercises_for_generated_list })}
+                            video={getCurrentExerciseVideo({ activeRoundIndex, currentExercise, all_exercises_for_generated_list })}
+                            exerciseName={getCurrentExerciseLabel({ activeRoundIndex, currentExercise, all_exercises_for_generated_list })}
                             description={"Current exercise is:"}
                           />
                         </Grid>
                         <Grid item xs={4}>
                           <ExerciseDetail
-                            video={getCurrentExerciseVideo({ currentRound, currentExercise: currentExercise + 1, all_exercises_for_generated_list })}
-                            exerciseName={getCurrentExerciseLabel({ currentRound: nextRound, currentExercise: nextExercise, all_exercises_for_generated_list })}
+                            video={getCurrentExerciseVideo({ activeRoundIndex, currentExercise: currentExercise + 1, all_exercises_for_generated_list })}
+                            exerciseName={getCurrentExerciseLabel({ activeRoundIndex: nextRound, currentExercise: nextExercise, all_exercises_for_generated_list })}
                             description={"Next exercise is:"}
                           />
                         </Grid>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <iframe width="100%" height="600" src={currentWorkoutSession.url || "https://www.youtube.com/embed/IgSn1Z2rq6E"}
+                      <iframe width="100%" height="600" src={workoutSession.url || "https://www.youtube.com/embed/IgSn1Z2rq6E"}
                         title="YouTube video player" frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen></iframe>

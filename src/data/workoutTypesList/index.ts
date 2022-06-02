@@ -8,21 +8,21 @@ import { exercises as abs } from "./abs";
 import { exercises as abs_left_right } from "./abs_left_right";
 import { exercises as hands } from "./hands";
 import { exercises as back } from "./back";
-import { BodyParts } from "../bodyPartsForWorkout";
+import { EBodyParts } from "../bodyPartsForWorkout";
 import IExercise from "../../models/Exercise/IExercise";
 import {TValues} from "../../interfaces_deprecated/TValues";
 
-const workoutTypes: { [key in TValues<typeof BodyParts>]: IExercise[] } = {
-  [BodyParts.legsFront]: legsFront,
-  [BodyParts.legsRear]: legsRear,
-  [BodyParts.legsInside]: legsInside,
-  [BodyParts.legsOutside]: legsOutside,
-  [BodyParts.legsAss]: legsAss,
-  [BodyParts.abs]: abs,
-  [BodyParts.abs_left_right]: abs_left_right,
-  [BodyParts.back]: back,
-  [BodyParts.hands]: hands,
-  [BodyParts.cardio]: cardio
+const workoutTypes: { [key in TValues<typeof EBodyParts>]: IExercise[] } = {
+  [EBodyParts.legsFront]: legsFront,
+  [EBodyParts.legsRear]: legsRear,
+  [EBodyParts.legsInside]: legsInside,
+  [EBodyParts.legsOutside]: legsOutside,
+  [EBodyParts.legsAss]: legsAss,
+  [EBodyParts.abs]: abs,
+  [EBodyParts.abs_left_right]: abs_left_right,
+  [EBodyParts.back]: back,
+  [EBodyParts.hands]: hands,
+  [EBodyParts.cardio]: cardio
 };
 
 export default workoutTypes;

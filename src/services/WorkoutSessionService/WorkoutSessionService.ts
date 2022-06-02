@@ -1,25 +1,18 @@
 import IRound from "../../models/Round/IRound";
-import IWorkoutService from "../WorkoutService/IWorkoutService";
-import WorkoutBuilderService from "../WorkoutBuilderService/WorkoutBuilderService";
-import WorkoutFactory from "../WorkoutFactory";
-import { WorkoutType } from "../../interfaces_deprecated/WorkoutType";
 import { IWorkoutSettings } from "../../interfaces_deprecated/IWorkoutSettings";
-import RoundBuilderService from "../RoundBuilderService/RoundBuilderService";
 import IWorkoutSessionService from "./IWorkoutSessionService";
-import workoutDefaultSettings from "../../data/workoutDefaultSettings";
-import {WorkoutSessionFields} from "./WorkoutSessionFields";
-import {TValues} from "../../interfaces_deprecated/TValues";
-import {BodyParts} from "../../data/bodyPartsForWorkout";
-import IWorkoutSession from "./IWorkoutSession";
+import { WorkoutSessionFields } from "./WorkoutSessionFields";
+import HIITRound from "../../models/Round/HIITRound";
 
 export default class WorkoutSessionService implements IWorkoutSessionService {
   rounds: IRound[] = [];
   activeRoundIndex: number = 0;
-  roundsLength: number = workoutDefaultSettings.rounds;
-  exercisesLength: number = workoutDefaultSettings.exercises;
-  restDuration: number = workoutDefaultSettings.rest_duration;
-  exerciseDuration: number = workoutDefaultSettings.exercise_duration;
-  betweenRoundsDuration: number = workoutDefaultSettings.rest_between_rounds;
+  activeExerciseIndex: number = 0;
+  roundsLength: number = 1;
+  exercisesLength: number = 1;
+  restDuration: number = 20;
+  exerciseDuration: number = 20;
+  betweenRoundsDuration: number = 60;
 
   constructor({ exerciseDuration, exercisesLength, roundsLength, restDuration, betweenRoundsDuration }: IWorkoutSettings) {
     this.exercisesLength = exercisesLength;
@@ -33,8 +26,20 @@ export default class WorkoutSessionService implements IWorkoutSessionService {
     return this.rounds[index];
   }
 
+  getActiveRoundIndex(): number {
+    return this.activeRoundIndex;
+  }
+
   setActiveRoundIndex(index: number): void {
     this.activeRoundIndex = index;
+  }
+
+  getActiveExerciseIndex(): number {
+    return this.activeExerciseIndex;
+  }
+
+  setActiveExerciseIndex(index: number): void {
+    this.activeExerciseIndex = index;
   }
 
   updateValue(field: WorkoutSessionFields, value: any): void {

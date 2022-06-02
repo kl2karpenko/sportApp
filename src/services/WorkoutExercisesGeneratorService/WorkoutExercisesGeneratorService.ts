@@ -1,30 +1,20 @@
 import {IWorkoutExercisesGeneratorService} from "./IWorkoutExercisesGeneratorService";
 import IExercise from "../../models/Exercise/IExercise";
 import {TValues} from "../../interfaces_deprecated/TValues";
-import {BodyParts} from "../../data/bodyPartsForWorkout";
-import workoutTypes from "../../data/workoutTypesList";
-import {IRandomizerService} from "../RandomizerService/IRandomizerService";
-import RandomizerService from "../RandomizerService";
+import {EBodyParts} from "../../data/bodyPartsForWorkout";
 import {WorkoutAlgorithms} from "./WorkoutAlgorithms";
+import WorkoutRoundExercises from "../../models/WorkoutRoundExercises/WorkoutRoundExercises";
+import {IWorkoutRoundExercises} from "../../models/WorkoutRoundExercises/IWorkoutRoundExercises";
 
+// TODO: change!!!
 export default class WorkoutExercisesGeneratorService implements IWorkoutExercisesGeneratorService {
-  public exercisesList: { [key in TValues<typeof BodyParts>]: IExercise[] } = workoutTypes;
-  public cardioExercisesList: IExercise[] = workoutTypes[BodyParts.cardio];
-  public cardioExercisesListLength: number = this.cardioExercisesList.length;
-  public listOfExercisesForCurrentBodyPart: IExercise[] = [];
-  public allExercisesForThisBodyLen: number = 0;
-  public bodyPartName: TValues<typeof BodyParts> = BodyParts.cardio;
-  public exercisesLength: number = 0;
-  randomizerService: IRandomizerService = new RandomizerService();
+  public workoutRoundExercises: IWorkoutRoundExercises;
 
-  constructor(exercisesLength: number, bodyPartName: TValues<typeof BodyParts>) {
-    this.exercisesLength = exercisesLength;
-    this.bodyPartName = bodyPartName;
-    this.listOfExercisesForCurrentBodyPart = this.exercisesList[bodyPartName];
-    this.allExercisesForThisBodyLen = this.listOfExercisesForCurrentBodyPart.length;
+  constructor(exercisesLength: number, bodyPartName: TValues<typeof EBodyParts>) {
+    this.workoutRoundExercises = new WorkoutRoundExercises(exercisesLength, bodyPartName);
   }
 
-  getExercisesList(algorithm: WorkoutAlgorithms): Set<IExercise> {
+  getExercisesList(algorithm?: WorkoutAlgorithms): Set<IExercise> {
     switch (algorithm) {
     case WorkoutAlgorithms.simple:
       return this.getExercisesListForSimpleAlgorithm();
@@ -36,64 +26,59 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
   }
 
   protected getExercisesListForSimpleAlgorithm(): Set<IExercise> {
-    const exercisesList: Set<IExercise> = new Set();
-    if (this.exercisesLength === 0) return exercisesList;
+    const listOfExercises = this.workoutRoundExercises.getListOfExerciseForBodyId();
+    if (listOfExercises.length === 0) return new Set([]);
 
-    let failedAttemptsToGenerateExclusiveExercises = false;
-
-    while (exercisesList.size < this.exercisesLength && !failedAttemptsToGenerateExclusiveExercises) {
-      try {
-        exercisesList.add(this.generateExclusiveExercise(exercisesList));
-      } catch (e) {
-        exercisesList.add(this.getRandomExercise());
-        failedAttemptsToGenerateExclusiveExercises = true;
-      }
-    }
-
-    return exercisesList;
+    const shuffledExercises = this.getShuffledList(listOfExercises);
+    return new Set([ ...shuffledExercises.slice(0, this.workoutRoundExercises.getNumberOfExercisesInRound())]);
   }
 
   protected getExercisesListForWithPairAlgorithm(): Set<IExercise> {
-    const exercisesList: Set<IExercise> = new Set();
-    if (this.exercisesLength === 0) return exercisesList;
+    const exercisesList: Set<IExercise> = new Set([]);
+    const listOfExercises = this.workoutRoundExercises.getListOfExerciseForBodyId();
+    if (this.workoutRoundExercises.getNumberOfExercisesInRound() === 0) return exercisesList;
 
-    for (let ex = 0; ex < this.exercisesLength; ex ++) {
-      exercisesList.add(this.getExercise(exercisesList));
-    }
+    const shuffledExercises = this.getShuffledList(listOfExercises);
+    const newExercisesList = [...shuffledExercises.slice(0, this.workoutRoundExercises.getNumberOfExercisesInRound())];
+    const newExercisesListLen = newExercisesList.length;
 
-    return exercisesList;
-  }
+    for (let i = 0; i < newExercisesListLen; i++) {
+      const currentExercise = newExercisesList[i];
+      const pairExerciseId = currentExercise.pair;
+      exercisesList.add(currentExercise);
 
-  getExercise(exercisesList: Set<IExercise>, exclusive: boolean = true): IExercise {
-    if (exclusive) {
-      try {
-        return this.generateExclusiveExercise(exercisesList);
-      } catch (e) {
-        return this.getRandomExercise();
+      if (pairExerciseId) {
+        exercisesList.add(shuffledExercises[this.getExerciseIndexInList(shuffledExercises, pairExerciseId)]);
       }
     }
 
-    return this.getRandomExercise();
+    const finalExercisesList = Array.from(exercisesList);
+    finalExercisesList.length = this.workoutRoundExercises.getNumberOfExercisesInRound();
+
+    return new Set([...finalExercisesList]);
   }
 
-  generateExclusiveExercise(exercisesList: Set<IExercise>): IExercise {
-    let attempts = 0;
+  protected getShuffledList(list: IExercise[]): IExercise[] {
+    return list.sort(() => Math.random() - 0.5);
+  }
 
-    while (exercisesList.size < this.exercisesLength && attempts !== this.exercisesLength) {
-      const randomExercise = this.getRandomExercise();
-      console.log(attempts, " attempts ");
+  protected getExerciseIndexInList(exercisesList: IExercise[], findId: string): number {
+    return exercisesList.findIndex((el: IExercise, index: number) => {
+      if (el.id === findId) return index;
+    });
+  }
 
-      if (!exercisesList.has(randomExercise)) {
-        return randomExercise;
-      }
-      attempts++;
+  protected addCardioExercisesToList(exercisesList: Set<IExercise>, position: number = 2): Set<IExercise> {
+    const arr = Array.from(exercisesList);
+    const arrLen = arr.length;
+    const shuffledCardioList = this.getShuffledList(this.workoutRoundExercises.getCardioExercisesList());
+    let addingToPosition = 0;
+
+    for (let i = 0; i < arrLen + addingToPosition; i = i + position) {
+      addingToPosition++;
+      arr.splice(i, 0, shuffledCardioList[i]);
     }
 
-    throw Error("Cannot generate an exclusive exercise");
-  }
-
-  getRandomExercise(): IExercise {
-    const randomInt = this.randomizerService.getRandomInt(0, this.allExercisesForThisBodyLen - 1);
-    return this.listOfExercisesForCurrentBodyPart[randomInt];
+    return new Set([ ...arr.slice(0, arrLen)]);
   }
 }

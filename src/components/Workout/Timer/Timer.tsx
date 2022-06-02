@@ -25,35 +25,35 @@ const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { curre
 };
 
 export default function Timer(): React.ReactElement {
-  const { workoutSettings, currentWorkoutSession, setCurrentWorkoutSession } = useContext(SportAppContext);
-  const expiryTimestamp = getIntervalForTimer({ currentWorkoutSession, workoutSettings });
+  const { workoutCreatorService, currentWorkoutSession, setCurrentWorkoutSession } = useContext(SportAppContext);
+  const expiryTimestamp = getIntervalForTimer({ currentWorkoutSession, workoutCreatorService });
   const setNextStepInWorkout = () => {
     const previousSessionValues = JSON.parse(JSON.stringify(currentWorkoutSession));
     const updatedWorkoutState: IWorkoutSession = setNextStep({
-      currentWorkoutSession, workoutSettings, previousSessionValues
+      currentWorkoutSession, workoutCreatorService, previousSessionValues
     });
     setCurrentWorkoutSession(updatedWorkoutState);
 
-    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
+    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutCreatorService });
   };
   const moveToNext = (): Date => {
     const previousSessionValues = JSON.parse(JSON.stringify(currentWorkoutSession));
     const updatedWorkoutState: IWorkoutSession = setNextStep({
-      currentWorkoutSession, workoutSettings, previousSessionValues
+      currentWorkoutSession, workoutCreatorService, previousSessionValues
     });
     setCurrentWorkoutSession(updatedWorkoutState);
 
     console.log("moveToNext", updatedWorkoutState);
 
-    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
+    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutCreatorService });
   };
   const moveToPrevious = (): Date => {
     const updatedWorkoutState: IWorkoutSession = toPreviousExercise({
-      currentWorkoutSession, workoutSettings
+      currentWorkoutSession, workoutCreatorService
     });
     setCurrentWorkoutSession(updatedWorkoutState);
 
-    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
+    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutCreatorService });
   };
 
   return (

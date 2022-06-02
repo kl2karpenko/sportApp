@@ -1,33 +1,16 @@
-import IRound from "./IRound";
 import IExercise from "../Exercise/IExercise";
-import Exercise from "../Exercise/Exercise";
 import {TValues} from "../../interfaces_deprecated/TValues";
-import { BodyParts } from "../../data/bodyPartsForWorkout";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
+import Round from "./Round";
+import IRound from "./IRound";
 
-export default class HIITRound implements IRound {
-  bodyId: TValues<typeof BodyParts>;
-  isActive: boolean = false;
-  exercisesList: Set<IExercise>;
-  restDuration: number;
-  workDuration: number;
-
+export default class HIITRound extends Round implements IRound {
   constructor(props: {
     exercisesList: Set<IExercise>;
-    bodyId: TValues<typeof BodyParts>;
+    bodyId: TValues<typeof EBodyParts>;
     restDuration: number;
     workDuration: number
   }) {
-    this.bodyId = props.bodyId;
-    this.restDuration = props.restDuration;
-    this.workDuration = props.workDuration;
-    this.exercisesList = props.exercisesList;
-  }
-
-  public getExercisesLength(): number {
-    return this.exercisesList.size;
-  }
-
-  private setIsActive(): void {
-    this.isActive = true;
+    super(props);
   }
 }

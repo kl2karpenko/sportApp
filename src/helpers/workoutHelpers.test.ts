@@ -5,7 +5,7 @@ import {
   setupExerciseWithPairIfNeeded,
   checkIfWorkoutFinished, setNextStep, toNextExercise, toPreviousExercise, isRestTime, createRandomExercisesForAllRounds
 } from "./workoutHelpers";
-import workoutDefaultSettings from "../data/workoutDefaultSettings";
+import workoutsDefaultSettings from "../data/workoutsDefaultSettings";
 import workoutTypesList from "../data/workoutTypesList";
 import {IBodyPartsForWorkout} from "../interfaces_deprecated/IBodyPartsForWorkout";
 import {defaultWorkoutSession} from "../SportApp";
@@ -44,9 +44,9 @@ describe("workoutHelpers", () => {
 
   describe("generateListOfBodyPartsForAllRounds", () => {
     test("should create list of exercises for tabata, that are random and there is no repeats", () => {
-      const listOfExercises = generateListOfBodyPartsForAllRounds(workoutDefaultSettings);
+      const listOfExercises = generateListOfBodyPartsForAllRounds(workoutsDefaultSettings);
 
-      expect(listOfExercises.length).toBe(workoutDefaultSettings.rounds);
+      expect(listOfExercises.length).toBe(workoutsDefaultSettings.rounds);
     });
   });
 
@@ -63,30 +63,30 @@ describe("workoutHelpers", () => {
   describe("createRandomExercisesForRound", () => {
     const workoutTypesListEnums = Object.keys(workoutTypesList);
     test("should create list of exercises for each round, the same as number of exercises", () => {
-      const result = createRandomExercisesForRound(workoutTypesListEnums[0], workoutDefaultSettings, []);
+      const result = createRandomExercisesForRound(workoutTypesListEnums[0], workoutsDefaultSettings, []);
 
       console.log(result, " result");
 
-      expect(result.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises);
+      expect(result.length).toBeGreaterThanOrEqual(workoutsDefaultSettings.exercises);
     });
   });
 
   describe("createRandomExercisesForAllRounds", () => {
     const workoutTypesListEnums = Object.keys(workoutTypesList);
     test("should create list of exercises for all rounds", () => {
-      const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[1]], workoutDefaultSettings);
+      const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[1]], workoutsDefaultSettings);
 
       result.forEach(({ exercises }: IWorkoutGeneratedExercisesList, index) =>
-        expect(exercises.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises)
+        expect(exercises.length).toBeGreaterThanOrEqual(workoutsDefaultSettings.exercises)
       );
 
-      expect(result.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises);
+      expect(result.length).toBeGreaterThanOrEqual(workoutsDefaultSettings.exercises);
     });
 
     test("should create list of exercises for all rounds without repeating the exercises", () => {
-      const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[0], workoutTypesListEnums[2], workoutTypesListEnums[1]], workoutDefaultSettings);
+      const result = createRandomExercisesForAllRounds([workoutTypesListEnums[0], workoutTypesListEnums[0], workoutTypesListEnums[2], workoutTypesListEnums[1]], workoutsDefaultSettings);
 
-      result.forEach(({ exercises }: IWorkoutGeneratedExercisesList, index) => expect(exercises.length).toBeGreaterThanOrEqual(workoutDefaultSettings.exercises));
+      result.forEach(({ exercises }: IWorkoutGeneratedExercisesList, index) => expect(exercises.length).toBeGreaterThanOrEqual(workoutsDefaultSettings.exercises));
     });
   });
 
@@ -97,10 +97,10 @@ describe("workoutHelpers", () => {
           ...defaultWorkoutSession,
           inProgress: true,
           isResting: true,
-          round: workoutDefaultSettings.rounds,
+          round: workoutsDefaultSettings.rounds,
           exercise: 1
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(result.exercise).toBe(2);
@@ -114,10 +114,10 @@ describe("workoutHelpers", () => {
           inProgress: true,
           isResting: true,
           round: 1,
-          exercise: workoutDefaultSettings.exercises
+          exercise: workoutsDefaultSettings.exercises
         },
         workoutSettings: {
-          ...workoutDefaultSettings,
+          ...workoutsDefaultSettings,
           rounds: 2
         }
       });
@@ -138,7 +138,7 @@ describe("workoutHelpers", () => {
           round: 1,
           exercise: 2
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(result.exercise).toBe(2);
@@ -155,7 +155,7 @@ describe("workoutHelpers", () => {
           round: 1,
           exercise: 2
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(result.exercise).toBe(1);
@@ -172,7 +172,7 @@ describe("workoutHelpers", () => {
           round: 2,
           exercise: 1
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(result.exercise).toBe(2);
@@ -192,7 +192,7 @@ describe("workoutHelpers", () => {
           exercise: 1
         },
         workoutSettings: {
-          ...workoutDefaultSettings,
+          ...workoutsDefaultSettings,
           exercises: 3
         },
         previousSessionValues: {
@@ -217,7 +217,7 @@ describe("workoutHelpers", () => {
           exercise: 2
         },
         workoutSettings: {
-          ...workoutDefaultSettings,
+          ...workoutsDefaultSettings,
           exercises: 3
         },
         previousSessionValues: {
@@ -243,7 +243,7 @@ describe("workoutHelpers", () => {
           round: 1,
           exercise: 1
         },
-        workoutSettings: workoutDefaultSettings,
+        workoutSettings: workoutsDefaultSettings,
         previousSessionValues: {
           ...defaultWorkoutSession,
           inProgress: true,
@@ -264,10 +264,10 @@ describe("workoutHelpers", () => {
           inProgress: true,
           isResting: true,
           round: 1,
-          exercise: workoutDefaultSettings.exercises
+          exercise: workoutsDefaultSettings.exercises
         },
         workoutSettings: {
-          ...workoutDefaultSettings,
+          ...workoutsDefaultSettings,
           rounds: 2
         },
         previousSessionValues: {
@@ -275,7 +275,7 @@ describe("workoutHelpers", () => {
           inProgress: true,
           isResting: false,
           round: 1,
-          exercise: workoutDefaultSettings.exercises
+          exercise: workoutsDefaultSettings.exercises
         }
       });
 
@@ -291,10 +291,10 @@ describe("workoutHelpers", () => {
           ...defaultWorkoutSession,
           inProgress: true,
           isResting: true,
-          round: workoutDefaultSettings.rounds,
-          exercise: workoutDefaultSettings.exercises
+          round: workoutsDefaultSettings.rounds,
+          exercise: workoutsDefaultSettings.exercises
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(isFinished).toBe(true);
@@ -306,10 +306,10 @@ describe("workoutHelpers", () => {
           ...defaultWorkoutSession,
           inProgress: true,
           isResting: false,
-          round: workoutDefaultSettings.rounds,
-          exercise: workoutDefaultSettings.exercises
+          round: workoutsDefaultSettings.rounds,
+          exercise: workoutsDefaultSettings.exercises
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(isFinished).toBe(false);
@@ -321,10 +321,10 @@ describe("workoutHelpers", () => {
           ...defaultWorkoutSession,
           inProgress: true,
           isResting: false,
-          round: workoutDefaultSettings.rounds,
+          round: workoutsDefaultSettings.rounds,
           exercise: 1
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(isFinished).toBe(false);
@@ -337,9 +337,9 @@ describe("workoutHelpers", () => {
           inProgress: true,
           isResting: false,
           round: 0,
-          exercise: workoutDefaultSettings.exercises
+          exercise: workoutsDefaultSettings.exercises
         },
-        workoutSettings: workoutDefaultSettings
+        workoutSettings: workoutsDefaultSettings
       });
 
       expect(isFinished).toBe(false);
