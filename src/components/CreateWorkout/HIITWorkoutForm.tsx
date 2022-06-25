@@ -1,14 +1,15 @@
 import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
-import React, { ChangeEvent, useContext } from "react";
-import { WorkoutSessionFields } from "../../services/WorkoutSessionService/WorkoutSessionFields";
-import { SportAppContext } from "../../SportAppContext";
+import React, { ChangeEvent } from "react";
+import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/main";
 
 interface IHIITWorkoutFormProps {
   updateState: (stateName: WorkoutSessionFields, stateVal: number) => void;
 }
 
 export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) {
-  const { workoutSession } = useContext(SportAppContext);
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
   // @ts-ignore
   const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = {
     [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0,

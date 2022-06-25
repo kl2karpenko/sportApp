@@ -5,5 +5,5 @@ import { IWorkoutRoundExercises } from "../../models/WorkoutRoundExercises/IWork
 export interface IWorkoutExercisesGeneratorService {
   workoutRoundExercises: IWorkoutRoundExercises;
 
-  getExercisesList(algorithm: WorkoutAlgorithms): Set<IExercise>;
+  getExercisesList(algorithm: WorkoutAlgorithms): IExercise[];
 }

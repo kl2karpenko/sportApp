@@ -9,7 +9,7 @@ export default class TabataRound extends Round implements IRound {
 
   constructor(props: {
     // TODO: this should be different for tabata and hiit
-    exercisesList: Set<IExercise>;
+    exercisesList: IExercise[];
     exerciseRepeatTimes: number;
     restDuration: number;
     bodyId: TValues<typeof EBodyParts>;

@@ -1,4 +1,4 @@
-import IRound from "../../models/Round/IRound";
+import IRound from "../models/Round/IRound";
 
 export default interface IWorkoutSession {
   rounds: IRound[];

@@ -43,8 +43,6 @@ export default function Timer(): React.ReactElement {
     });
     setCurrentWorkoutSession(updatedWorkoutState);
 
-    console.log("moveToNext", updatedWorkoutState);
-
     return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutCreatorService });
   };
   const moveToPrevious = (): Date => {

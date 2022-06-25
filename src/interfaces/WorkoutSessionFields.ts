@@ -4,5 +4,7 @@ export enum WorkoutSessionFields {
   exerciseDuration = "exerciseDuration",
   exercisesLength = "exercisesLength",
   restDuration = "restDuration",
-  betweenRoundsDuration = "betweenRoundsDuration"
+  betweenRoundsDuration = "betweenRoundsDuration",
+  activeExerciseIndex = "activeExerciseIndex",
+  activeRoundIndex = "activeRoundIndex"
 }

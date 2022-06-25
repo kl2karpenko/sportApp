@@ -11,7 +11,7 @@ import { useStyles } from "./styles";
 import { IWorkoutGeneratedExercisesList } from "../../interfaces_deprecated/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../data/bodyPartsForWorkout";
 import { IBodyPartsForWorkout } from "../../interfaces_deprecated/IBodyPartsForWorkout";
-import WorkoutCreatorService from "../../services/WorkoutCreatorService/WorkoutCreatorService";
+import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
 
 const getCurrentExercise = (
   {
@@ -68,10 +68,10 @@ const getCurrentExerciseVideo = (
 }
 
 interface ICurrentWorkoutProps {
-  workoutCreatorService: WorkoutCreatorService;
+  workoutBuilderService: WorkoutBuilderService;
 }
 
-export default function CurrentWorkout({ workoutCreatorService }: ICurrentWorkoutProps): React.ReactElement {
+export default function CurrentWorkout({ workoutBuilderService }: ICurrentWorkoutProps): React.ReactElement {
   const classes = useStyles();
   const { workoutSession } = useContext(SportAppContext);
   // stop reload the page
@@ -98,7 +98,7 @@ export default function CurrentWorkout({ workoutCreatorService }: ICurrentWorkou
   const {
     all_exercises_for_generated_list,
     exercises
-  } = workoutCreatorService;
+  } = workoutBuilderService;
   const isResting = false;
 
   const nextExercise = currentExercise + 1 > exercises ? 1 : currentExercise + 1;
@@ -114,7 +114,7 @@ export default function CurrentWorkout({ workoutCreatorService }: ICurrentWorkou
                 <Typography align="center" variant="h5">Workout in Progress:</Typography>
               </Grid>
               <Grid item>
-                <Typography align="center" variant="h5">{bodyPartsForWorkout[workoutCreatorService.generated_body_parts_list[(activeRoundIndex - 1)]]}</Typography>
+                <Typography align="center" variant="h5">{bodyPartsForWorkout[workoutBuilderService.generated_body_parts_list[(activeRoundIndex - 1)]]}</Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -122,10 +122,10 @@ export default function CurrentWorkout({ workoutCreatorService }: ICurrentWorkou
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
                 <Grid item xs={12} alignSelf={"flex-end"}>
-                  <RoundsStepper workoutSession={workoutSession} workoutCreatorService={workoutCreatorService} activeRoundIndex={activeRoundIndex} />
+                  <RoundsStepper workoutSession={workoutSession} workoutCreatorService={workoutBuilderService} activeRoundIndex={activeRoundIndex} />
                 </Grid>
                 <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper isResting={isResting} workoutCreatorService={workoutCreatorService} workoutSession={workoutSession} currentExercise={currentExercise} />
+                  <ExercisesStepper isResting={isResting} workoutCreatorService={workoutBuilderService} workoutSession={workoutSession} currentExercise={currentExercise} />
                 </Grid>
                 <Grid item xs={10}>
                   <Grid container spacing={2}>

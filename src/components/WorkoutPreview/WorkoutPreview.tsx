@@ -1,34 +1,31 @@
-import React, { useContext } from "react";
+import React from "react";
+import {useSelector} from "react-redux";
 
-import { Grid } from "@mui/material";
-import { SportAppContext } from "../../SportAppContext";
-import IRound from "../../models/Round/IRound";
-import WorkoutRoundExercisesPreview from "./WorkoutRoundExercisesPreview";
-import WorkoutCreatorService from "../../services/WorkoutCreatorService/WorkoutCreatorService";
+import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
+import {RootState} from "../../store/main";
+import {WorkoutType} from "../../interfaces/WorkoutType";
+
+import HIITWorkoutPreview from "./HIITWorkoutPreview";
+import TabataWorkoutPreview from "./TabataWorkoutPreview";
 
 interface IWorkoutPreviewProps {
-  workoutCreatorService: WorkoutCreatorService;
-  handleRandomChangeExerciseForRound: (round: number, exerciseNum: number) => void;
-  handleChangeExerciseForRound(roundIndex: number, exerciseIndex: number, value: string): void;
+  workoutBuilderService: WorkoutBuilderService;
 }
 
-export default function WorkoutPreview({ workoutCreatorService, handleRandomChangeExerciseForRound, handleChangeExerciseForRound }: IWorkoutPreviewProps) {
-  const { workoutSession } = useContext(SportAppContext);
+export default function WorkoutPreview({ workoutBuilderService }: IWorkoutPreviewProps) {
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
+  const workoutType = workoutSession.workoutType;
 
-  return (
-    <Grid container direction="column">
-      {
-        workoutSession?.rounds?.map((round: IRound, roundIndex: number) => (
-          <WorkoutRoundExercisesPreview
-            key={round.bodyId + roundIndex}
-            round={round}
-            roundIndex={roundIndex}
-            workoutCreatorService={workoutCreatorService}
-            handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound}
-            handleChangeExerciseForRound={handleChangeExerciseForRound}
-          />
-        ))
-      }
-    </Grid>
-  )
+  const getPreviewComponent = (workoutType: WorkoutType) => {
+    switch (workoutType) {
+    case WorkoutType.HIIT:
+      return <HIITWorkoutPreview workoutBuilderService={workoutBuilderService} />;
+    case WorkoutType.Tabata:
+      return <TabataWorkoutPreview workoutBuilderService={workoutBuilderService} />;
+    default:
+      return <span />;
+    }
+  }
+
+  return getPreviewComponent(workoutType!);
 }

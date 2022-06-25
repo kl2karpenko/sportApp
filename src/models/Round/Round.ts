@@ -6,12 +6,12 @@ import { EBodyParts } from "../../data/bodyPartsForWorkout";
 export default class Round implements IRound {
   bodyId: TValues<typeof EBodyParts>;
   isActive: boolean = false;
-  exercisesList: Set<IExercise>;
+  exercisesList: IExercise[];
   restDuration: number;
   workDuration: number;
 
   constructor(props: {
-    exercisesList: Set<IExercise>;
+    exercisesList: IExercise[];
     bodyId: TValues<typeof EBodyParts>;
     restDuration: number;
     workDuration: number
@@ -23,7 +23,7 @@ export default class Round implements IRound {
   }
 
   public getExercisesLength(): number {
-    return this.exercisesList.size;
+    return this.exercisesList.length;
   }
 
   public getExerciseByIndex(exIndex: number): IExercise {
@@ -36,16 +36,14 @@ export default class Round implements IRound {
     this.bodyId = bodyPartName;
   }
 
-  public updateExercises(exercises: Set<IExercise>): void {
+  public updateExercises(exercises: IExercise[]): void {
     this.exercisesList = exercises;
   }
 
   public updateExerciseByIndex(exIndex: number, exercise: IExercise): void {
-    const list = Array.from(this.exercisesList);
-
-    const newList = [...list];
+    const newList = [...this.exercisesList];
     newList[exIndex] = exercise;
 
-    this.exercisesList = new Set([...newList]);
+    this.exercisesList = newList;
   }
 }

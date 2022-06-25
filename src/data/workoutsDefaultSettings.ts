@@ -17,7 +17,7 @@ export const tabataDefaultSettings: IWorkoutSettings = {
   exercisesLength: 8,
   exerciseDuration: 20,
   restDuration: 10,
-  betweenRoundsDuration: 120
+  betweenRoundsDuration: 90
 };
 export const hiitDefaultSettings: IWorkoutSettings = {
   roundsLength: 8,

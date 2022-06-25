@@ -2,12 +2,12 @@ import { Box, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import React from "react";
 
 import { useStyles } from "../styles";
-import WorkoutCreatorService from "../../../services/WorkoutCreatorService/WorkoutCreatorService";
-import IWorkoutSession from "../../../services/WorkoutSessionService/IWorkoutSession";
+import WorkoutBuilderService from "../../../services/WorkoutBuilderService/WorkoutBuilderService";
+import IWorkoutSession from "../../../interfaces/IWorkoutSession";
 import IRound from "../../../models/Round/IRound";
 
 interface IExercisesStepperProps {
-  workoutCreatorService: WorkoutCreatorService;
+  workoutCreatorService: WorkoutBuilderService;
   currentExercise: number;
   isResting: boolean;
   workoutSession: IWorkoutSession;

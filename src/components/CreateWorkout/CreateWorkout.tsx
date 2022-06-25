@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useContext, useMemo, useState} from "react";
+import React, {ChangeEvent, useContext, useMemo} from "react";
 
 import {
   Box,
@@ -14,55 +14,42 @@ import {
 } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-import { EBodyParts } from "../../data/bodyPartsForWorkout";
-import { SportAppContext } from "../../SportAppContext";
-import { WorkoutSessionFields } from "../../services/WorkoutSessionService/WorkoutSessionFields";
-import { TValues } from "../../interfaces_deprecated/TValues";
-import { WorkoutType, WorkoutTypesList } from "../../interfaces_deprecated/WorkoutType";
+import {EBodyParts} from "../../data/bodyPartsForWorkout";
+import {SportAppContext} from "../../SportAppContext";
+import {WorkoutSessionFields} from "../../interfaces/WorkoutSessionFields";
+import {TValues} from "../../interfaces_deprecated/TValues";
+import {WorkoutType, WorkoutTypesList} from "../../interfaces/WorkoutType";
 import IRound from "../../models/Round/IRound";
 import FormComponent from "./FormComponent";
 import WorkoutPreview from "../WorkoutPreview";
-import WorkoutCreatorService from "../../services/WorkoutCreatorService/WorkoutCreatorService";
-import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
-import ExercisesList from "../../models/ExercisesList/ExercisesList";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store/main";
+import WorkoutBuilderServiceFactory from "../../services/WorkoutBuilderServiceFactory";
+
+import {changeWorkoutType, updateWorkoutRoundByIndex, updateWorkoutSessionValue} from "../../store/workoutSession";
+import {RoundFields} from "../../models/Round/RoundFields";
 
 interface ICreateWorkoutProps {
-  workoutCreatorService: WorkoutCreatorService;
+
 }
 
-export default function CreateWorkout({ workoutCreatorService }: ICreateWorkoutProps): React.ReactElement {
-  const { workoutSession, setWorkoutSession, workoutType, setWorkoutType, setDialogProps } = useContext(SportAppContext);
+export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactElement {
+  const dispatch = useDispatch();
+  const { setDialogProps } = useContext(SportAppContext);
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
+  const workoutType = workoutSession.workoutType;
+
+  const workoutBuilderService = useMemo(() => WorkoutBuilderServiceFactory(workoutType!, workoutSession), [workoutType]);
   const navigate = useNavigate();
   // const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
-    workoutCreatorService?.updateCurrentWorkoutSession(stateName, stateVal);
-    setWorkoutSession(workoutCreatorService?.getCurrentWorkoutSession());
+    dispatch(updateWorkoutSessionValue({ field: stateName, value: stateVal }));
   };
 
-  const handleChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, value: string) => {
-    console.log("handleChangeExerciseForRound", roundIndex, exerciseIndex, value);
-    const allExercisesData: IExercisesList = new ExercisesList();
-    const exercise = allExercisesData.findExerciseById(value)!;
-
-    console.log("new exercise", exercise);
-    workoutCreatorService?.updateCurrentWorkoutSessionRoundExercise(roundIndex, exerciseIndex, exercise);
-    setWorkoutSession(workoutCreatorService?.getCurrentWorkoutSession());
-  };
-
-  const handleRandomChangeExerciseForRound = (round: number, exerciseNum: number) => {
-    // const allExercises = workoutSettings.all_exercises_for_generated_list;
-    // const thisRoundObj = allExercises[round];
-    // const thisExercise = thisRoundObj.exercises[exerciseNum];
-    // const allExercisesOfThisType = workoutTypes[thisExercise.id.includes("cardio") ? BodyParts.cardio : thisRoundObj.bodyPartName];
-    // let randomExercise: IBodyPartsForWorkout = allExercisesOfThisType[getRandomInt(0, allExercisesOfThisType.length - 1)];
-    //
-    // handleChangeExerciseForRound(round, exerciseNum, randomExercise.id);
-  };
-
-  const handleChangeBodyPartForTheRound = (roundIndex: number, value: TValues<typeof EBodyParts>) => {
-    workoutCreatorService?.updateCurrentWorkoutSessionRound(roundIndex, value);
+  const handleChangeBodyPartForTheRound = (roundIndex: number, fieldValue: TValues<typeof EBodyParts>) => {
+    dispatch(updateWorkoutRoundByIndex({ roundIndex, fieldName: RoundFields.bodyId, fieldValue }));
   };
 
   return (
@@ -83,8 +70,8 @@ export default function CreateWorkout({ workoutCreatorService }: ICreateWorkoutP
                     color="secondary"
                     startIcon={<ShuffleIcon />}
                     onClick={() => {
-                      workoutCreatorService?.generateWorkout();
-                      setWorkoutSession(workoutCreatorService?.getCurrentWorkoutSession());
+                      const rounds = workoutBuilderService?.generateWorkout(workoutSession);
+                      dispatch(updateWorkoutSessionValue({ field: WorkoutSessionFields.rounds, value: rounds }));
                     }}
                   >
                     Generate a workout!
@@ -93,7 +80,7 @@ export default function CreateWorkout({ workoutCreatorService }: ICreateWorkoutP
                 <Grid item>
                   <Button
                     variant="contained"
-                    disabled={!workoutSession?.rounds.length}
+                    disabled={!workoutSession?.rounds?.length}
                     onClick={() => {
                       setDialogProps({
                         open: true,
@@ -101,11 +88,7 @@ export default function CreateWorkout({ workoutCreatorService }: ICreateWorkoutP
                         content: (
                           <Grid container spacing={2} direction="column">
                             <Grid item xs={12}>
-                              <WorkoutPreview
-                                workoutCreatorService={workoutCreatorService}
-                                handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound}
-                                handleChangeExerciseForRound={handleChangeExerciseForRound}
-                              />
+                              <WorkoutPreview workoutBuilderService={workoutBuilderService} />
                             </Grid>
                           </Grid>
                         ),
@@ -138,7 +121,7 @@ export default function CreateWorkout({ workoutCreatorService }: ICreateWorkoutP
                     <Select
                       id="workoutType"
                       value={workoutType}
-                      onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => setWorkoutType(value)}
+                      onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => dispatch(changeWorkoutType(value))}
                     >
                       {/*  // TODO: change the place where I take this */}
                       {WorkoutTypesList.map((workoutTypeInside: WorkoutType) => (
@@ -171,9 +154,9 @@ export default function CreateWorkout({ workoutCreatorService }: ICreateWorkoutP
                                 handleChangeBodyPartForTheRound(index, value);
                               }}
                             >
-                              {workoutCreatorService?.getBodyParts().map((bodyPartsNameInside: TValues<typeof EBodyParts>) => (
+                              {workoutBuilderService?.getBodyParts().map((bodyPartsNameInside: TValues<typeof EBodyParts>) => (
                                 <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{
-                                  workoutCreatorService?.getBodyPartLabel(bodyPartsNameInside)
+                                  workoutBuilderService?.getBodyPartLabel(bodyPartsNameInside)
                                 }</MenuItem>
                               ))}
                             </Select>

@@ -6,7 +6,6 @@ import {WorkoutAlgorithms} from "./WorkoutAlgorithms";
 import WorkoutRoundExercises from "../../models/WorkoutRoundExercises/WorkoutRoundExercises";
 import {IWorkoutRoundExercises} from "../../models/WorkoutRoundExercises/IWorkoutRoundExercises";
 
-// TODO: change!!!
 export default class WorkoutExercisesGeneratorService implements IWorkoutExercisesGeneratorService {
   public workoutRoundExercises: IWorkoutRoundExercises;
 
@@ -14,27 +13,27 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
     this.workoutRoundExercises = new WorkoutRoundExercises(exercisesLength, bodyPartName);
   }
 
-  getExercisesList(algorithm?: WorkoutAlgorithms): Set<IExercise> {
+  getExercisesList(algorithm?: WorkoutAlgorithms): IExercise[] {
     switch (algorithm) {
     case WorkoutAlgorithms.simple:
       return this.getExercisesListForSimpleAlgorithm();
     case WorkoutAlgorithms.withPair:
       return this.getExercisesListForWithPairAlgorithm();
     default:
-      return new Set([]);
+      return [];
     }
   }
 
-  protected getExercisesListForSimpleAlgorithm(): Set<IExercise> {
+  protected getExercisesListForSimpleAlgorithm(): IExercise[] {
     const listOfExercises = this.workoutRoundExercises.getListOfExerciseForBodyId();
-    if (listOfExercises.length === 0) return new Set([]);
+    if (listOfExercises.length === 0) return [];
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
-    return new Set([ ...shuffledExercises.slice(0, this.workoutRoundExercises.getNumberOfExercisesInRound())]);
+    return [ ...shuffledExercises.slice(0, this.workoutRoundExercises.getNumberOfExercisesInRound())];
   }
 
-  protected getExercisesListForWithPairAlgorithm(): Set<IExercise> {
-    const exercisesList: Set<IExercise> = new Set([]);
+  protected getExercisesListForWithPairAlgorithm(): IExercise[] {
+    const exercisesList: IExercise[] = [];
     const listOfExercises = this.workoutRoundExercises.getListOfExerciseForBodyId();
     if (this.workoutRoundExercises.getNumberOfExercisesInRound() === 0) return exercisesList;
 
@@ -45,21 +44,26 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
     for (let i = 0; i < newExercisesListLen; i++) {
       const currentExercise = newExercisesList[i];
       const pairExerciseId = currentExercise.pair;
-      exercisesList.add(currentExercise);
+      exercisesList.push(currentExercise);
 
       if (pairExerciseId) {
-        exercisesList.add(shuffledExercises[this.getExerciseIndexInList(shuffledExercises, pairExerciseId)]);
+        exercisesList.push(shuffledExercises[this.getExerciseIndexInList(shuffledExercises, pairExerciseId)]);
       }
     }
 
-    const finalExercisesList = Array.from(exercisesList);
-    finalExercisesList.length = this.workoutRoundExercises.getNumberOfExercisesInRound();
+    exercisesList.length = this.workoutRoundExercises.getNumberOfExercisesInRound();
 
-    return new Set([...finalExercisesList]);
+    return exercisesList;
   }
 
   protected getShuffledList(list: IExercise[]): IExercise[] {
     return list.sort(() => Math.random() - 0.5);
+  }
+
+  protected getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   protected getExerciseIndexInList(exercisesList: IExercise[], findId: string): number {
@@ -68,17 +72,16 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
     });
   }
 
-  protected addCardioExercisesToList(exercisesList: Set<IExercise>, position: number = 2): Set<IExercise> {
-    const arr = Array.from(exercisesList);
-    const arrLen = arr.length;
+  protected addCardioExercisesToList(exercisesList: IExercise[], position: number = 2): IExercise[] {
+    const arrLen = exercisesList.length;
     const shuffledCardioList = this.getShuffledList(this.workoutRoundExercises.getCardioExercisesList());
     let addingToPosition = 0;
 
     for (let i = 0; i < arrLen + addingToPosition; i = i + position) {
       addingToPosition++;
-      arr.splice(i, 0, shuffledCardioList[i]);
+      exercisesList.splice(i, 0, shuffledCardioList[i]);
     }
 
-    return new Set([ ...arr.slice(0, arrLen)]);
+    return exercisesList.slice(0, arrLen);
   }
 }

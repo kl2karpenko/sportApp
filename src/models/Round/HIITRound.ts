@@ -6,7 +6,7 @@ import IRound from "./IRound";
 
 export default class HIITRound extends Round implements IRound {
   constructor(props: {
-    exercisesList: Set<IExercise>;
+    exercisesList: IExercise[];
     bodyId: TValues<typeof EBodyParts>;
     restDuration: number;
     workDuration: number

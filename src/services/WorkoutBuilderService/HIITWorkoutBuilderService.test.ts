@@ -1,9 +1,9 @@
-import HIITWorkoutCreatorService from "./HIITWorkoutCreatorService";
+import HIITWorkoutBuilderService from "./HIITWorkoutBuilderService";
 import workoutsDefaultSettings from "../../data/workoutsDefaultSettings";
 
-describe("HIITWorkoutCreatorService", () => {
+describe("HIITWorkoutBuilderService", () => {
   it("new instance should have a generator and session instance inside of it", () => {
-    const instHIITWorkoutService = new HIITWorkoutCreatorService({
+    const instHIITWorkoutService = new HIITWorkoutBuilderService({
       exerciseDuration: workoutsDefaultSettings.exercise_duration,
       exercisesLength: workoutsDefaultSettings.exercises,
       roundsLength: workoutsDefaultSettings.rounds,
@@ -15,7 +15,7 @@ describe("HIITWorkoutCreatorService", () => {
   });
 
   it("should be able to generate a workout and strre values in workoutSession", () => {
-    const instHIITWorkoutService = new HIITWorkoutCreatorService({
+    const instHIITWorkoutService = new HIITWorkoutBuilderService({
       exerciseDuration: workoutsDefaultSettings.exercise_duration,
       exercisesLength: workoutsDefaultSettings.exercises,
       roundsLength: workoutsDefaultSettings.rounds,
@@ -29,7 +29,7 @@ describe("HIITWorkoutCreatorService", () => {
   });
 
   describe("generateBodyParts", () => {
-    const instHIITWorkoutService = new HIITWorkoutCreatorService({
+    const instHIITWorkoutService = new HIITWorkoutBuilderService({
       exerciseDuration: workoutsDefaultSettings.exercise_duration,
       exercisesLength: workoutsDefaultSettings.exercises,
       roundsLength: workoutsDefaultSettings.rounds,

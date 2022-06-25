@@ -1,5 +1,5 @@
 import RoundBuilderService from "./RoundBuilderService";
-import IWorkoutSession from "../WorkoutSessionService/IWorkoutSession";
+import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import { TValues } from "../../interfaces_deprecated/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
@@ -11,7 +11,7 @@ import TabataRound from "../../models/Round/TabataRound";
 export default class TabataRoundBuilderService extends RoundBuilderService {
   public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): IRound[] { return []; }
 
-  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): Set<IExercise> {
+  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
     const { exercisesLength } = workoutSession;
     const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
 

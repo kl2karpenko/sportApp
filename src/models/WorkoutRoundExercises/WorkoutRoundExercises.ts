@@ -7,10 +7,10 @@ import ExercisesList from "../ExercisesList/ExercisesList";
 import Exercise from "../Exercise/Exercise";
 
 export default class WorkoutRoundExercises implements IWorkoutRoundExercises {
-  private listOfExercisesForCurrentBodyPart: IExercise[];
-  private bodyPartName: TValues<typeof EBodyParts>;
-  private exercisesInRoundLength: number;
-  private allExercisesData: IExercisesList = new ExercisesList();
+  public listOfExercisesForCurrentBodyPart: IExercise[];
+  public bodyPartName: TValues<typeof EBodyParts>;
+  public exercisesInRoundLength: number;
+  public allExercisesData: IExercisesList = new ExercisesList();
 
   constructor(exercisesLength: number, bodyPartName: TValues<typeof EBodyParts>) {
     this.exercisesInRoundLength = exercisesLength;

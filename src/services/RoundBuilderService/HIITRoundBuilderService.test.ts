@@ -1,17 +1,19 @@
-import HIITWorkoutSessionService from "../WorkoutSessionService/HIITWorkoutSessionService";
 import workoutsDefaultSettings from "../../data/workoutsDefaultSettings";
 import HIITRoundBuilderService from "./HIITRoundBuilderService";
-import HIITWorkoutCreatorService from "../WorkoutCreatorService/HIITWorkoutCreatorService";
+import HIITWorkoutBuilderService from "../WorkoutBuilderService/HIITWorkoutBuilderService";
 
 describe("HIITRoundBuilderService", () => {
-  const testHiitWorkoutSession = new HIITWorkoutSessionService({
+  const testHiitWorkoutSession = {
+    rounds: [],
     exerciseDuration: workoutsDefaultSettings.exercise_duration,
     exercisesLength: workoutsDefaultSettings.exercises,
     roundsLength: workoutsDefaultSettings.rounds,
     restDuration: workoutsDefaultSettings.rest_duration,
-    betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
-  });
-  const testHiitWB = new HIITWorkoutCreatorService(testHiitWorkoutSession);
+    betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds,
+    activeExerciseIndex: 0,
+    activeRoundIndex: 0
+  };
+  const testHiitWB = new HIITWorkoutBuilderService();
   const testHiitRB = new HIITRoundBuilderService();
 
   describe("generateRound", () => {

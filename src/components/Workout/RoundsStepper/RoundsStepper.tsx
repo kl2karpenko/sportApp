@@ -4,11 +4,12 @@ import React, {useContext} from "react";
 import { IWorkoutDeprecatedObj } from "../../../interfaces_deprecated/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../../../data/bodyPartsForWorkout";
 import {SportAppContext} from "../../../SportAppContext";
-import WorkoutCreatorService from "../../../services/WorkoutCreatorService/WorkoutCreatorService";
+import WorkoutBuilderService from "../../../services/WorkoutBuilderService/WorkoutBuilderService";
+import IRound from "../../../models/Round/IRound";
 
 interface IRoundsStepperProps {
   activeRoundIndex: number;
-  workoutCreatorService: WorkoutCreatorService;
+  workoutCreatorService: WorkoutBuilderService;
 }
 
 export default function RoundsStepper({ activeRoundIndex, workoutCreatorService }: IRoundsStepperProps) {

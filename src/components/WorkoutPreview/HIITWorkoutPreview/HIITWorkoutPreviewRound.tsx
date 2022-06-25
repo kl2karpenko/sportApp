@@ -1,23 +1,24 @@
-import React, {ChangeEvent, Fragment, useContext} from "react";
+import React, { ChangeEvent, Fragment } from "react";
 
 import { Typography, Grid, MenuItem, Box, Select, FormControl, Button } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Cached";
-import {IBodyPartsForWorkout} from "../../interfaces_deprecated/IBodyPartsForWorkout";
-import {SportAppContext} from "../../SportAppContext";
-import IRound from "../../models/Round/IRound";
-import IExercise from "../../models/Exercise/IExercise";
-import WorkoutRoundExercises from "../../models/WorkoutRoundExercises/WorkoutRoundExercises";
-import WorkoutCreatorService from "../../services/WorkoutCreatorService/WorkoutCreatorService";
+import {IBodyPartsForWorkout} from "../../../interfaces_deprecated/IBodyPartsForWorkout";
+import IRound from "../../../models/Round/IRound";
+import IExercise from "../../../models/Exercise/IExercise";
+import WorkoutRoundExercises from "../../../models/WorkoutRoundExercises/WorkoutRoundExercises";
+import WorkoutBuilderService from "../../../services/WorkoutBuilderService/WorkoutBuilderService";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store/main";
 
 interface IWorkoutRoundExercisesPreviewProps {
   round: IRound;
   roundIndex: number;
-  workoutCreatorService: WorkoutCreatorService;
+  workoutCreatorService: WorkoutBuilderService;
   handleRandomChangeExerciseForRound: (round: number, exerciseNum: number) => void;
   handleChangeExerciseForRound(roundIndex: number, exerciseIndex: number, value: string): void;
 }
 
-export default function WorkoutRoundExercisesPreview({
+export default function HIITWorkoutPreviewRound({
   round,
   roundIndex,
   workoutCreatorService,
@@ -25,16 +26,17 @@ export default function WorkoutRoundExercisesPreview({
   handleChangeExerciseForRound
 }: IWorkoutRoundExercisesPreviewProps
 ) {
-  const { workoutSession } = useContext(SportAppContext);
-  const allExercises: Set<IExercise> = round.exercisesList;
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
+  const allExercises: IExercise[] = round.exercisesList;
   const workoutExercises: WorkoutRoundExercises = new WorkoutRoundExercises(workoutSession?.exercisesLength || 0, round.bodyId);
 
   return (
+
     <Fragment key={round.bodyId}>
       <Grid item xs={12}>
         <Typography variant="body1" color={"primary"}>{workoutCreatorService.getBodyPartLabel(round.bodyId)}</Typography>
       </Grid>
-      {Array.from(allExercises).map((exercise: IExercise, index) => {
+      {allExercises.map((exercise: IExercise, index) => {
         const isCardio = workoutExercises.isExerciseCardio(exercise);
         const allExercisesForThisBP: IExercise[] = workoutExercises.getListOfExerciseForBodyId() || [];
         const allCardioExercises: IExercise[] = workoutExercises.getCardioExercisesList() || [];

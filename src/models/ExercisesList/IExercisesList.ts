@@ -8,4 +8,6 @@ export interface IExercisesList {
   getCardioExercisesList(): IExercise[];
   getExercisesForBodyPart(bodyPartName: TValues<typeof EBodyParts>): IExercise[];
   findExerciseById(exId: string): IExercise | null;
+  getRandomInt(min: number, max: number): number;
+  getExerciseByIndex(index: number): IExercise;
 }

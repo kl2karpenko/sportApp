@@ -1,21 +1,22 @@
 import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
-import React, {ChangeEvent, useContext, useMemo} from "react";
-import { WorkoutSessionFields } from "../../services/WorkoutSessionService/WorkoutSessionFields";
-import {SportAppContext} from "../../SportAppContext";
+import React, { ChangeEvent } from "react";
+import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/main";
 
 interface ITabataWorkoutFormProps {
   updateState: (stateName: WorkoutSessionFields, stateVal: number) => void;
 }
 
 export default function TabataWorkoutForm({ updateState }: ITabataWorkoutFormProps) {
-  const { workoutSession } = useContext(SportAppContext);
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
   // @ts-ignore
   const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = {
     [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0,
-    [WorkoutSessionFields.exercisesLength]: workoutSession?.exercisesLength || 0,
-    [WorkoutSessionFields.exerciseDuration]: workoutSession?.exerciseDuration || 0,
-    [WorkoutSessionFields.restDuration]: workoutSession?.restDuration || 0,
-    [WorkoutSessionFields.betweenRoundsDuration]: workoutSession?.betweenRoundsDuration || 0
+    // [WorkoutSessionFields.exercisesLength]: workoutSession?.exercisesLength || 0,
+    // [WorkoutSessionFields.exerciseDuration]: workoutSession?.exerciseDuration || 0,
+    // [WorkoutSessionFields.restDuration]: workoutSession?.restDuration || 0,
+    // [WorkoutSessionFields.betweenRoundsDuration]: workoutSession?.betweenRoundsDuration || 0
   };
 
   return (
