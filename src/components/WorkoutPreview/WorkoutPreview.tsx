@@ -1,27 +1,22 @@
 import React from "react";
 import {useSelector} from "react-redux";
 
-import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
 import {RootState} from "../../store/main";
 import {WorkoutType} from "../../interfaces/WorkoutType";
 
 import HIITWorkoutPreview from "./HIITWorkoutPreview";
 import TabataWorkoutPreview from "./TabataWorkoutPreview";
 
-interface IWorkoutPreviewProps {
-  workoutBuilderService: WorkoutBuilderService;
-}
-
-export default function WorkoutPreview({ workoutBuilderService }: IWorkoutPreviewProps) {
+export default function WorkoutPreview() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const workoutType = workoutSession.workoutType;
 
   const getPreviewComponent = (workoutType: WorkoutType) => {
     switch (workoutType) {
     case WorkoutType.HIIT:
-      return <HIITWorkoutPreview workoutBuilderService={workoutBuilderService} />;
+      return <HIITWorkoutPreview />;
     case WorkoutType.Tabata:
-      return <TabataWorkoutPreview workoutBuilderService={workoutBuilderService} />;
+      return <TabataWorkoutPreview />;
     default:
       return <span />;
     }

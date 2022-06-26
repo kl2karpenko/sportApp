@@ -9,6 +9,7 @@ import {IExercisesList} from "../models/ExercisesList/IExercisesList";
 import ExercisesList from "../models/ExercisesList/ExercisesList";
 import IRound from "../models/Round/IRound";
 import IExercise from "../models/Exercise/IExercise";
+import WorkoutBuilderServiceFactory from "../services/WorkoutBuilderServiceFactory";
 
 export type IWorkoutSessionState = IWorkoutSession & { workoutType: WorkoutType };
 const initialState: IWorkoutSessionState = {
@@ -36,6 +37,15 @@ export const workoutSessionSlice = createSlice({
     setActiveExerciseIndex: (state: IWorkoutSessionState, action: PayloadAction<number>) => {
       state.activeExerciseIndex = action.payload;
       return state;
+    },
+    generateWorkoutSession: (state: IWorkoutSessionState, action: PayloadAction) => {
+      const workoutBuilderService = WorkoutBuilderServiceFactory(state.workoutType!);
+      const rounds = workoutBuilderService?.generateWorkout(state);
+
+      return {
+        ...state,
+        rounds
+      };
     },
     updateWorkoutSessionValue: (state: IWorkoutSessionState, action: PayloadAction<{ field: WorkoutSessionFields; value: any }>) => {
       return {
@@ -111,7 +121,8 @@ export const {
   changeWorkoutType,
   updateWorkoutRoundByIndex,
   updateWorkoutExerciseInRound,
-  generateRandomWorkoutExerciseInRound
+  generateRandomWorkoutExerciseInRound,
+  generateWorkoutSession
 } = workoutSessionSlice.actions
 
 export default workoutSessionSlice.reducer

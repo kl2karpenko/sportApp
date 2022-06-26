@@ -9,11 +9,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../store/main";
 import ShuffleIcon from "@material-ui/icons/Cached";
 
-interface IWorkoutPreviewProps {
-  workoutBuilderService: WorkoutBuilderService;
-}
-
-export default function HIITWorkoutPreview({ workoutBuilderService }: IWorkoutPreviewProps) {
+export default function HIITWorkoutPreview() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
 
   const handleChangeBodyPartForRound = (roundIndex: number) => {

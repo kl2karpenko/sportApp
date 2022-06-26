@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-import { IDialogProps } from "./interfaces_deprecated/IDialogProps";
+import { IDialogProps } from "./interfaces/IDialogProps";
 
 export interface ISportAppContext {
   dialogProps: IDialogProps;

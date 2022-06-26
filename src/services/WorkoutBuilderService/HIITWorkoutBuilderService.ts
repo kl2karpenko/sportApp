@@ -14,6 +14,7 @@ export default class HIITWorkoutBuilderService extends WorkoutBuilderService {
     const {
       roundsLength
     } = workoutSession;
+    console.log(roundsLength, " roundsLength when generate");
     if (roundsLength === 0) throw new Error();
 
     const bodyPartsIdForEachRound = this.generateBodyParts(roundsLength);

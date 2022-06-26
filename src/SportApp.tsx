@@ -13,7 +13,7 @@ import CreateWorkout from "./components/CreateWorkout";
 import { SportAppContext } from "./SportAppContext";
 import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
-import {IDialogProps} from "./interfaces_deprecated/IDialogProps";
+import {IDialogProps} from "./interfaces/IDialogProps";
 import ModalDialog from "./components/Dialog";
 
 export const defaultWorkoutSession = {

@@ -19,17 +19,22 @@ import {useNavigate} from "react-router-dom";
 import {EBodyParts} from "../../data/bodyPartsForWorkout";
 import {SportAppContext} from "../../SportAppContext";
 import {WorkoutSessionFields} from "../../interfaces/WorkoutSessionFields";
-import {TValues} from "../../interfaces_deprecated/TValues";
+import {TValues} from "../../interfaces/TValues";
 import {WorkoutType, WorkoutTypesList} from "../../interfaces/WorkoutType";
 import IRound from "../../models/Round/IRound";
 import FormComponent from "./FormComponent";
 import WorkoutPreview from "../WorkoutPreview";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store/main";
-import WorkoutBuilderServiceFactory from "../../services/WorkoutBuilderServiceFactory";
 
-import {changeWorkoutType, updateWorkoutRoundByIndex, updateWorkoutSessionValue} from "../../store/workoutSession";
+import {
+  changeWorkoutType,
+  generateWorkoutSession,
+  updateWorkoutRoundByIndex,
+  updateWorkoutSessionValue
+} from "../../store/workoutSession";
 import {RoundFields} from "../../models/Round/RoundFields";
+import {getBodyPartLabel, getBodyPartsLabels, getBodyPartsList} from "../../store/bodyParts";
 
 interface ICreateWorkoutProps {
 
@@ -39,9 +44,14 @@ export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactEl
   const dispatch = useDispatch();
   const { setDialogProps } = useContext(SportAppContext);
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
+  const bodyPartsList = useSelector((state: RootState) => getBodyPartsList(state.bodyParts));
+  const bodyPartsLabels = useSelector((state: RootState) => getBodyPartsLabels(state.bodyParts));
   const workoutType = workoutSession.workoutType;
 
-  const workoutBuilderService = useMemo(() => WorkoutBuilderServiceFactory(workoutType!, workoutSession), [workoutType]);
+  console.log(bodyPartsList, " bodyPartsList");
+  console.log(bodyPartsLabels, " bodyPartsLabels");
+  console.log(workoutSession?.rounds, " workoutSession?.rounds");
+
   const navigate = useNavigate();
   // const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
@@ -69,10 +79,7 @@ export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactEl
                     variant="contained"
                     color="secondary"
                     startIcon={<ShuffleIcon />}
-                    onClick={() => {
-                      const rounds = workoutBuilderService?.generateWorkout(workoutSession);
-                      dispatch(updateWorkoutSessionValue({ field: WorkoutSessionFields.rounds, value: rounds }));
-                    }}
+                    onClick={() => dispatch(generateWorkoutSession(workoutSession))}
                   >
                     Generate a workout!
                   </Button>
@@ -88,7 +95,7 @@ export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactEl
                         content: (
                           <Grid container spacing={2} direction="column">
                             <Grid item xs={12}>
-                              <WorkoutPreview workoutBuilderService={workoutBuilderService} />
+                              <WorkoutPreview />
                             </Grid>
                           </Grid>
                         ),
@@ -139,6 +146,7 @@ export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactEl
               <Grid container spacing={2} direction="column">
                 {workoutSession?.rounds?.map((round: IRound, index: number) => {
                   const { bodyId } = round;
+                  const bodyPartLabel = bodyPartsLabels[bodyId];
                   // const allExercises = workoutSettings.all_exercises_for_generated_list || [];
 
                   return (
@@ -154,10 +162,8 @@ export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactEl
                                 handleChangeBodyPartForTheRound(index, value);
                               }}
                             >
-                              {workoutBuilderService?.getBodyParts().map((bodyPartsNameInside: TValues<typeof EBodyParts>) => (
-                                <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{
-                                  workoutBuilderService?.getBodyPartLabel(bodyPartsNameInside)
-                                }</MenuItem>
+                              {bodyPartsList.map((bodyPartsNameInside: TValues<typeof EBodyParts>) => (
+                                <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{bodyPartsLabels[bodyPartsNameInside]}</MenuItem>
                               ))}
                             </Select>
                           </FormControl>

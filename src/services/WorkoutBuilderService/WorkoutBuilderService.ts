@@ -1,5 +1,5 @@
 import IWorkoutBuilderService from "./IWorkoutBuilderService";
-import { TValues } from "../../interfaces_deprecated/TValues";
+import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { IBodyParts } from "../../models/BodyParts/IBodyParts";
 import BodyParts from "../../models/BodyParts/BodyParts";

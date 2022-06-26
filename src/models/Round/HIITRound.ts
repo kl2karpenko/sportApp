@@ -1,5 +1,5 @@
 import IExercise from "../Exercise/IExercise";
-import {TValues} from "../../interfaces_deprecated/TValues";
+import {TValues} from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import Round from "./Round";
 import IRound from "./IRound";

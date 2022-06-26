@@ -1,4 +1,4 @@
-import { TValues } from "../interfaces_deprecated/TValues";
+import { TValues } from "../interfaces/TValues";
 
 export const EBodyParts = {
   "legsFront": "legsFront",

@@ -1,4 +1,4 @@
-import {TValues} from "../../interfaces_deprecated/TValues";
+import {TValues} from "../../interfaces/TValues";
 import {EBodyParts} from "../../data/bodyPartsForWorkout";
 
 export interface IBodyParts {

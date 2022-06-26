@@ -1,16 +1,21 @@
 import {IWorkoutExercisesGeneratorService} from "./IWorkoutExercisesGeneratorService";
 import IExercise from "../../models/Exercise/IExercise";
-import {TValues} from "../../interfaces_deprecated/TValues";
+import {TValues} from "../../interfaces/TValues";
 import {EBodyParts} from "../../data/bodyPartsForWorkout";
 import {WorkoutAlgorithms} from "./WorkoutAlgorithms";
-import WorkoutRoundExercises from "../../models/WorkoutRoundExercises/WorkoutRoundExercises";
-import {IWorkoutRoundExercises} from "../../models/WorkoutRoundExercises/IWorkoutRoundExercises";
+import {IExercisesList} from "../../models/ExercisesList/IExercisesList";
+import ExercisesList from "../../models/ExercisesList/ExercisesList";
 
 export default class WorkoutExercisesGeneratorService implements IWorkoutExercisesGeneratorService {
-  public workoutRoundExercises: IWorkoutRoundExercises;
+  private listOfExercisesForCurrentBodyPart: IExercise[];
+  private bodyPartName: TValues<typeof EBodyParts>;
+  private exercisesInRoundLength: number;
+  private allExercisesData: IExercisesList = new ExercisesList();
 
   constructor(exercisesLength: number, bodyPartName: TValues<typeof EBodyParts>) {
-    this.workoutRoundExercises = new WorkoutRoundExercises(exercisesLength, bodyPartName);
+    this.exercisesInRoundLength = exercisesLength;
+    this.bodyPartName = bodyPartName;
+    this.listOfExercisesForCurrentBodyPart = this.allExercisesData.getExercisesForBodyPart(bodyPartName);
   }
 
   getExercisesList(algorithm?: WorkoutAlgorithms): IExercise[] {
@@ -25,20 +30,20 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
   }
 
   protected getExercisesListForSimpleAlgorithm(): IExercise[] {
-    const listOfExercises = this.workoutRoundExercises.getListOfExerciseForBodyId();
+    const listOfExercises = this.listOfExercisesForCurrentBodyPart;
     if (listOfExercises.length === 0) return [];
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
-    return [ ...shuffledExercises.slice(0, this.workoutRoundExercises.getNumberOfExercisesInRound())];
+    return [ ...shuffledExercises.slice(0, this.exercisesInRoundLength)];
   }
 
   protected getExercisesListForWithPairAlgorithm(): IExercise[] {
     const exercisesList: IExercise[] = [];
-    const listOfExercises = this.workoutRoundExercises.getListOfExerciseForBodyId();
-    if (this.workoutRoundExercises.getNumberOfExercisesInRound() === 0) return exercisesList;
+    const listOfExercises = this.listOfExercisesForCurrentBodyPart;
+    if (this.exercisesInRoundLength === 0) return exercisesList;
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
-    const newExercisesList = [...shuffledExercises.slice(0, this.workoutRoundExercises.getNumberOfExercisesInRound())];
+    const newExercisesList = [...shuffledExercises.slice(0, this.exercisesInRoundLength)];
     const newExercisesListLen = newExercisesList.length;
 
     for (let i = 0; i < newExercisesListLen; i++) {
@@ -51,13 +56,13 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
       }
     }
 
-    exercisesList.length = this.workoutRoundExercises.getNumberOfExercisesInRound();
+    exercisesList.length = this.exercisesInRoundLength;
 
     return exercisesList;
   }
 
   protected getShuffledList(list: IExercise[]): IExercise[] {
-    return list.sort(() => Math.random() - 0.5);
+    return [...list].sort(() => Math.random() - 0.5);
   }
 
   protected getRandomInt(min: number, max: number) {
@@ -74,7 +79,7 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
 
   protected addCardioExercisesToList(exercisesList: IExercise[], position: number = 2): IExercise[] {
     const arrLen = exercisesList.length;
-    const shuffledCardioList = this.getShuffledList(this.workoutRoundExercises.getCardioExercisesList());
+    const shuffledCardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
     let addingToPosition = 0;
 
     for (let i = 0; i < arrLen + addingToPosition; i = i + position) {

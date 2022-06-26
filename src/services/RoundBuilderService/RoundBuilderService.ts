@@ -1,6 +1,6 @@
 import { IRoundBuilderService } from "./IRoundBuilderService";
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
-import { TValues } from "../../interfaces_deprecated/TValues";
+import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 

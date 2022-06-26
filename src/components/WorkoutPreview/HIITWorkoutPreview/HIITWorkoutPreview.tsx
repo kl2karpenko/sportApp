@@ -4,15 +4,10 @@ import {useDispatch, useSelector} from "react-redux";
 import { Grid } from "@mui/material";
 import IRound from "../../../models/Round/IRound";
 import HIITWorkoutPreviewRound from "./HIITWorkoutPreviewRound";
-import WorkoutBuilderService from "../../../services/WorkoutBuilderService/WorkoutBuilderService";
 import {RootState} from "../../../store/main";
 import {updateWorkoutExerciseInRound, generateRandomWorkoutExerciseInRound} from "../../../store/workoutSession";
 
-interface IWorkoutPreviewProps {
-  workoutBuilderService: WorkoutBuilderService;
-}
-
-export default function HIITWorkoutPreview({ workoutBuilderService }: IWorkoutPreviewProps) {
+export default function HIITWorkoutPreview() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const dispatch = useDispatch();
 
@@ -33,7 +28,6 @@ export default function HIITWorkoutPreview({ workoutBuilderService }: IWorkoutPr
             key={round.bodyId + roundIndex}
             round={round}
             roundIndex={roundIndex}
-            workoutCreatorService={workoutBuilderService}
             handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound}
             handleChangeExerciseForRound={handleChangeExerciseForRound}
           />

@@ -5,15 +5,14 @@ import ShuffleIcon from "@material-ui/icons/Cached";
 import {IBodyPartsForWorkout} from "../../../interfaces_deprecated/IBodyPartsForWorkout";
 import IRound from "../../../models/Round/IRound";
 import IExercise from "../../../models/Exercise/IExercise";
-import WorkoutRoundExercises from "../../../models/WorkoutRoundExercises/WorkoutRoundExercises";
-import WorkoutBuilderService from "../../../services/WorkoutBuilderService/WorkoutBuilderService";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/main";
+import {geExercisesListForBodyPart, getCardioExercisesList} from "../../../store/allExercises";
+import {getBodyPartLabel} from "../../../store/bodyParts";
 
 interface IWorkoutRoundExercisesPreviewProps {
   round: IRound;
   roundIndex: number;
-  workoutCreatorService: WorkoutBuilderService;
   handleRandomChangeExerciseForRound: (round: number, exerciseNum: number) => void;
   handleChangeExerciseForRound(roundIndex: number, exerciseIndex: number, value: string): void;
 }
@@ -21,25 +20,25 @@ interface IWorkoutRoundExercisesPreviewProps {
 export default function HIITWorkoutPreviewRound({
   round,
   roundIndex,
-  workoutCreatorService,
   handleRandomChangeExerciseForRound,
   handleChangeExerciseForRound
 }: IWorkoutRoundExercisesPreviewProps
 ) {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
-  const allExercises: IExercise[] = round.exercisesList;
-  const workoutExercises: WorkoutRoundExercises = new WorkoutRoundExercises(workoutSession?.exercisesLength || 0, round.bodyId);
+  const bodyPartName = round.bodyId;
+  const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state, bodyPartName));
+  const allExercisesForThisBP: IExercise[] = useSelector((state: RootState) => geExercisesListForBodyPart(state, bodyPartName));
+  const allCardioExercises: IExercise[] = useSelector((state: RootState) => getCardioExercisesList(state));
+  console.log(allExercisesForThisBP, " allExercisesForThisBP");
+  console.log(allCardioExercises, " allCardioExercises");
 
   return (
-
     <Fragment key={round.bodyId}>
       <Grid item xs={12}>
-        <Typography variant="body1" color={"primary"}>{workoutCreatorService.getBodyPartLabel(round.bodyId)}</Typography>
+        <Typography variant="body1" color={"primary"}>{bodyPartLabel}</Typography>
       </Grid>
-      {allExercises.map((exercise: IExercise, index) => {
-        const isCardio = workoutExercises.isExerciseCardio(exercise);
-        const allExercisesForThisBP: IExercise[] = workoutExercises.getListOfExerciseForBodyId() || [];
-        const allCardioExercises: IExercise[] = workoutExercises.getCardioExercisesList() || [];
+      {allExercisesForThisBP.map((exercise: IExercise, index) => {
+        const isCardio = false;
         const listToRender = isCardio ? allCardioExercises : allExercisesForThisBP;
 
         return (
