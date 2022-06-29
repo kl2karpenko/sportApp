@@ -1,19 +1,12 @@
-import IWorkoutBuilderService from "./IWorkoutBuilderService";
 import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { IBodyParts } from "../../models/BodyParts/IBodyParts";
 import BodyParts from "../../models/BodyParts/BodyParts";
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import IRound from "../../models/Round/IRound";
-import { WorkoutType } from "../../interfaces/WorkoutType";
 
-export default class WorkoutBuilderService implements IWorkoutBuilderService {
-  public workoutType: WorkoutType;
+export default class WorkoutBuilderService {
   private bodyParts: IBodyParts = new BodyParts();
-
-  constructor(props: { workoutType: WorkoutType }) {
-    this.workoutType = props.workoutType;
-  }
 
   generateWorkout(workoutSession: IWorkoutSession): Partial<IRound>[] {
     return [];

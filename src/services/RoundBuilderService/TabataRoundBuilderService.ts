@@ -4,7 +4,7 @@ import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
-import WorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/WorkoutExercisesGeneratorService";
+import TabataWorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/TabataWorkoutExercisesGeneratorService";
 import { WorkoutAlgorithms } from "../WorkoutExercisesGeneratorService/WorkoutAlgorithms";
 
 export default class TabataRoundBuilderService extends RoundBuilderService {
@@ -25,7 +25,7 @@ export default class TabataRoundBuilderService extends RoundBuilderService {
   }
 
   public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
-    const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(2, bodyPartName);
+    const workoutExercisesGenerator: TabataWorkoutExercisesGeneratorService = new TabataWorkoutExercisesGeneratorService(2, bodyPartName);
 
     const [ ex1, ex2 ] = workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple);
     return [ex1, ex1, ex1, ex1, ex2, ex2, ex2, ex2];

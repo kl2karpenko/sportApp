@@ -7,10 +7,6 @@ import { WorkoutType } from "../../interfaces/WorkoutType";
 export default class HIITWorkoutBuilderService extends WorkoutBuilderService {
   private roundBuilder: HIITRoundBuilderService = new HIITRoundBuilderService();
 
-  constructor(props: { workoutType: WorkoutType }) {
-    super(props);
-  }
-
   generateWorkoutRounds(workoutSession: IWorkoutSession): Partial<IRound>[] {
     const {
       roundsLength

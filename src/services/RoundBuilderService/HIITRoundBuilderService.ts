@@ -4,7 +4,7 @@ import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import { WorkoutAlgorithms } from "../WorkoutExercisesGeneratorService/WorkoutAlgorithms";
-import WorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/WorkoutExercisesGeneratorService";
+import HIITWorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/HIITWorkoutExercisesGeneratorService";
 import IExercise from "../../models/Exercise/IExercise";
 
 export default class HIITRoundBuilderService extends RoundBuilderService {
@@ -28,7 +28,7 @@ export default class HIITRoundBuilderService extends RoundBuilderService {
 
   public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
     const { exercisesLength } = workoutSession;
-    const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
+    const workoutExercisesGenerator: HIITWorkoutExercisesGeneratorService = new HIITWorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
 
     return workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple);
   }

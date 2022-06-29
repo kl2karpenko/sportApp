@@ -1,10 +1,6 @@
 import IRound from "../models/Round/IRound";
+import { IWorkoutSettings } from "./IWorkoutSettings";
 
-export default interface IWorkoutSession {
+export default interface IWorkoutSession extends IWorkoutSettings {
   rounds: IRound[];
-  roundsLength: number;
-  restDuration: number;
-  betweenRoundsDuration: number;
-  exerciseDuration: number;
-  exercisesLength: number;
 }

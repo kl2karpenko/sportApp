@@ -46,8 +46,8 @@ export default class ActiveWorkoutManagerService {
 
   public moveToPreviousStep(activeWorkoutState: IActiveWorkoutState) {
     const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
+    const { roundsLength, exercisesLength } = this.workoutSession;
 
-    // set to rest if it was not resting before
     if (isResting) {
       return {
         ...activeWorkoutState,
@@ -68,6 +68,7 @@ export default class ActiveWorkoutManagerService {
     if (activeRoundIndex !== 0) {
       return {
         ...activeWorkoutState,
+        activeExerciseIndex: exercisesLength - 1,
         activeRoundIndex: activeRoundIndex - 1,
         isResting: true
       }

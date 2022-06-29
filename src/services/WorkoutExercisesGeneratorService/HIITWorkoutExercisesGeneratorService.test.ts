@@ -1,16 +1,16 @@
-import WorkoutExercisesGeneratorService from "./WorkoutExercisesGeneratorService";
+import HIITWorkoutExercisesGeneratorService from "./HIITWorkoutExercisesGeneratorService";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
 
-describe("WorkoutExercisesGeneratorService", () => {
+describe("HIITWorkoutExercisesGeneratorService", () => {
   let len = 6;
   const bodyPart = EBodyParts.abs;
   const allExercisesData: IExercisesList = new ExercisesList();
-  let testWorkoutExercisesGeneratorService: WorkoutExercisesGeneratorService;
+  let testWorkoutExercisesGeneratorService: HIITWorkoutExercisesGeneratorService;
   beforeEach(() => {
-    testWorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(len, bodyPart);
+    testWorkoutExercisesGeneratorService = new HIITWorkoutExercisesGeneratorService(len, bodyPart);
   });
 
   describe("getShuffledList", () => {
@@ -51,7 +51,7 @@ describe("WorkoutExercisesGeneratorService", () => {
     });
 
     test("should return a list of exercises if there is no ability to create a unique list the exercises can be repeated", () => {
-      testWorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(25, EBodyParts.abs);
+      testWorkoutExercisesGeneratorService = new HIITWorkoutExercisesGeneratorService(25, EBodyParts.abs);
       const list = testWorkoutExercisesGeneratorService.getExercisesListForSimpleAlgorithm();
 
       expect(list.length).toBe(25);

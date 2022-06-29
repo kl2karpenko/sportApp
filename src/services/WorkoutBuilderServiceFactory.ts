@@ -8,9 +8,9 @@ import { WorkoutType } from "../interfaces/WorkoutType";
 export default function WorkoutBuilderServiceFactory (workoutType: WorkoutType): WorkoutBuilderService {
   switch(workoutType) {
   case WorkoutType.HIIT:
-    return new HIITWorkoutBuilderService({ workoutType });
+    return new HIITWorkoutBuilderService();
   case WorkoutType.Tabata:
-    return new TabataWorkoutBuilderService({ workoutType });
+    return new TabataWorkoutBuilderService();
   default:
     throw new Error("Not supported workout type");
   }

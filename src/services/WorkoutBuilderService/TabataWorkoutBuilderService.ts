@@ -7,10 +7,6 @@ import { WorkoutType } from "../../interfaces/WorkoutType";
 export default class TabataWorkoutBuilderService extends WorkoutBuilderService {
   public roundBuilder: TabataRoundBuilderService = new TabataRoundBuilderService();
 
-  constructor(props: { workoutType: WorkoutType }) {
-    super(props);
-  }
-
   generateWorkoutRounds(workoutSession: IWorkoutSession): Partial<IRound>[] {
     const {
       roundsLength

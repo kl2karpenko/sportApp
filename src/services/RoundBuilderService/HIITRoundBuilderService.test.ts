@@ -1,7 +1,6 @@
 import { hiitDefaultSettings } from "../../data/workoutsDefaultSettings";
 import HIITRoundBuilderService from "./HIITRoundBuilderService";
 import HIITWorkoutBuilderService from "../WorkoutBuilderService/HIITWorkoutBuilderService";
-import { WorkoutType } from "../../interfaces/WorkoutType";
 
 describe("HIITRoundBuilderService", () => {
   const testHiitWorkoutSession = {
@@ -12,7 +11,7 @@ describe("HIITRoundBuilderService", () => {
     restDuration: hiitDefaultSettings.restDuration,
     betweenRoundsDuration: hiitDefaultSettings.betweenRoundsDuration
   };
-  const testHiitWB = new HIITWorkoutBuilderService({ workoutType: WorkoutType.HIIT });
+  const testHiitWB = new HIITWorkoutBuilderService();
   const testHiitRB = new HIITRoundBuilderService();
 
   describe("generateRound", () => {
