@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Grid } from "@mui/material";
 import IRound from "../../../models/Round/IRound";
 import HIITWorkoutPreviewRound from "./HIITWorkoutPreviewRound";
-import {RootState} from "../../../store/main";
-import {updateWorkoutExerciseInRound, generateRandomWorkoutExerciseInRound} from "../../../store/workoutSession";
+import { RootState } from "../../../store/main";
+import { generateRandomWorkoutExerciseInRound, updateWorkoutExerciseInRound } from "../../../store/workoutSession";
 
 export default function HIITWorkoutPreview() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);

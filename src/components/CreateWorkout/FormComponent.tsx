@@ -1,4 +1,4 @@
-import {WorkoutType} from "../../interfaces/WorkoutType";
+import { WorkoutType } from "../../interfaces/WorkoutType";
 import HIITWorkoutForm from "./HIITWorkoutForm";
 import TabataWorkoutForm from "./TabataWorkoutForm";
 import React from "react";

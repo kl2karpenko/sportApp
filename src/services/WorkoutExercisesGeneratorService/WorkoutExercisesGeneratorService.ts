@@ -1,11 +1,12 @@
-import {IWorkoutExercisesGeneratorService} from "./IWorkoutExercisesGeneratorService";
+import { IWorkoutExercisesGeneratorService } from "./IWorkoutExercisesGeneratorService";
 import IExercise from "../../models/Exercise/IExercise";
-import {TValues} from "../../interfaces/TValues";
-import {EBodyParts} from "../../data/bodyPartsForWorkout";
-import {WorkoutAlgorithms} from "./WorkoutAlgorithms";
-import {IExercisesList} from "../../models/ExercisesList/IExercisesList";
+import { TValues } from "../../interfaces/TValues";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
+import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
+import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
 
+// TODO: split this and rename for HIITWorkoutExercisesGeneratorService as for Tabata this should be different!!!
 export default class WorkoutExercisesGeneratorService implements IWorkoutExercisesGeneratorService {
   private listOfExercisesForCurrentBodyPart: IExercise[];
   private bodyPartName: TValues<typeof EBodyParts>;
@@ -18,27 +19,39 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
     this.listOfExercisesForCurrentBodyPart = this.allExercisesData.getExercisesForBodyPart(bodyPartName);
   }
 
-  getExercisesList(algorithm?: WorkoutAlgorithms): IExercise[] {
+  public getExercisesList(algorithm?: WorkoutAlgorithms, includeCardio: boolean = true): IExercise[] {
     switch (algorithm) {
     case WorkoutAlgorithms.simple:
-      return this.getExercisesListForSimpleAlgorithm();
+      return this.getExercisesListForSimpleAlgorithm(includeCardio);
     case WorkoutAlgorithms.withPair:
-      return this.getExercisesListForWithPairAlgorithm();
+      return this.getExercisesListForWithPairAlgorithm(includeCardio);
     default:
       return [];
     }
   }
 
-  protected getExercisesListForSimpleAlgorithm(): IExercise[] {
+  public getListOfExercisesForCurrentBodyPart() {
+    return this.listOfExercisesForCurrentBodyPart;
+  }
+
+  protected getExercisesListForSimpleAlgorithm(includeCardio: boolean = true): IExercise[] {
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
     if (listOfExercises.length === 0) return [];
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
-    return [ ...shuffledExercises.slice(0, this.exercisesInRoundLength)];
+    let allExercises = [ ...shuffledExercises ];
+    
+    if (includeCardio) {
+      allExercises = this.addCardioExercisesToList(allExercises, 2);
+    }
+
+    allExercises.length = this.exercisesInRoundLength;
+
+    return allExercises;
   }
 
-  protected getExercisesListForWithPairAlgorithm(): IExercise[] {
-    const exercisesList: IExercise[] = [];
+  protected getExercisesListForWithPairAlgorithm(includeCardio: boolean = true): IExercise[] {
+    let exercisesList: IExercise[] = [];
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
     if (this.exercisesInRoundLength === 0) return exercisesList;
 
@@ -54,6 +67,10 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
       if (pairExerciseId) {
         exercisesList.push(shuffledExercises[this.getExerciseIndexInList(shuffledExercises, pairExerciseId)]);
       }
+    }
+
+    if (includeCardio) {
+      exercisesList = this.addCardioExercisesToList(exercisesList, 2);
     }
 
     exercisesList.length = this.exercisesInRoundLength;
@@ -77,12 +94,12 @@ export default class WorkoutExercisesGeneratorService implements IWorkoutExercis
     });
   }
 
-  protected addCardioExercisesToList(exercisesList: IExercise[], position: number = 2): IExercise[] {
+  protected addCardioExercisesToList(exercisesList: IExercise[], step: number = 2): IExercise[] {
     const arrLen = exercisesList.length;
     const shuffledCardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
     let addingToPosition = 0;
 
-    for (let i = 0; i < arrLen + addingToPosition; i = i + position) {
+    for (let i = 0; i < arrLen + addingToPosition; i = i + step) {
       addingToPosition++;
       exercisesList.splice(i, 0, shuffledCardioList[i]);
     }

@@ -1,5 +1,5 @@
 import { TValues } from "../../interfaces/TValues";
-import bodyPartsForWorkout, {EBodyParts} from "../../data/bodyPartsForWorkout";
+import bodyPartsForWorkout, { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { IBodyParts } from "./IBodyParts";
 
 export default class BodyParts implements IBodyParts {

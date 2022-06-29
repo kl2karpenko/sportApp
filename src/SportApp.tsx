@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import {ThemeProvider} from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 
-import {BrowserRouter as Router} from "react-router-dom";
-import {Route, Routes} from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes } from "react-router";
 
 
 import { store } from "./store/main"
@@ -13,7 +13,7 @@ import CreateWorkout from "./components/CreateWorkout";
 import { SportAppContext } from "./SportAppContext";
 import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
-import {IDialogProps} from "./interfaces/IDialogProps";
+import { IDialogProps } from "./interfaces/IDialogProps";
 import ModalDialog from "./components/Dialog";
 
 export const defaultWorkoutSession = {

@@ -1,8 +1,8 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
-import {RootState} from "../../store/main";
-import {WorkoutType} from "../../interfaces/WorkoutType";
+import { RootState } from "../../store/main";
+import { WorkoutType } from "../../interfaces/WorkoutType";
 
 import HIITWorkoutPreview from "./HIITWorkoutPreview";
 import TabataWorkoutPreview from "./TabataWorkoutPreview";

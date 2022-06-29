@@ -1,15 +1,15 @@
 import {
-  generateListOfBodyPartsForAllRounds,
+  checkIfWorkoutFinished,
+  createRandomExercisesForAllRounds,
   createRandomExercisesForRound,
-  ifExerciseAlreadyIncluded,
-  setupExerciseWithPairIfNeeded,
-  checkIfWorkoutFinished, setNextStep, toNextExercise, toPreviousExercise, isRestTime, createRandomExercisesForAllRounds
+  generateListOfBodyPartsForAllRounds,
+  ifExerciseAlreadyIncluded, isRestTime, setNextStep, setupExerciseWithPairIfNeeded, toNextExercise, toPreviousExercise
 } from "./workoutHelpers";
 import workoutsDefaultSettings from "../data/workoutsDefaultSettings";
 import workoutTypesList from "../data/workoutTypesList";
-import {IBodyPartsForWorkout} from "../interfaces_deprecated/IBodyPartsForWorkout";
-import {defaultWorkoutSession} from "../SportApp";
-import {IWorkoutGeneratedExercisesList} from "../interfaces_deprecated/IWorkoutDeprecatedObj";
+import { IBodyPartsForWorkout } from "../interfaces_deprecated/IBodyPartsForWorkout";
+import { defaultWorkoutSession } from "../SportApp";
+import { IWorkoutGeneratedExercisesList } from "../interfaces_deprecated/IWorkoutDeprecatedObj";
 
 describe("workoutHelpers", () => {
   describe("ifListIncludeExercise", () => {

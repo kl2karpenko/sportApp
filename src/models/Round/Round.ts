@@ -1,6 +1,6 @@
 import IRound from "./IRound";
 import IExercise from "../Exercise/IExercise";
-import {TValues} from "../../interfaces/TValues";
+import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 
 export default class Round implements IRound {

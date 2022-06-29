@@ -2,19 +2,19 @@ import WorkoutBuilderService from "./WorkoutBuilderService";
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import HIITRoundBuilderService from "../RoundBuilderService/HIITRoundBuilderService";
 import IRound from "../../models/Round/IRound";
+import { WorkoutType } from "../../interfaces/WorkoutType";
 
 export default class HIITWorkoutBuilderService extends WorkoutBuilderService {
   private roundBuilder: HIITRoundBuilderService = new HIITRoundBuilderService();
 
-  constructor() {
-    super();
+  constructor(props: { workoutType: WorkoutType }) {
+    super(props);
   }
 
   generateWorkoutRounds(workoutSession: IWorkoutSession): Partial<IRound>[] {
     const {
       roundsLength
     } = workoutSession;
-    console.log(roundsLength, " roundsLength when generate");
     if (roundsLength === 0) throw new Error();
 
     const bodyPartsIdForEachRound = this.generateBodyParts(roundsLength);

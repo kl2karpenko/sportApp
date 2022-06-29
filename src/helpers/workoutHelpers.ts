@@ -1,5 +1,5 @@
 import { IWorkoutSession } from "../interfaces_deprecated/IWorkoutSession";
-import {IWorkoutGeneratedExercisesList, IWorkoutDeprecatedObj} from "../interfaces_deprecated/IWorkoutDeprecatedObj";
+import { IWorkoutDeprecatedObj, IWorkoutGeneratedExercisesList } from "../interfaces_deprecated/IWorkoutDeprecatedObj";
 import bodyPartsForWorkout from "../data/bodyPartsForWorkout";
 import workoutTypesList from "../data/workoutTypesList";
 import { exercises as cardioExercises } from "../data/workoutTypesList/cardio";

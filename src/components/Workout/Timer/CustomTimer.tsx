@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
-import { Box, Grid, Card, CardContent, Typography, IconButton, Theme } from "@mui/material";
+import { Box, Card, CardContent, Grid, IconButton, Theme, Typography } from "@mui/material";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@material-ui/icons";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
@@ -11,7 +11,7 @@ const beepEndSound = require("../../../sounds/mixkit-repeating-arcade-beep-1084.
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
-  setNextStepInWorkout: () => Date;
+  // setNextStepInWorkout: () => Date;
   moveToNext: () => Date;
   moveToPrevious: () => Date;
   isResting: boolean;
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
+export default function MyTimer({ expiryTimestamp, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
   const {
     minutes,
     seconds,
@@ -34,10 +34,10 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResti
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
-      setTimeout(() => restart(setNextStepInWorkout()), 0);
+      // setTimeout(() => restart(setNextStepInWorkout()), 0);
     }
   });
-  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.15 });
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.05 });
   const classes = useStyles();
   const totalTimerTime = minutes*60 + seconds;
 

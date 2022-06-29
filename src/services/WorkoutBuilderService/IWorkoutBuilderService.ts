@@ -1,5 +1,5 @@
-import {TValues} from "../../interfaces/TValues";
-import {EBodyParts} from "../../data/bodyPartsForWorkout";
+import { TValues } from "../../interfaces/TValues";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import IRound from "../../models/Round/IRound";
 

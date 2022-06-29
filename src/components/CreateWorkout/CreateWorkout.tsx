@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useContext, useMemo} from "react";
+import React, { ChangeEvent, useContext, useMemo } from "react";
 
 import {
   Box,
@@ -14,18 +14,18 @@ import {
 } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
 
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import {EBodyParts} from "../../data/bodyPartsForWorkout";
-import {SportAppContext} from "../../SportAppContext";
-import {WorkoutSessionFields} from "../../interfaces/WorkoutSessionFields";
-import {TValues} from "../../interfaces/TValues";
-import {WorkoutType, WorkoutTypesList} from "../../interfaces/WorkoutType";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
+import { SportAppContext } from "../../SportAppContext";
+import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
+import { TValues } from "../../interfaces/TValues";
+import { WorkoutType, WorkoutTypesList } from "../../interfaces/WorkoutType";
 import IRound from "../../models/Round/IRound";
 import FormComponent from "./FormComponent";
 import WorkoutPreview from "../WorkoutPreview";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../store/main";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/main";
 
 import {
   changeWorkoutType,
@@ -33,34 +33,23 @@ import {
   updateWorkoutRoundByIndex,
   updateWorkoutSessionValue
 } from "../../store/workoutSession";
-import {RoundFields} from "../../models/Round/RoundFields";
-import {getBodyPartLabel, getBodyPartsLabels, getBodyPartsList} from "../../store/bodyParts";
+import { RoundFields } from "../../models/Round/RoundFields";
+import { getBodyPartsLabels, getBodyPartsList } from "../../store/bodyParts";
 
-interface ICreateWorkoutProps {
-
-}
-
-export default function CreateWorkout(props: ICreateWorkoutProps): React.ReactElement {
+export default function CreateWorkout(): React.ReactElement {
   const dispatch = useDispatch();
   const { setDialogProps } = useContext(SportAppContext);
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const bodyPartsList = useSelector((state: RootState) => getBodyPartsList(state.bodyParts));
   const bodyPartsLabels = useSelector((state: RootState) => getBodyPartsLabels(state.bodyParts));
   const workoutType = workoutSession.workoutType;
-
-  console.log(bodyPartsList, " bodyPartsList");
-  console.log(bodyPartsLabels, " bodyPartsLabels");
-  console.log(workoutSession?.rounds, " workoutSession?.rounds");
-
   const navigate = useNavigate();
   // const [url, setUrl] = useState<string>("");
-  const updateState = (stateName: WorkoutSessionFields, stateVal: number): void => {
+  const updateState = (stateName: WorkoutSessionFields, stateVal: number) =>
     dispatch(updateWorkoutSessionValue({ field: stateName, value: stateVal }));
-  };
 
-  const handleChangeBodyPartForTheRound = (roundIndex: number, fieldValue: TValues<typeof EBodyParts>) => {
+  const handleChangeBodyPartForTheRound = (roundIndex: number, fieldValue: TValues<typeof EBodyParts>) =>
     dispatch(updateWorkoutRoundByIndex({ roundIndex, fieldName: RoundFields.bodyId, fieldValue }));
-  };
 
   return (
     <Box p={10}>

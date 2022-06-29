@@ -9,9 +9,7 @@ describe("HIITRoundBuilderService", () => {
     exercisesLength: workoutsDefaultSettings.exercises,
     roundsLength: workoutsDefaultSettings.rounds,
     restDuration: workoutsDefaultSettings.rest_duration,
-    betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds,
-    activeExerciseIndex: 0,
-    activeRoundIndex: 0
+    betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
   };
   const testHiitWB = new HIITWorkoutBuilderService();
   const testHiitRB = new HIITRoundBuilderService();

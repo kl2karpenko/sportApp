@@ -5,29 +5,41 @@ import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
 import WorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/WorkoutExercisesGeneratorService";
-import {WorkoutAlgorithms} from "../WorkoutExercisesGeneratorService/WorkoutAlgorithms";
-import TabataRound from "../../models/Round/TabataRound";
+import { WorkoutAlgorithms } from "../WorkoutExercisesGeneratorService/WorkoutAlgorithms";
 
 export default class TabataRoundBuilderService extends RoundBuilderService {
-  public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): IRound[] { return []; }
+  public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): Partial<IRound>[] {
+    const {
+      roundsLength
+    } = workoutSession;
+    if (roundsLength <= 0) {
+      throw new Error();
+    }
 
-  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
-    const { exercisesLength } = workoutSession;
-    const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
+    const allRounds: Partial<IRound>[] = [];
+    for (let i = 0; i < roundsLength; i++) {
+      allRounds.push(this.generateRound(workoutSession, bodyPartsIdForEachRound[i]));
+    }
 
-    return workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple)
+    return allRounds;
   }
 
-  public generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IRound {
-    const { exercisesLength, restDuration, exerciseDuration } = workoutSession;
-    const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
+  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
+    const workoutExercisesGenerator: WorkoutExercisesGeneratorService = new WorkoutExercisesGeneratorService(2, bodyPartName);
 
-    return new TabataRound({
+    const [ ex1, ex2 ] = workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple);
+    return [ex1, ex1, ex1, ex1, ex2, ex2, ex2, ex2];
+  }
+
+  public generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): Partial<IRound> {
+    const { restDuration, exerciseDuration } = workoutSession;
+
+    return {
       bodyId: bodyPartName,
       restDuration,
       workDuration: exerciseDuration,
-      exerciseRepeatTimes: 8,
-      exercisesList: this.generateRoundExercises(workoutSession, bodyPartName)
-    });
+      exercisesList: this.generateRoundExercises(workoutSession, bodyPartName),
+      isActive: false
+    };
   }
 }

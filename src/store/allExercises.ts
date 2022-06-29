@@ -1,8 +1,8 @@
-import {createSelector, createSlice} from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { flatten } from "lodash-es";
 
 import IExercise from "../models/Exercise/IExercise";
-import {TValues} from "../interfaces/TValues";
+import { TValues } from "../interfaces/TValues";
 import { EBodyParts } from "../data/bodyPartsForWorkout";
 import workoutTypes from "../data/workoutTypesList";
 import { IBodyPartsStateState } from "./bodyParts";
@@ -19,6 +19,7 @@ const initialState: IAllExercisesState = {
   cardioExercisesList: workoutTypes.cardio
 }
 
+// REDUCER =======
 export const allExercisesSlice = createSlice({
   name: "allExercises",
   initialState,
@@ -30,6 +31,7 @@ export const allExercisesSlice = createSlice({
   },
 });
 
+// SELECTORS =======
 export const geExercisesList = (state: IAllExercisesState) => state.exercisesList;
 export const geExercisesListForBodyPart = createSelector([
   geExercisesList,

@@ -1,6 +1,6 @@
-import {createSelector, createSlice} from "@reduxjs/toolkit";
-import {TValues} from "../interfaces/TValues";
-import bodyPartsForWorkout, {EBodyParts} from "../data/bodyPartsForWorkout";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { TValues } from "../interfaces/TValues";
+import bodyPartsForWorkout, { EBodyParts } from "../data/bodyPartsForWorkout";
 
 export type IBodyPartsStateState = {
   list: TValues<typeof EBodyParts>[],
@@ -12,6 +12,7 @@ const initialState: IBodyPartsStateState = {
   labels: bodyPartsForWorkout
 };
 
+// REDUCER =======
 export const bodyPartsSlice = createSlice({
   name: "bodyParts",
   initialState,
@@ -23,6 +24,7 @@ export const bodyPartsSlice = createSlice({
   },
 });
 
+// SELECTORS =======
 export const getBodyPartsList = (state: IBodyPartsStateState) => state.list;
 export const getBodyPartsLabels = (state: IBodyPartsStateState) => state.labels;
 export const getBodyPartLabel = createSelector([
