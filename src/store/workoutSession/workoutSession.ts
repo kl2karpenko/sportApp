@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
-import workoutsDefaultSettings, { hiitDefaultSettings, tabataDefaultSettings } from "../../data/workoutsDefaultSettings";
+import { hiitDefaultSettings, tabataDefaultSettings } from "../../data/workoutsDefaultSettings";
 import { WorkoutType } from "../../interfaces/WorkoutType";
 import { RoundFields } from "../../models/Round/RoundFields";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
@@ -18,15 +18,15 @@ import {
 } from "./hiitWorkoutSession";
 import { updateWorkoutSessionValueForTabataAction } from "./tabataWorkoutSession";
 
-export type IWorkoutSessionState = IWorkoutSession & { workoutType: WorkoutType };
+export type IWorkoutSessionState = IWorkoutSession & {
+  workoutType: WorkoutType; includeCardio: boolean;
+}
+;
 export const initialState: IWorkoutSessionState = {
+  includeCardio: false,
   workoutType: WorkoutType.HIIT,
   rounds: [],
-  exerciseDuration: workoutsDefaultSettings.exercise_duration,
-  exercisesLength: workoutsDefaultSettings.exercises,
-  roundsLength: workoutsDefaultSettings.rounds,
-  restDuration: workoutsDefaultSettings.rest_duration,
-  betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
+  ...hiitDefaultSettings
 }
 
 export const allExercisesData: IExercisesList = new ExercisesList();

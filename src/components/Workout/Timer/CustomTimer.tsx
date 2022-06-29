@@ -34,7 +34,7 @@ export default function MyTimer({ expiryTimestamp, isResting, moveToNext, moveTo
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
-      // setTimeout(() => restart(setNextStepInWorkout()), 0);
+      setTimeout(() => restart(moveToNext()), 0);
     }
   });
   const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.05 });

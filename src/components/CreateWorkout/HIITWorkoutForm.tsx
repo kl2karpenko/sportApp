@@ -1,11 +1,11 @@
-import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
+import { FormControl, FormLabel, Grid, TextField, FormControlLabel, Checkbox } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/main";
 
 interface IHIITWorkoutFormProps {
-  updateState: (stateName: WorkoutSessionFields, stateVal: number) => void;
+  updateState: (stateName: WorkoutSessionFields, stateVal: any) => void;
 }
 
 export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) {
@@ -21,6 +21,17 @@ export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) 
 
   return (
     <>
+      <Grid item xs={12}>
+        <FormControl fullWidth>
+          <FormControlLabel control={<Checkbox
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              console.log(e.target.value === "on", " e.target.value");
+              updateState(WorkoutSessionFields.includeCardio, !workoutSession.includeCardio)
+            }}
+            checked={workoutSession.includeCardio}
+          />} label="Include cardio" id={"includeCardio"} />
+        </FormControl>
+      </Grid>
       {Object.keys(WorkoutSessionFieldsPairs).map((field: WorkoutSessionFields) => (
         <Grid item xs={12} key={field}>
           <FormControl fullWidth>

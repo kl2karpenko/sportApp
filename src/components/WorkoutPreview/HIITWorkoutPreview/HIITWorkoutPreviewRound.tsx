@@ -2,7 +2,6 @@ import React, { ChangeEvent, Fragment } from "react";
 
 import { Box, Button, FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Cached";
-import { IBodyPartsForWorkout } from "../../../interfaces_deprecated/IBodyPartsForWorkout";
 import IRound from "../../../models/Round/IRound";
 import IExercise from "../../../models/Exercise/IExercise";
 import { useSelector } from "react-redux";
@@ -57,7 +56,7 @@ export default function HIITWorkoutPreviewRound({
                       handleChangeExerciseForRound(roundIndex, index, value)
                     }}
                   >
-                    {listToRender.map((bodyPartWorkout: IBodyPartsForWorkout) => (
+                    {listToRender.map((bodyPartWorkout: IExercise) => (
                       <MenuItem
                         key={bodyPartWorkout.id}
                         disabled={exercisesInThisRoundIds.includes(bodyPartWorkout.id)}

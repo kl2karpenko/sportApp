@@ -1,40 +1,26 @@
 import HIITWorkoutBuilderService from "./HIITWorkoutBuilderService";
-import workoutsDefaultSettings from "../../data/workoutsDefaultSettings";
+import { hiitDefaultSettings } from "../../data/workoutsDefaultSettings";
+import { WorkoutType } from "../../interfaces/WorkoutType";
 
 describe("HIITWorkoutBuilderService", () => {
-  it("new instance should have a generator and session instance inside of it", () => {
-    const instHIITWorkoutService = new HIITWorkoutBuilderService({
-      exerciseDuration: workoutsDefaultSettings.exercise_duration,
-      exercisesLength: workoutsDefaultSettings.exercises,
-      roundsLength: workoutsDefaultSettings.rounds,
-      restDuration: workoutsDefaultSettings.rest_duration,
-      betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
-    });
-
-    expect(instHIITWorkoutService.workoutSession).toBeDefined();
-  });
-
   it("should be able to generate a workout and strre values in workoutSession", () => {
     const instHIITWorkoutService = new HIITWorkoutBuilderService({
-      exerciseDuration: workoutsDefaultSettings.exercise_duration,
-      exercisesLength: workoutsDefaultSettings.exercises,
-      roundsLength: workoutsDefaultSettings.rounds,
-      restDuration: workoutsDefaultSettings.rest_duration,
-      betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
+      ...hiitDefaultSettings,
+      workoutType: WorkoutType.HIIT
     });
 
-    instHIITWorkoutService.generateWorkout();
+    const generatedRounds = instHIITWorkoutService.generateWorkout({
+      ...hiitDefaultSettings,
+      rounds: []
+    });
 
-    expect(instHIITWorkoutService.workoutSession.rounds.length).toBe(workoutsDefaultSettings.rounds);
+    expect(generatedRounds.length).toBe(hiitDefaultSettings.roundsLength);
   });
 
   describe("generateBodyParts", () => {
     const instHIITWorkoutService = new HIITWorkoutBuilderService({
-      exerciseDuration: workoutsDefaultSettings.exercise_duration,
-      exercisesLength: workoutsDefaultSettings.exercises,
-      roundsLength: workoutsDefaultSettings.rounds,
-      restDuration: workoutsDefaultSettings.rest_duration,
-      betweenRoundsDuration: workoutsDefaultSettings.rest_between_rounds
+      ...hiitDefaultSettings,
+      workoutType: WorkoutType.HIIT
     });
 
     test("should return empty list when there is zero rounds", () => {

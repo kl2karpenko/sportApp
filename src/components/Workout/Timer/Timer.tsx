@@ -8,7 +8,6 @@ import { updateWorkoutState } from "../../../store/activeWorkout";
 
 export default function Timer({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
   const dispatch = useDispatch();
-  // const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const expiryTimestamp = activeWorkoutManager.getDateForTimer(activeWorkout);
 
@@ -17,7 +16,7 @@ export default function Timer({ activeWorkoutManager }: { activeWorkoutManager: 
       key="customTimer"
       // setNextStepInWorkout={() => activeWorkoutManager.moveToNextStep(activeWorkout)}
       expiryTimestamp={expiryTimestamp}
-      isResting={false}
+      isResting={activeWorkout.isResting}
       moveToNext={() => {
         // updated state
         const newActiveWorkoutState = activeWorkoutManager.moveToNextStep(activeWorkout);

@@ -22,10 +22,10 @@ export default class ActiveWorkoutManagerService {
       }
     }
 
-    const isRoundNotOver = activeExerciseIndex < (exercisesLength - 1);
+    const isRoundOver = activeExerciseIndex === exercisesLength - 1;
 
     // set next exercise if we were resting before
-    if (isRoundNotOver) {
+    if (!isRoundOver) {
       return {
         ...activeWorkoutState,
         activeExerciseIndex: activeExerciseIndex + 1,
@@ -46,7 +46,6 @@ export default class ActiveWorkoutManagerService {
 
   public moveToPreviousStep(activeWorkoutState: IActiveWorkoutState) {
     const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
-    const { roundsLength, exercisesLength } = this.workoutSession;
 
     // set to rest if it was not resting before
     if (isResting) {
@@ -61,7 +60,7 @@ export default class ActiveWorkoutManagerService {
       return {
         ...activeWorkoutState,
         activeExerciseIndex: activeExerciseIndex - 1,
-        isResting: false
+        isResting: true
       };
     }
 
@@ -78,7 +77,7 @@ export default class ActiveWorkoutManagerService {
   }
 
   public getIntervalForTimer(activeWorkoutState: IActiveWorkoutState) {
-    const { roundsLength, exercisesLength, exerciseDuration, betweenRoundsDuration, restDuration } = this.workoutSession;
+    const { exerciseDuration, betweenRoundsDuration, restDuration } = this.workoutSession;
 
     if (this.isRestBetweenExercises(activeWorkoutState)) {
       return restDuration;
@@ -100,19 +99,15 @@ export default class ActiveWorkoutManagerService {
 
   public isRestBetweenExercises = (activeWorkoutState: IActiveWorkoutState): boolean => {
     const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
-    const { roundsLength, exercisesLength } = this.workoutSession;
+    const { exercisesLength } = this.workoutSession;
 
-    return isResting && activeExerciseIndex < (exercisesLength - 1) && activeRoundIndex < (roundsLength - 1);
+    return isResting && activeExerciseIndex !== exercisesLength - 1;
   }
 
   public isRestBetweenRounds = (activeWorkoutState: IActiveWorkoutState): boolean => {
     const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
     const { roundsLength, exercisesLength } = this.workoutSession;
 
-    return isResting && activeExerciseIndex === (exercisesLength - 1) && activeRoundIndex < roundsLength;
+    return isResting && activeExerciseIndex === exercisesLength - 1 && activeRoundIndex !== roundsLength - 1;
   }
-
-  // private isTimeToMoveToRest = (activeWorkoutState: IActiveWorkoutState): boolean => {
-  //   return activeWorkoutState.isResting;
-  // }
 }

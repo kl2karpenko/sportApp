@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { default as workoutSessionSliceReducer } from "./workoutSession";
-import { bodyPartsSlice } from "./bodyParts";
-import { allExercisesSlice } from "./allExercises";
-import { activeWorkoutSlice } from "./activeWorkout";
+import { default as bodyPartsSliceReducer } from "./bodyParts";
+import { default as allExercisesSliceReducer } from "./allExercises";
+import { default as activeWorkoutSliceReducer } from "./activeWorkout";
 
 export const store = configureStore({
   reducer: {
     workoutSession: workoutSessionSliceReducer,
-    bodyParts: bodyPartsSlice.reducer,
-    allExercises: allExercisesSlice.reducer,
-    activeWorkout: activeWorkoutSlice.reducer,
+    bodyParts: bodyPartsSliceReducer,
+    allExercises: allExercisesSliceReducer,
+    activeWorkout: activeWorkoutSliceReducer,
   },
 });
 

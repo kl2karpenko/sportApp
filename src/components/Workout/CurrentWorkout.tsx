@@ -1,20 +1,16 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 
 import Timer from "./Timer";
-import { SportAppContext } from "../../SportAppContext";
-import ExerciseDetail from "./ExerciseDetail";
 import ExercisesStepper from "./ExercisesStepper";
 import RoundsStepper from "./RoundsStepper";
 import { useStyles } from "./styles";
-import { IWorkoutGeneratedExercisesList } from "../../interfaces_deprecated/IWorkoutDeprecatedObj";
-import bodyPartsForWorkout from "../../data/bodyPartsForWorkout";
-import { IBodyPartsForWorkout } from "../../interfaces_deprecated/IBodyPartsForWorkout";
 import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/main";
 import ActiveWorkoutManagerService from "../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
+import ExerciseDetail from "./ExerciseDetail";
 
 interface ICurrentWorkoutProps {
   workoutBuilderService: WorkoutBuilderService;
@@ -42,23 +38,24 @@ export default function CurrentWorkout({ workoutBuilderService }: ICurrentWorkou
   }, []);
 
   const {
-    rounds,
-    exercisesLength,
-    roundsLength
+    rounds
   } = workoutSession;
 
   const activeWorkoutManager = useMemo(() => new ActiveWorkoutManagerService({
     workoutSession
   }), [workoutSession]);
   const {
-    activeExerciseIndex: currentExercise,
+    activeExerciseIndex,
     activeRoundIndex
   } = activeWorkout;
   const isResting = false;
 
-  // const nextExercise = currentExercise + 1 > exercisesLength ? 1 : currentExercise + 1;
-  // const nextRound = currentExercise + 1 > roundsLength ? activeRoundIndex + 1 : activeRoundIndex;
-  const currentRound = rounds[activeRoundIndex];
+  const currentRound = rounds[activeRoundIndex] || {};
+  const nextRound = rounds[activeRoundIndex + 1] || {};
+  const activeExercisesList = currentRound.exercisesList || [];
+  const nextRoundExercisesList = nextRound.exercisesList || [];
+  const activeExercise = activeExercisesList[activeExerciseIndex] || {};
+  const nextExercise = activeExercisesList[activeExerciseIndex + 1] || nextRoundExercisesList[0] || {};
 
   return (
     <Box p={2} minHeight="100%">
@@ -67,7 +64,7 @@ export default function CurrentWorkout({ workoutBuilderService }: ICurrentWorkou
           <Grid item xs={12} alignContent={"center"}>
             <Grid container>
               <Grid item>
-                <Typography align="center" variant="h5">Workout in Progress:</Typography>
+                <Typography align="center" variant="h5">Workout in Progress:&nbsp;</Typography>
               </Grid>
               <Grid item>
                 <Typography align="center" variant="h5">{currentRound.bodyId}</Typography>
@@ -81,29 +78,29 @@ export default function CurrentWorkout({ workoutBuilderService }: ICurrentWorkou
                   <RoundsStepper />
                 </Grid>
                 <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper isResting={isResting} workoutCreatorService={workoutBuilderService} workoutSession={workoutSession} currentExercise={currentExercise} />
+                  <ExercisesStepper isResting={isResting} workoutCreatorService={workoutBuilderService} workoutSession={workoutSession} currentExercise={activeExerciseIndex} />
                 </Grid>
                 <Grid item xs={10}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Grid container spacing={3} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
                         <Grid item xs={4}>
+                          <ExerciseDetail
+                            video={activeExercise.video}
+                            exerciseName={activeExercise.label}
+                            description={"Current exercise is:"}
+                          />
+                        </Grid>
+                        <Grid item xs={4}>
                           <Timer activeWorkoutManager={activeWorkoutManager} />
                         </Grid>
-                        {/*<Grid item xs={4}>*/}
-                        {/*  <ExerciseDetail*/}
-                        {/*    video={getCurrentExerciseVideo({ activeRoundIndex, currentExercise, all_exercises_for_generated_list })}*/}
-                        {/*    exerciseName={getCurrentExerciseLabel({ activeRoundIndex, currentExercise, all_exercises_for_generated_list })}*/}
-                        {/*    description={"Current exercise is:"}*/}
-                        {/*  />*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={4}>*/}
-                        {/*  <ExerciseDetail*/}
-                        {/*    video={getCurrentExerciseVideo({ activeRoundIndex, currentExercise: currentExercise + 1, all_exercises_for_generated_list })}*/}
-                        {/*    exerciseName={getCurrentExerciseLabel({ activeRoundIndex: nextRound, currentExercise: nextExercise, all_exercises_for_generated_list })}*/}
-                        {/*    description={"Next exercise is:"}*/}
-                        {/*  />*/}
-                        {/*</Grid>*/}
+                        <Grid item xs={4}>
+                          <ExerciseDetail
+                            video={nextExercise.video}
+                            exerciseName={nextExercise.label}
+                            description={"Next exercise is:"}
+                          />
+                        </Grid>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>

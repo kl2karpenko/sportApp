@@ -1,27 +1,27 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
-import React, { useContext } from "react";
+import React from "react";
 
-import { IWorkoutDeprecatedObj } from "../../../interfaces_deprecated/IWorkoutDeprecatedObj";
-import bodyPartsForWorkout from "../../../data/bodyPartsForWorkout";
-import { SportAppContext } from "../../../SportAppContext";
-import WorkoutBuilderService from "../../../services/WorkoutBuilderService/WorkoutBuilderService";
 import IRound from "../../../models/Round/IRound";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
+import { getBodyPartLabel } from "../../../store/bodyParts";
 
 export default function RoundsStepper() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
-  const { rounds: allRounds, activeRoundIndex } = workoutSession;
+  const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
+  const bodyParts = useSelector((state: RootState) => state.bodyParts);
+  const { rounds: allRounds } = workoutSession;
+  const { activeRoundIndex } = activeWorkout;
 
   return (
-    <Stepper activeStep={activeRoundIndex - 1}>
-      {[...allRounds].map((round: IRound, index: number) => {
+    <Stepper activeStep={activeRoundIndex}>
+      {[...allRounds].map((round: IRound, roundIndex: number) => {
         const currentRoundBodyPart = round.bodyId;
-        const currentRoundBodyPartLabel = round.bodyId;
+        const bodyPartLabel = getBodyPartLabel(bodyParts, currentRoundBodyPart);
 
         return (
-          <Step key={`round-${round}`}>
-            <StepLabel>{round < (activeRoundIndex - 1) ? "Round Completed" : currentRoundBodyPartLabel}</StepLabel>
+          <Step key={`round-${round}`} active={roundIndex === activeRoundIndex} completed={roundIndex < activeRoundIndex}>
+            <StepLabel>{bodyPartLabel}</StepLabel>
           </Step>
         );
       })}
