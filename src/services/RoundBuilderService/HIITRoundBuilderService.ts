@@ -1,14 +1,14 @@
 import RoundBuilderService from "./RoundBuilderService";
-import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import { WorkoutAlgorithms } from "../WorkoutExercisesGeneratorService/WorkoutAlgorithms";
 import HIITWorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/HIITWorkoutExercisesGeneratorService";
 import IExercise from "../../models/Exercise/IExercise";
+import { IWorkoutSessionState } from "../../store/workoutSession";
 
 export default class HIITRoundBuilderService extends RoundBuilderService {
-  public generate(workoutSession: IWorkoutSession, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): Partial<IRound>[] {
+  public generate(workoutSession: IWorkoutSessionState, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): Partial<IRound>[] {
     const {
       roundsLength
     } = workoutSession;
@@ -26,14 +26,14 @@ export default class HIITRoundBuilderService extends RoundBuilderService {
     return allRounds;
   }
 
-  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
-    const { exercisesLength } = workoutSession;
+  public generateRoundExercises(workoutSession: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
+    const { exercisesLength, includeCardio, cardioStep } = workoutSession;
     const workoutExercisesGenerator: HIITWorkoutExercisesGeneratorService = new HIITWorkoutExercisesGeneratorService(exercisesLength, bodyPartName);
 
-    return workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple);
+    return workoutExercisesGenerator.getExercisesList({ algorithm: WorkoutAlgorithms.simple, includeCardio, cardioStep });
   }
 
-  public generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): Partial<IRound> {
+  public generateRound(workoutSession: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>): Partial<IRound> {
     const { restDuration, exerciseDuration } = workoutSession;
 
     return {

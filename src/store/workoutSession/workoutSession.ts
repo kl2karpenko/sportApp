@@ -8,8 +8,7 @@ import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
-import WorkoutBuilderServiceFactory from "../../services/WorkoutBuilderServiceFactory";
-import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
+import WorkoutBuilderServiceSingleton from "../../services/WorkoutBuilderServiceSingleton";
 import {
   generateRandomWorkoutExerciseInRoundAction,
   IUpdateWorkoutSessionValuePayload,
@@ -19,26 +18,19 @@ import {
 import { updateWorkoutSessionValueForTabataAction } from "./tabataWorkoutSession";
 
 export type IWorkoutSessionState = IWorkoutSession & {
-  workoutType: WorkoutType; includeCardio: boolean;
+  workoutType: WorkoutType;
+  cardioStep?: number;
 }
 ;
 export const initialState: IWorkoutSessionState = {
   includeCardio: false,
+  cardioStep: 2,
   workoutType: WorkoutType.HIIT,
   rounds: [],
   ...hiitDefaultSettings
 }
 
 export const allExercisesData: IExercisesList = new ExercisesList();
-let workoutBuilderService: WorkoutBuilderService;
-
-export const getBuilderService = (state: IWorkoutSessionState) => {
-  if (workoutBuilderService && state.workoutType === workoutBuilderService.workoutType) {
-    return workoutBuilderService;
-  }
-
-  return WorkoutBuilderServiceFactory(state.workoutType);
-};
 
 // REDUCER =======
 export const workoutSessionSlice = createSlice({
@@ -46,7 +38,7 @@ export const workoutSessionSlice = createSlice({
   initialState,
   reducers: {
     generateWorkoutSession: (state: IWorkoutSessionState) => {
-      workoutBuilderService = getBuilderService(state);
+      const workoutBuilderService = WorkoutBuilderServiceSingleton(state.workoutType);
       const rounds = workoutBuilderService?.generateWorkout(state);
 
       return {
@@ -89,7 +81,7 @@ export const workoutSessionSlice = createSlice({
         break;
       }
 
-      workoutBuilderService = getBuilderService(newState);
+      const workoutBuilderService = WorkoutBuilderServiceSingleton(newState.workoutType);
       const rounds = workoutBuilderService?.generateWorkout(newState);
 
       return {
@@ -114,9 +106,6 @@ export const getRoundByIndex = createSelector([
 export const getRoundExercisesListByIndex = createSelector([
   getRoundByIndex
 ], (roundByIndex): IExercise[] => Array.from(roundByIndex.exercisesList));
-
-// HELPERS =======
-export const isExerciseCardio = (exercise: IExercise) => (!!exercise.isCardio);
 
 // Action creators are generated for each case reducer function
 export const {

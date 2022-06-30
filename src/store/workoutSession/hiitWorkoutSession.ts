@@ -3,12 +3,12 @@ import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
 import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
 import {
   allExercisesData,
-  getBuilderService,
   getRoundByIndex,
   getRoundExercisesListByIndex,
   IWorkoutSessionState
 } from "./workoutSession";
 import IExercise from "../../models/Exercise/IExercise";
+import WorkoutBuilderServiceSingleton from "../../services/WorkoutBuilderServiceSingleton";
 
 let workoutBuilderService: WorkoutBuilderService;
 
@@ -24,7 +24,7 @@ export const updateWorkoutSessionForHiitValueAction = (state: IWorkoutSessionSta
   };
 
   if (field === WorkoutSessionFields.roundsLength || field === WorkoutSessionFields.exercisesLength) {
-    workoutBuilderService = getBuilderService(newState);
+    workoutBuilderService = WorkoutBuilderServiceSingleton(newState.workoutType);
     newRounds = workoutBuilderService?.generateWorkout(newState);
   }
 

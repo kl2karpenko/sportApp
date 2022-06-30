@@ -1,7 +1,8 @@
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
-import { getBuilderService, IWorkoutSessionState } from "./workoutSession";
+import { IWorkoutSessionState } from "./workoutSession";
 import { PayloadAction } from "@reduxjs/toolkit";
 import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
+import WorkoutBuilderServiceSingleton from "../../services/WorkoutBuilderServiceSingleton";
 
 export interface IUpdateWorkoutSessionValuePayload { field: WorkoutSessionFields; value: any }
 
@@ -16,7 +17,7 @@ export const updateWorkoutSessionValueForTabataAction = (state: IWorkoutSessionS
   };
 
   if (field === WorkoutSessionFields.roundsLength) {
-    workoutBuilderService = getBuilderService(state);
+    workoutBuilderService = WorkoutBuilderServiceSingleton(state.workoutType);
     newRounds = workoutBuilderService?.generateWorkout(newState);
   }
 

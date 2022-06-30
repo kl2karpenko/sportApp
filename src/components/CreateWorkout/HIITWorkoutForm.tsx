@@ -1,8 +1,10 @@
-import { FormControl, FormLabel, Grid, TextField, FormControlLabel, Checkbox } from "@mui/material";
+import { FormControl, FormLabel, Grid, TextField, FormControlLabel, Checkbox, MenuItem, Select } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/main";
+import { WorkoutType, WorkoutTypesList } from "../../interfaces/WorkoutType";
+import { changeWorkoutType } from "../../store/workoutSession";
 
 interface IHIITWorkoutFormProps {
   updateState: (stateName: WorkoutSessionFields, stateVal: any) => void;
@@ -22,15 +24,36 @@ export default function HIITWorkoutForm({ updateState }: IHIITWorkoutFormProps) 
   return (
     <>
       <Grid item xs={12}>
-        <FormControl fullWidth>
-          <FormControlLabel control={<Checkbox
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              console.log(e.target.value === "on", " e.target.value");
-              updateState(WorkoutSessionFields.includeCardio, !workoutSession.includeCardio)
-            }}
-            checked={workoutSession.includeCardio}
-          />} label="Include cardio" id={"includeCardio"} />
-        </FormControl>
+        <Grid container alignItems="center" alignContent="content">
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <FormControlLabel control={<Checkbox
+                onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(WorkoutSessionFields.includeCardio, !workoutSession.includeCardio)}
+                checked={workoutSession.includeCardio}
+              />} label="Include cardio" id={"includeCardio"} />
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            {workoutSession.includeCardio &&
+              (<FormControl fullWidth>
+                <FormLabel component="legend">Step for cardio exercise</FormLabel>
+                <TextField
+                  id="cardioStep"
+                  value={workoutSession.cardioStep}
+                  type="number"
+                  min="1"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    const step = Number(e.target.value);
+                    if (step > 1 && step < workoutSession.exercisesLength - 1) {
+                      return updateState(WorkoutSessionFields.cardioStep, step);
+                    }
+
+                    updateState(WorkoutSessionFields.cardioStep, Number(1));
+                  }}
+                />
+              </FormControl>)}
+          </Grid>
+        </Grid>
       </Grid>
       {Object.keys(WorkoutSessionFieldsPairs).map((field: WorkoutSessionFields) => (
         <Grid item xs={12} key={field}>

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 import { geExercisesListForBodyPart, getCardioExercisesList } from "../../../store/allExercises";
 import { getBodyPartLabel } from "../../../store/bodyParts";
-import { getRoundByIndex, isExerciseCardio } from "../../../store/workoutSession";
+import { getRoundByIndex } from "../../../store/workoutSession";
 
 interface IWorkoutRoundExercisesPreviewProps {
   round: IRound;
@@ -20,27 +20,19 @@ interface IWorkoutRoundExercisesPreviewProps {
 export default function HIITWorkoutPreviewRound({
   round,
   roundIndex,
-  handleRandomChangeExerciseForRound,
-  handleChangeExerciseForRound
+  handleRandomChangeExerciseForRound
 }: IWorkoutRoundExercisesPreviewProps
 ) {
   const currentRound = useSelector((state: RootState) => getRoundByIndex(state.workoutSession, roundIndex));
   const bodyPartName = round.bodyId;
   const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, bodyPartName));
-  const allExercisesForThisBP: IExercise[] = useSelector((state: RootState) => geExercisesListForBodyPart(state.allExercises, bodyPartName));
-  const allCardioExercises: IExercise[] = useSelector((state: RootState) => getCardioExercisesList(state.allExercises));
-  const exercisesInThisRound = currentRound.exercisesList;
-  const exercisesInThisRoundIds = currentRound.exercisesList.map((ex: IExercise) => ex.id);
 
   return (
     <Fragment key={round.bodyId}>
       <Grid item xs={12}>
         <Typography variant="body1" color={"primary"}>{bodyPartLabel}</Typography>
       </Grid>
-      {exercisesInThisRound.map((exercise: IExercise, index) => {
-        const isCardio = isExerciseCardio(exercise);
-        const listToRender = isCardio ? allCardioExercises : allExercisesForThisBP;
-
+      {(currentRound.exercisesList || []).map((exercise: IExercise, index) => {
         return (
           <Grid key={`${roundIndex}-${exercise.id}`} item xs={12}>
             <Grid container alignItems={"center"} spacing={1} justifyItems={"flex-start"}>
@@ -48,34 +40,18 @@ export default function HIITWorkoutPreviewRound({
                 <Typography variant={"body2"}>{`${index + 1}.`}</Typography>
               </Grid>
               <Grid item>
-                <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 700 }} size="small">
-                  <Select
-                    id={`workout_parts-${index}`}
-                    value={exercise.id}
-                    onChange={(e: ChangeEvent, { props: { value } }: { props: { value: string }}) => {
-                      handleChangeExerciseForRound(roundIndex, index, value)
-                    }}
-                  >
-                    {listToRender.map((bodyPartWorkout: IExercise) => (
-                      <MenuItem
-                        key={bodyPartWorkout.id}
-                        disabled={exercisesInThisRoundIds.includes(bodyPartWorkout.id)}
-                        value={bodyPartWorkout.id}>
-                        {bodyPartWorkout.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                {exercise.label}
               </Grid>
               <Grid item>
+                {/*<ShuffleIcon fontSize="large" color="secondary" size="small" onClick={() => handleRandomChangeExerciseForRound(roundIndex, index)} />*/}
                 <Box
-                  minWidth={30}
+                  minWidth={15}
                   pl={2}
                   pr={0.5}
                   component={Button}
                   color="secondary"
-                  size="large"
-                  startIcon={<ShuffleIcon fontSize="large" />}
+                  size="small"
+                  startIcon={<ShuffleIcon fontSize="small" />}
                   variant={"outlined"}
                   onClick={() => handleRandomChangeExerciseForRound(roundIndex, index)}
                 />

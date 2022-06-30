@@ -44,10 +44,8 @@ export default function CreateWorkout(): React.ReactElement {
   const bodyPartsLabels = useSelector((state: RootState) => getBodyPartsLabels(state.bodyParts));
   const workoutType = workoutSession.workoutType;
   const navigate = useNavigate();
-  // const [url, setUrl] = useState<string>("");
   const updateState = (stateName: WorkoutSessionFields, stateVal: number) =>
     dispatch(updateWorkoutSessionValue({ field: stateName, value: stateVal }));
-
   const handleChangeBodyPartForTheRound = (roundIndex: number, fieldValue: TValues<typeof EBodyParts>) =>
     dispatch(updateWorkoutRoundByIndex({ roundIndex, fieldName: RoundFields.bodyId, fieldValue }));
 

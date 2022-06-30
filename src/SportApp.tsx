@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { ThemeProvider } from "@mui/material/styles";
+import React, { useState, useEffect } from "react";
+import { Provider } from "react-redux";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
-
+import { ThemeProvider } from "@mui/material/styles";
 
 import { store } from "./store/main"
-import { Provider, useSelector } from "react-redux"
 
 import theme from "./theme";
 import CreateWorkout from "./components/CreateWorkout";
@@ -26,6 +25,12 @@ export const defaultWorkoutSession = {
 
 function SportApp() {
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("/express_backend");
+  //     const body = await response.json();
+  //   })()
+  // }, []);
 
   return (
     <Provider store={store}>

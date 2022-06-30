@@ -21,7 +21,7 @@ export default function HIITWorkoutPreview() {
 
   // THIS SHOULD DIFFER FROM TABATA PREVIEW
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" spacing={2}>
       {
         workoutSession?.rounds?.map((round: IRound, roundIndex: number) => (
           <HIITWorkoutPreviewRound

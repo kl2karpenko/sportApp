@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from "react";
+import { useSelector } from "react-redux";
 
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 
@@ -6,17 +7,11 @@ import Timer from "./Timer";
 import ExercisesStepper from "./ExercisesStepper";
 import RoundsStepper from "./RoundsStepper";
 import { useStyles } from "./styles";
-import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
-import { useSelector } from "react-redux";
 import { RootState } from "../../store/main";
 import ActiveWorkoutManagerService from "../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
 import ExerciseDetail from "./ExerciseDetail";
 
-interface ICurrentWorkoutProps {
-  workoutBuilderService: WorkoutBuilderService;
-}
-
-export default function CurrentWorkout({ workoutBuilderService }: ICurrentWorkoutProps): React.ReactElement {
+export default function CurrentWorkout(): React.ReactElement {
   const classes = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
@@ -78,7 +73,7 @@ export default function CurrentWorkout({ workoutBuilderService }: ICurrentWorkou
                   <RoundsStepper />
                 </Grid>
                 <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper isResting={isResting} workoutCreatorService={workoutBuilderService} workoutSession={workoutSession} currentExercise={activeExerciseIndex} />
+                  <ExercisesStepper isResting={isResting} workoutSession={workoutSession} currentExercise={activeExerciseIndex} />
                 </Grid>
                 <Grid item xs={10}>
                   <Grid container spacing={2}>

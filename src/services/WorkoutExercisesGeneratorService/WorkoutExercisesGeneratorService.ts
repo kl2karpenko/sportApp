@@ -4,6 +4,12 @@ import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
+import { IHiitWorkoutGetExercisesListConfig } from "./HIITWorkoutExercisesGeneratorService";
+import { ITabataWorkoutGetExercisesListConfig } from "./TabataWorkoutExercisesGeneratorService";
+
+export interface IWorkoutGetExercisesListConfig extends IHiitWorkoutGetExercisesListConfig, ITabataWorkoutGetExercisesListConfig {
+
+}
 
 export default class WorkoutExercisesGeneratorService {
   protected listOfExercisesForCurrentBodyPart: IExercise[];
@@ -17,7 +23,7 @@ export default class WorkoutExercisesGeneratorService {
     this.listOfExercisesForCurrentBodyPart = this.allExercisesData.getExercisesForBodyPart(bodyPartName);
   }
 
-  public getExercisesList(algorithm?: WorkoutAlgorithms, includeCardio: boolean = true): IExercise[] {
+  public getExercisesList(props: IWorkoutGetExercisesListConfig): IExercise[] {
     return [];
   }
 

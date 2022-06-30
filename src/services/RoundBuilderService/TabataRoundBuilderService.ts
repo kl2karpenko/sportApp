@@ -27,7 +27,7 @@ export default class TabataRoundBuilderService extends RoundBuilderService {
   public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
     const workoutExercisesGenerator: TabataWorkoutExercisesGeneratorService = new TabataWorkoutExercisesGeneratorService(2, bodyPartName);
 
-    const [ ex1, ex2 ] = workoutExercisesGenerator.getExercisesList(WorkoutAlgorithms.simple);
+    const [ ex1, ex2 ] = workoutExercisesGenerator.getExercisesList();
     return [ex1, ex1, ex1, ex1, ex2, ex2, ex2, ex2];
   }
 
