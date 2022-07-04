@@ -4,11 +4,16 @@ import { IBodyParts } from "../../models/BodyParts/IBodyParts";
 import BodyParts from "../../models/BodyParts/BodyParts";
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import IRound from "../../models/Round/IRound";
+import { IWorkoutSessionState } from "../../store/workoutSession";
 
 export default class WorkoutBuilderService {
   private bodyParts: IBodyParts = new BodyParts();
 
   generateWorkout(workoutSession: IWorkoutSession): Partial<IRound>[] {
+    return [];
+  }
+  
+  generateWorkoutRounds(workoutSession: IWorkoutSessionState, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): Partial<IRound>[] {
     return [];
   }
 

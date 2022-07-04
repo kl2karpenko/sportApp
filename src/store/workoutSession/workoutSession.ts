@@ -8,7 +8,6 @@ import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
-import WorkoutBuilderServiceSingleton from "../../services/WorkoutBuilderServiceSingleton";
 import {
   generateRandomWorkoutExerciseInRoundAction,
   IUpdateWorkoutSessionValuePayload,
@@ -16,6 +15,9 @@ import {
   updateWorkoutSessionForHiitValueAction
 } from "./hiitWorkoutSession";
 import { updateWorkoutSessionValueForTabataAction } from "./tabataWorkoutSession";
+import { TValues } from "../../interfaces/TValues";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
+import workoutBuilderServiceInstance from "../../services/WorkoutBuilderService/WorkoutBuilderServiceSingleton";
 
 export type IWorkoutSessionState = IWorkoutSession & {
   workoutType: WorkoutType;
@@ -38,8 +40,18 @@ export const workoutSessionSlice = createSlice({
   initialState,
   reducers: {
     generateWorkoutSession: (state: IWorkoutSessionState) => {
-      const workoutBuilderService = WorkoutBuilderServiceSingleton(state.workoutType);
+      const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
       const rounds = workoutBuilderService?.generateWorkout(state);
+
+      return {
+        ...state,
+        rounds
+      };
+    },
+    regenerateWorkoutSessionRounds: (state: IWorkoutSessionState) => {
+      const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
+      const bodyPartsIdForEachRound: TValues<typeof EBodyParts>[] = state.rounds.map((round: IRound) => round.bodyId);
+      const rounds = workoutBuilderService?.generateWorkoutRounds(state, bodyPartsIdForEachRound);
 
       return {
         ...state,
@@ -81,7 +93,7 @@ export const workoutSessionSlice = createSlice({
         break;
       }
 
-      const workoutBuilderService = WorkoutBuilderServiceSingleton(newState.workoutType);
+      const workoutBuilderService = workoutBuilderServiceInstance.getService(newState.workoutType);
       const rounds = workoutBuilderService?.generateWorkout(newState);
 
       return {
@@ -114,7 +126,8 @@ export const {
   updateWorkoutRoundByIndex,
   updateWorkoutExerciseInRound,
   generateRandomWorkoutExerciseInRound,
-  generateWorkoutSession
+  generateWorkoutSession,
+  regenerateWorkoutSessionRounds
 } = workoutSessionSlice.actions
 
 export default workoutSessionSlice.reducer

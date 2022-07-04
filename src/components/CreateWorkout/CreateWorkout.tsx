@@ -13,6 +13,7 @@ import {
   Typography
 } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +32,8 @@ import {
   changeWorkoutType,
   generateWorkoutSession,
   updateWorkoutRoundByIndex,
-  updateWorkoutSessionValue
+  updateWorkoutSessionValue,
+  regenerateWorkoutSessionRounds
 } from "../../store/workoutSession";
 import { RoundFields } from "../../models/Round/RoundFields";
 import { getBodyPartsLabels, getBodyPartsList } from "../../store/bodyParts";
@@ -68,12 +70,25 @@ export default function CreateWorkout(): React.ReactElement {
                     startIcon={<ShuffleIcon />}
                     onClick={() => dispatch(generateWorkoutSession(workoutSession))}
                   >
-                    Generate a workout!
+                    Create!
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button
                     variant="contained"
+                    color="error"
+                    disabled={!workoutSession?.rounds.length}
+                    startIcon={<ShuffleIcon />}
+                    onClick={() => dispatch(regenerateWorkoutSessionRounds(workoutSession))}
+                  >
+                    Regenerate
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    startIcon={<VisibilityIcon />}
                     disabled={!workoutSession?.rounds?.length}
                     onClick={() => {
                       setDialogProps({
@@ -99,7 +114,7 @@ export default function CreateWorkout(): React.ReactElement {
                       });
                     }}
                   >
-                    Click Here to start!
+                    Preview And Start
                   </Button>
                 </Grid>
               </Grid>

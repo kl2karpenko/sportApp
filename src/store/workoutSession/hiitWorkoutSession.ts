@@ -1,6 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
-import WorkoutBuilderService from "../../services/WorkoutBuilderService/WorkoutBuilderService";
 import {
   allExercisesData,
   getRoundByIndex,
@@ -8,9 +7,9 @@ import {
   IWorkoutSessionState
 } from "./workoutSession";
 import IExercise from "../../models/Exercise/IExercise";
-import WorkoutBuilderServiceSingleton from "../../services/WorkoutBuilderServiceSingleton";
+import workoutBuilderServiceInstance from "../../services/WorkoutBuilderService/WorkoutBuilderServiceSingleton";
 
-let workoutBuilderService: WorkoutBuilderService;
+import IRound from "../../models/Round/IRound";
 
 export interface IUpdateWorkoutSessionValuePayload { field: WorkoutSessionFields; value: any }
 
@@ -18,14 +17,12 @@ export const updateWorkoutSessionForHiitValueAction = (state: IWorkoutSessionSta
   const { field, value } = action.payload;
   let newRounds = state.rounds;
 
-  const newState = {
-    ...state,
-    [field]: value
-  };
+  const newState = Object.assign({}, state);
+  newState[field] = value;
 
-  if (field === WorkoutSessionFields.roundsLength || field === WorkoutSessionFields.exercisesLength) {
-    workoutBuilderService = WorkoutBuilderServiceSingleton(newState.workoutType);
-    newRounds = workoutBuilderService?.generateWorkout(newState);
+  if (newState.rounds.length && state.rounds.length < newState.rounds.length && [WorkoutSessionFields.roundsLength, WorkoutSessionFields.exercisesLength, WorkoutSessionFields.cardioStep].includes(field)) {
+    const workoutBuilderService = workoutBuilderServiceInstance.getService(newState.workoutType);
+    newRounds = workoutBuilderService?.generateWorkoutRounds(newState, newState.rounds.map((round: IRound) => round.bodyId));
   }
 
   return {
@@ -46,12 +43,13 @@ export const updateWorkoutExerciseInRoundAction = (state: IWorkoutSessionState, 
   return state;
 };
 
-export const generateRandomWorkoutExerciseInRoundAction = (state: IWorkoutSessionState, action: PayloadAction<{ roundIndex: number; exerciseIndex: number }>) => {
-  const { roundIndex, exerciseIndex } = action.payload;
+export const generateRandomWorkoutExerciseInRoundAction = (state: IWorkoutSessionState, action: PayloadAction<{ roundIndex: number; exerciseIndex: number; isCardio: boolean }>) => {
+  const { roundIndex, exerciseIndex, isCardio } = action.payload;
+
   const currentRound = getRoundByIndex(state, roundIndex);
-  const allExercisesForBodyId = allExercisesData.getExercisesForBodyPart(currentRound.bodyId);
+  const allExercisesForBodyId = isCardio ? allExercisesData.getCardioExercisesList() : allExercisesData.getExercisesForBodyPart(currentRound.bodyId);
   const randomInt = allExercisesData.getRandomInt(0, allExercisesForBodyId.length - 1);
-  currentRound.exercisesList[exerciseIndex] = allExercisesData.getExerciseByIndex(randomInt);
+  currentRound.exercisesList[exerciseIndex] = allExercisesForBodyId[randomInt];
 
   return state;
 };

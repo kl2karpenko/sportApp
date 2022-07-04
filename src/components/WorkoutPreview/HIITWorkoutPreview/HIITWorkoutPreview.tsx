@@ -15,8 +15,8 @@ export default function HIITWorkoutPreview() {
     dispatch(updateWorkoutExerciseInRound({ roundIndex, exerciseIndex, exerciseValue }));
   };
 
-  const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number) => {
-    dispatch(generateRandomWorkoutExerciseInRound({ roundIndex, exerciseIndex }));
+  const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, isCardio: boolean) => {
+    dispatch(generateRandomWorkoutExerciseInRound({ roundIndex, exerciseIndex, isCardio }));
   };
 
   // THIS SHOULD DIFFER FROM TABATA PREVIEW

@@ -1,13 +1,18 @@
 import WorkoutBuilderService from "./WorkoutBuilderService";
 import TabataRoundBuilderService from "../RoundBuilderService/TabataRoundBuilderService";
-import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import IRound from "../../models/Round/IRound";
-import { WorkoutType } from "../../interfaces/WorkoutType";
+import { IWorkoutSessionState } from "../../store/workoutSession";
+import { TValues } from "../../interfaces/TValues";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
 
 export default class TabataWorkoutBuilderService extends WorkoutBuilderService {
   public roundBuilder: TabataRoundBuilderService = new TabataRoundBuilderService();
 
-  generateWorkoutRounds(workoutSession: IWorkoutSession): Partial<IRound>[] {
+  generateWorkoutRounds(workoutSession: IWorkoutSessionState, bodyPartsIdForEachRound: TValues<typeof EBodyParts>[]): Partial<IRound>[] {
+    return this.roundBuilder.generate(workoutSession, bodyPartsIdForEachRound);
+  }
+
+  generateWorkout(workoutSession: IWorkoutSessionState): Partial<IRound>[] {
     const {
       roundsLength
     } = workoutSession;
@@ -15,10 +20,6 @@ export default class TabataWorkoutBuilderService extends WorkoutBuilderService {
 
     const bodyPartsIdForEachRound = this.generateBodyParts(roundsLength);
 
-    return this.roundBuilder.generate(workoutSession, bodyPartsIdForEachRound);
-  }
-
-  generateWorkout(workoutSession: IWorkoutSession): Partial<IRound>[] {
-    return this.generateWorkoutRounds(workoutSession);
+    return this.generateWorkoutRounds(workoutSession, bodyPartsIdForEachRound);
   }
 }
