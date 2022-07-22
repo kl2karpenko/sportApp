@@ -10,14 +10,10 @@ import { generateRandomWorkoutExerciseInRound, updateWorkoutExerciseInRound } fr
 export default function HIITWorkoutPreview() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const dispatch = useDispatch();
-
-  const handleChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, exerciseValue: string) => {
+  const handleChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, exerciseValue: string) =>
     dispatch(updateWorkoutExerciseInRound({ roundIndex, exerciseIndex, exerciseValue }));
-  };
-
-  const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, isCardio: boolean) => {
+  const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, isCardio: boolean) =>
     dispatch(generateRandomWorkoutExerciseInRound({ roundIndex, exerciseIndex, isCardio }));
-  };
 
   // THIS SHOULD DIFFER FROM TABATA PREVIEW
   return (

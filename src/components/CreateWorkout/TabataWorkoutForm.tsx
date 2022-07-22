@@ -1,26 +1,30 @@
-import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormLabel, Grid, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/main";
 
 interface ITabataWorkoutFormProps {
-  updateState: (stateName: WorkoutSessionFields, stateVal: number) => void;
+  updateState: (stateName: WorkoutSessionFields, stateVal: number | boolean) => void;
 }
 
 export default function TabataWorkoutForm({ updateState }: ITabataWorkoutFormProps) {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   // @ts-ignore
   const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = {
-    [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0,
-    // [WorkoutSessionFields.exercisesLength]: workoutSession?.exercisesLength || 0,
-    // [WorkoutSessionFields.exerciseDuration]: workoutSession?.exerciseDuration || 0,
-    // [WorkoutSessionFields.restDuration]: workoutSession?.restDuration || 0,
-    // [WorkoutSessionFields.betweenRoundsDuration]: workoutSession?.betweenRoundsDuration || 0
+    [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0
   };
 
   return (
     <>
+      <Grid item xs={12} key={"cardioTabata"}>
+        <FormControl fullWidth>
+          <FormControlLabel control={<Checkbox
+            onChange={(e: ChangeEvent<HTMLInputElement>) => updateState(WorkoutSessionFields.includeCardio, !workoutSession.includeCardio)}
+            checked={workoutSession.includeCardio}
+          />} label="Include cardio" id={"includeCardio"} />
+        </FormControl>
+      </Grid>
       {Object.keys(WorkoutSessionFieldsPairs).map((field: WorkoutSessionFields) => (
         <Grid item xs={12} key={field}>
           <FormControl fullWidth>

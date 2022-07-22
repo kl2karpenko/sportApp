@@ -20,7 +20,7 @@ export default function RoundsStepper() {
         const bodyPartLabel = getBodyPartLabel(bodyParts, currentRoundBodyPart);
 
         return (
-          <Step key={`round-${round}`} active={roundIndex === activeRoundIndex} completed={roundIndex < activeRoundIndex}>
+          <Step key={`round-${roundIndex}`} active={roundIndex === activeRoundIndex} completed={roundIndex < activeRoundIndex}>
             <StepLabel>{bodyPartLabel}</StepLabel>
           </Step>
         );

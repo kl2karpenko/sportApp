@@ -11,8 +11,9 @@ export default function TabataWorkoutPreviewRound({ round, roundIndex }: { round
   const bodyPartName = round.bodyId;
   const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, bodyPartName));
   const exercisesInThisRound = round.exercisesList;
-
-  console.log(exercisesInThisRound, " exercisesInThisRound");
+  const ex1 = exercisesInThisRound[0];
+  const ex2 = exercisesInThisRound[4];
+  const cardio = exercisesInThisRound[exercisesInThisRound.length - 1];
 
   return (
     <Fragment key={round.bodyId}>
@@ -22,8 +23,9 @@ export default function TabataWorkoutPreviewRound({ round, roundIndex }: { round
       <Grid item>
         <Grid container spacing={4} direction={"column"}>
           <Grid item xs={12}>
-            {exercisesInThisRound.map((ex: IExercise, index: number) =>
-              <Typography key={`${ex.id}-${index}`} variant="body1">{ex.label}</Typography>)}
+            {[ex1, ex2, cardio].map((ex: Partial<IExercise>, index: number) => (
+              <Typography key={`${ex.id}-${index}`} variant="body1">{index + 1}. {ex.label}</Typography>
+            ))}
           </Grid>
         </Grid>
       </Grid>

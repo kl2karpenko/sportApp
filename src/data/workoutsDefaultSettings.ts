@@ -3,8 +3,8 @@ import { IWorkoutSettings } from "../interfaces/IWorkoutSettings";
 export const tabataDefaultSettings: IWorkoutSettings = {
   roundsLength: 8,
   exercisesLength: 8,
-  exerciseDuration: 20,
-  restDuration: 10,
+  exerciseDuration: 30,
+  restDuration: 15,
   betweenRoundsDuration: 90
 };
 

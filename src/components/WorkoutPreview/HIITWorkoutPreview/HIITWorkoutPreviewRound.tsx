@@ -33,12 +33,12 @@ export default function HIITWorkoutPreviewRound({
       </Grid>
       <Grid item xs={12}>
         <List>
-          {(currentRound.exercisesList || []).map((exercise: IExercise, index) => {
+          {(currentRound.exercisesList || []).map((exercise: Partial<IExercise>, index) => {
             const isCardio = exercise.id.includes("cardio");
             const chipLabel = exercise.id.replace(/-ex\d+/gi,"");
 
             return (
-              <ListItem disableGutters divider key={`${roundIndex}-${exercise.id}`}
+              <ListItem disableGutters divider key={`${roundIndex}-${index}-${exercise.id}`}
                 secondaryAction={
                   <Box
                     minWidth={15}
@@ -55,7 +55,6 @@ export default function HIITWorkoutPreviewRound({
                 <ListItemText>
                   {`${index + 1}. ${exercise.label}`} <Chip label={chipLabel} size="small" color={isCardio ? "error" : "primary"} />
                 </ListItemText>
-
               </ListItem>
             )
           })}

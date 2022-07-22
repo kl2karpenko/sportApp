@@ -101,16 +101,7 @@ export default function CreateWorkout(): React.ReactElement {
                             </Grid>
                           </Grid>
                         ),
-                        actionConfirmCb: () => {
-                          // setCurrentWorkoutSession((state: IWorkoutSession) => ({
-                          //   ...state,
-                          //   inProgress: true,
-                          //   round: 1,
-                          //   exercise: 1,
-                          //   url
-                          // }));
-                          navigate("workout");
-                        }
+                        actionConfirmCb: () => navigate("workout")
                       });
                     }}
                   >
@@ -132,7 +123,6 @@ export default function CreateWorkout(): React.ReactElement {
                       value={workoutType}
                       onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => dispatch(changeWorkoutType(value))}
                     >
-                      {/*  // TODO: change the place where I take this */}
                       {WorkoutTypesList.map((workoutTypeInside: WorkoutType) => (
                         <MenuItem key={workoutTypeInside} value={workoutTypeInside}>{
                           workoutTypeInside
@@ -148,8 +138,6 @@ export default function CreateWorkout(): React.ReactElement {
               <Grid container spacing={2} direction="column">
                 {workoutSession?.rounds?.map((round: IRound, index: number) => {
                   const { bodyId } = round;
-                  const bodyPartLabel = bodyPartsLabels[bodyId];
-                  // const allExercises = workoutSettings.all_exercises_for_generated_list || [];
 
                   return (
                     <Grid key={`${bodyId}-${index}`} item xs={12}>
@@ -160,9 +148,9 @@ export default function CreateWorkout(): React.ReactElement {
                             <Select
                               id={`workout_parts-${index}`}
                               defaultValue={bodyId}
-                              onChange={(e: ChangeEvent, { props: { value } }: { props: { value: TValues<typeof EBodyParts> }}) => {
-                                handleChangeBodyPartForTheRound(index, value);
-                              }}
+                              onChange={(e: ChangeEvent, { props: { value } }: { props: { value: TValues<typeof EBodyParts> }}) =>
+                                handleChangeBodyPartForTheRound(index, value)
+                              }
                             >
                               {bodyPartsList.map((bodyPartsNameInside: TValues<typeof EBodyParts>) => (
                                 <MenuItem key={bodyPartsNameInside} value={bodyPartsNameInside}>{bodyPartsLabels[bodyPartsNameInside]}</MenuItem>

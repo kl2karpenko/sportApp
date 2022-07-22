@@ -1,6 +1,10 @@
 import IExercise from "../../models/Exercise/IExercise";
 import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
 import WorkoutExercisesGeneratorService from "./WorkoutExercisesGeneratorService";
+import ExercisesList from "../../models/ExercisesList/ExercisesList";
+import { WorkoutType } from "../../interfaces/WorkoutType";
+import { TValues } from "../../interfaces/TValues";
+import { EBodyParts } from "../../data/bodyPartsForWorkout";
 
 export interface IHiitWorkoutGetExercisesListConfig {
   includeCardio?: boolean;
@@ -9,6 +13,12 @@ export interface IHiitWorkoutGetExercisesListConfig {
 }
 
 export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercisesGeneratorService {
+  constructor(exercisesLength: number, bodyPartName: TValues<typeof EBodyParts>) {
+    super(exercisesLength, bodyPartName);
+
+    this.allExercisesData = new ExercisesList({ workoutType: WorkoutType.HIIT });
+  }
+
   public getExercisesList(props: IHiitWorkoutGetExercisesListConfig = { includeCardio: true, cardioStep: 2, algorithm: WorkoutAlgorithms.simple }): IExercise[] {
     switch (props?.algorithm) {
     case WorkoutAlgorithms.simple:
@@ -20,7 +30,7 @@ export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercis
     }
   }
 
-  protected getExercisesListForSimpleAlgorithm(props: IHiitWorkoutGetExercisesListConfig): IExercise[] {
+  protected getExercisesListForSimpleAlgorithm(props: IHiitWorkoutGetExercisesListConfig): Partial<IExercise>[] {
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
     if (listOfExercises.length === 0) return [];
 
@@ -36,8 +46,8 @@ export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercis
     return allExercises;
   }
 
-  protected getExercisesListForWithPairAlgorithm(props: IHiitWorkoutGetExercisesListConfig): IExercise[] {
-    let exercisesList: IExercise[] = [];
+  protected getExercisesListForWithPairAlgorithm(props: IHiitWorkoutGetExercisesListConfig): Partial<IExercise>[] {
+    let exercisesList: Partial<IExercise>[] = [];
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
     if (this.exercisesInRoundLength === 0) return exercisesList;
 
@@ -64,14 +74,17 @@ export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercis
     return exercisesList;
   }
 
-  protected addCardioExercisesToList(exercisesList: IExercise[], step: number = 2): IExercise[] {
+  protected addCardioExercisesToList(exercisesList: Partial<IExercise>[], step: number = 2): Partial<IExercise>[] {
     const arrLen = exercisesList.length;
-    const shuffledCardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
+    if (this.memoizedShuffledCardioList.length === 0) {
+      this.memoizedShuffledCardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
+    }
+
     let addingToPosition = 0;
 
     for (let i = 0; i < arrLen + addingToPosition; i = i + step) {
       addingToPosition++;
-      exercisesList.splice(i, 0, shuffledCardioList[i]);
+      exercisesList.splice(i, 0, this.memoizedShuffledCardioList[i]);
     }
 
     return exercisesList.slice(0, arrLen);

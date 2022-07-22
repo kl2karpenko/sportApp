@@ -25,8 +25,8 @@ export type IWorkoutSessionState = IWorkoutSession & {
 }
 ;
 export const initialState: IWorkoutSessionState = {
-  includeCardio: false,
-  cardioStep: 2,
+  includeCardio: true,
+  cardioStep: 3,
   workoutType: WorkoutType.HIIT,
   rounds: [],
   ...hiitDefaultSettings

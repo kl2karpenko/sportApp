@@ -1,18 +1,23 @@
-import React, { useEffect, useMemo } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, Typography, TextField } from "@mui/material";
 
-import Timer from "./Timer";
-import ExercisesStepper from "./ExercisesStepper";
-import RoundsStepper from "./RoundsStepper";
-import { useStyles } from "./styles";
-import { RootState } from "../../store/main";
-import ActiveWorkoutManagerService from "../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
-import ExerciseDetail from "./ExerciseDetail";
+import Timer from "../Timer";
+import ExercisesStepper from "../ExercisesStepper";
+import RoundsStepper from "../RoundsStepper";
+import { useStyles } from "../styles";
+import { RootState } from "../../../store/main";
+import ActiveWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
+import ExerciseDetail from "../ExerciseDetail";
+import IExercise from "../../../models/Exercise/IExercise";
+import { getBodyPartLabel } from "../../../store/bodyParts";
+
+const isExerciseCardio = (ex: Partial<IExercise>): boolean => ex?.id?.includes("cardio");
 
 export default function CurrentWorkout(): React.ReactElement {
   const classes = useStyles();
+  const [url, setUrl] = useState("https://www.youtube.com/embed/qsW5bCrv94s");
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   // stop reload the page
@@ -43,14 +48,13 @@ export default function CurrentWorkout(): React.ReactElement {
     activeExerciseIndex,
     activeRoundIndex
   } = activeWorkout;
-  const isResting = false;
-
   const currentRound = rounds[activeRoundIndex] || {};
   const nextRound = rounds[activeRoundIndex + 1] || {};
   const activeExercisesList = currentRound.exercisesList || [];
   const nextRoundExercisesList = nextRound.exercisesList || [];
   const activeExercise = activeExercisesList[activeExerciseIndex] || {};
   const nextExercise = activeExercisesList[activeExerciseIndex + 1] || nextRoundExercisesList[0] || {};
+  const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId));
 
   return (
     <Box p={2} minHeight="100%">
@@ -62,7 +66,7 @@ export default function CurrentWorkout(): React.ReactElement {
                 <Typography align="center" variant="h5">Workout in Progress:&nbsp;</Typography>
               </Grid>
               <Grid item>
-                <Typography align="center" variant="h5">{currentRound.bodyId}</Typography>
+                <Typography align="center" variant="h5">{bodyPartLabel}</Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -73,33 +77,44 @@ export default function CurrentWorkout(): React.ReactElement {
                   <RoundsStepper />
                 </Grid>
                 <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper isResting={isResting} workoutSession={workoutSession} currentExercise={activeExerciseIndex} />
+                  <ExercisesStepper />
                 </Grid>
                 <Grid item xs={10}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <Grid container spacing={3} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
-                        <Grid item xs={4}>
-                          <ExerciseDetail
-                            video={activeExercise.video}
-                            exerciseName={activeExercise.label}
-                            description={"Current exercise is:"}
-                          />
+                        <Grid item xs={8}>
+                          <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
+                            <Grid item xs={6}>
+                              <ExerciseDetail
+                                roundIndex={activeRoundIndex}
+                                exerciseIndex={activeExerciseIndex}
+                                isCardio={isExerciseCardio(activeExercise)}
+                                exerciseName={activeExercise.label}
+                                description={"Current exercise is:"}
+                              />
+                            </Grid>
+                            <Grid item xs={6}>
+                              <ExerciseDetail
+                                roundIndex={activeRoundIndex}
+                                exerciseIndex={activeExerciseIndex + 1}
+                                isCardio={isExerciseCardio(nextExercise)}
+                                variant={"small"}
+                                exerciseName={nextExercise.label}
+                                description={"Next exercise is:"}
+                              />
+                            </Grid>
+                          </Grid>
                         </Grid>
                         <Grid item xs={4}>
                           <Timer activeWorkoutManager={activeWorkoutManager} />
                         </Grid>
-                        <Grid item xs={4}>
-                          <ExerciseDetail
-                            video={nextExercise.video}
-                            exerciseName={nextExercise.label}
-                            description={"Next exercise is:"}
-                          />
-                        </Grid>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <iframe width="100%" height="600" src={"https://www.youtube.com/embed/IgSn1Z2rq6E"}
+                      <TextField id="url" label="Enter video source" value={url} variant="outlined" fullWidth={true} onChange={(e: ChangeEvent) => setUrl(e.target?.value)} />
+
+                      <iframe width="100%" height="600" src={url}
                         title="YouTube video player" frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen></iframe>

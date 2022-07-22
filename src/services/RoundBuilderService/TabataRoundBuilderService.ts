@@ -24,11 +24,12 @@ export default class TabataRoundBuilderService extends RoundBuilderService {
     return allRounds;
   }
 
-  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): IExercise[] {
+  public generateRoundExercises(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): Partial<IExercise>[] {
+    const { includeCardio } = workoutSession;
     const workoutExercisesGenerator: TabataWorkoutExercisesGeneratorService = new TabataWorkoutExercisesGeneratorService(2, bodyPartName);
 
-    const [ ex1, ex2 ] = workoutExercisesGenerator.getExercisesList();
-    return [ex1, ex1, ex1, ex1, ex2, ex2, ex2, ex2];
+    const [ ex1, ex2, cardio ] = workoutExercisesGenerator.getExercisesList({ includeCardio });
+    return [ ex1, ex1, ex1, ex1, ex2, ex2, ex2, ex2, cardio ];
   }
 
   public generateRound(workoutSession: IWorkoutSession, bodyPartName: TValues<typeof EBodyParts>): Partial<IRound> {

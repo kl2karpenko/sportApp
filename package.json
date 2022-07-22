@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test -- --config=jest.config.js",
+    "test": "react-scripts src/test -- --config=jest.config.js",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "npm run lint -- --fix"

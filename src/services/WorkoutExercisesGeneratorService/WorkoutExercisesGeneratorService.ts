@@ -1,37 +1,32 @@
 import IExercise from "../../models/Exercise/IExercise";
 import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
-import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
-import { IHiitWorkoutGetExercisesListConfig } from "./HIITWorkoutExercisesGeneratorService";
-import { ITabataWorkoutGetExercisesListConfig } from "./TabataWorkoutExercisesGeneratorService";
-
-export interface IWorkoutGetExercisesListConfig extends IHiitWorkoutGetExercisesListConfig, ITabataWorkoutGetExercisesListConfig {
-
-}
 
 export default class WorkoutExercisesGeneratorService {
-  protected listOfExercisesForCurrentBodyPart: IExercise[];
+  protected listOfExercisesForCurrentBodyPart: Partial<IExercise>[];
   protected bodyPartName: TValues<typeof EBodyParts>;
   protected exercisesInRoundLength: number;
-  protected allExercisesData: IExercisesList = new ExercisesList();
+  protected allExercisesData: IExercisesList;
+  protected memoizedShuffledCardioList: Partial<IExercise>[] = [];
 
   constructor(exercisesLength: number, bodyPartName: TValues<typeof EBodyParts>) {
     this.exercisesInRoundLength = exercisesLength;
+    this.allExercisesData = new ExercisesList();
     this.bodyPartName = bodyPartName;
     this.listOfExercisesForCurrentBodyPart = this.allExercisesData.getExercisesForBodyPart(bodyPartName);
   }
 
-  public getExercisesList(props: IWorkoutGetExercisesListConfig): IExercise[] {
+  public getExercisesList(props: any): Partial<IExercise>[] {
     return [];
   }
 
-  public getListOfExercisesForCurrentBodyPart(): IExercise[] {
+  public getListOfExercisesForCurrentBodyPart(): Partial<IExercise>[] {
     return this.listOfExercisesForCurrentBodyPart;
   }
 
-  protected getShuffledList(list: IExercise[]): IExercise[] {
+  protected getShuffledList(list: Partial<IExercise>[]): Partial<IExercise>[] {
     return [...list].sort(() => Math.random() - 0.5);
   }
 
@@ -41,8 +36,8 @@ export default class WorkoutExercisesGeneratorService {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  protected getExerciseIndexInList(exercisesList: IExercise[], findId: string): number {
-    return exercisesList.findIndex((el: IExercise, index: number) => {
+  protected getExerciseIndexInList(exercisesList: Partial<IExercise>[], findId: string): number {
+    return exercisesList.findIndex((el: Partial<IExercise>, index: number) => {
       if (el.id === findId) return index;
     });
   }

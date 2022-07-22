@@ -12,7 +12,7 @@ export default function HIITWorkoutPreview() {
   console.log(workoutSession, " workoutSession");
 
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" spacing={2}>
       {
         workoutSession?.rounds?.map((round: IRound, roundIndex: number) =>
           <TabataWorkoutPreviewRound key={`${round.bodyId}-${roundIndex}`} round={round} roundIndex={roundIndex} />

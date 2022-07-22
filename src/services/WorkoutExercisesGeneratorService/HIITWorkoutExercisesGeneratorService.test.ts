@@ -3,11 +3,12 @@ import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
+import { WorkoutType } from "../../interfaces/WorkoutType";
 
 describe("HIITWorkoutExercisesGeneratorService", () => {
   let len = 6;
   const bodyPart = EBodyParts.abs;
-  const allExercisesData: IExercisesList = new ExercisesList();
+  const allExercisesData: IExercisesList = new ExercisesList({ workoutType: WorkoutType.HIIT });
   let testWorkoutExercisesGeneratorService: HIITWorkoutExercisesGeneratorService;
   beforeEach(() => {
     testWorkoutExercisesGeneratorService = new HIITWorkoutExercisesGeneratorService(len, bodyPart);

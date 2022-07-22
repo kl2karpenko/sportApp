@@ -17,15 +17,16 @@ export const updateWorkoutSessionForHiitValueAction = (state: IWorkoutSessionSta
   const { field, value } = action.payload;
   let newRounds = state.rounds;
 
-  const newState = Object.assign({}, state);
+  const newState = JSON.parse(JSON.stringify(state));
   newState[field] = value;
 
   if (newState.rounds.length && state.rounds.length < newState.rounds.length && [WorkoutSessionFields.roundsLength, WorkoutSessionFields.exercisesLength, WorkoutSessionFields.cardioStep].includes(field)) {
     const workoutBuilderService = workoutBuilderServiceInstance.getService(newState.workoutType);
-    newRounds = workoutBuilderService?.generateWorkoutRounds(newState, newState.rounds.map((round: IRound) => round.bodyId));
+    newRounds = workoutBuilderService?.generateWorkoutRounds(newState, newRounds.map((round: IRound) => round.bodyId));
   }
 
   return {
+    ...state,
     ...newState,
     rounds: newRounds
   };
