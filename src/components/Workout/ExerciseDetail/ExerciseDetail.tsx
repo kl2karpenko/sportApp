@@ -23,8 +23,8 @@ export default function ExerciseDetail(props: IExerciseDetailProps): React.React
   const { workoutType } = workoutSession;
 
   if (workoutType === WorkoutType.Tabata) {
-    return <TabataExerciseDetail {...props} />
+    return <TabataExerciseDetail {...props} handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound} />
   }
 
-  return <HiitExerciseDetail {...props} />;
+  return <HiitExerciseDetail {...props} handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound} />;
 }

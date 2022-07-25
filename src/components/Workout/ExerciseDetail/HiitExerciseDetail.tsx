@@ -11,7 +11,7 @@ interface IHiitExerciseDetailProps {
   roundIndex: number;
   exerciseIndex: number;
   isCardio: boolean;
-  handleRandomChangeExerciseForRound: (roundIndex: number, exerciseIndex: number, isCardio: boolean) => Dispatch<void>;
+  handleRandomChangeExerciseForRound: (roundIndex: number, exerciseIndex: number, isCardio: boolean) => { payload: any; type: string; };
 }
 
 export default function HiitExerciseDetail({ handleRandomChangeExerciseForRound, description, exerciseName, roundIndex, exerciseIndex, isCardio }: IHiitExerciseDetailProps): React.ReactElement {

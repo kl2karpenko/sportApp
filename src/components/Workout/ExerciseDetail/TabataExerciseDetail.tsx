@@ -12,7 +12,7 @@ interface IExerciseDetailProps {
   roundIndex: number;
   exerciseIndex: number;
   isCardio: boolean;
-  handleRandomChangeExerciseForRound: (roundIndex: number, exerciseIndex: number, isCardio: boolean) => Dispatch<void>;
+  handleRandomChangeExerciseForRound: (roundIndex: number, exerciseIndex: number, isCardio: boolean) => { payload: any; type: string; };
 }
 
 export default function TabataExerciseDetail({ handleRandomChangeExerciseForRound, description, exerciseName, roundIndex, exerciseIndex, isCardio }: IExerciseDetailProps): React.ReactElement {
@@ -33,6 +33,19 @@ export default function TabataExerciseDetail({ handleRandomChangeExerciseForRoun
           </Grid>
           <Grid item xs={12}>
             <Typography align="center" variant={"h3"}>{isResting && isActive ? cardioExercise?.label : (exerciseName || "COMPLETED WORKOUT!")}</Typography>
+          </Grid>
+          <Grid item xs={12} justifySelf={"flex-end"}>
+            <Box
+              minWidth={15}
+              pl={2}
+              pr={0.5}
+              component={Button}
+              color="secondary"
+              size="small"
+              startIcon={<ShuffleIcon fontSize="small" />}
+              variant={"outlined"}
+              onClick={() => handleRandomChangeExerciseForRound(roundIndex, exerciseIndex, isCardio)}
+            />
           </Grid>
         </Grid>
       </CardContent>

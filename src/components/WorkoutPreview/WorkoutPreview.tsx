@@ -11,16 +11,12 @@ export default function WorkoutPreview() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const workoutType = workoutSession.workoutType;
 
-  const getPreviewComponent = (workoutType: WorkoutType) => {
-    switch (workoutType) {
-    case WorkoutType.HIIT:
-      return <HIITWorkoutPreview />;
-    case WorkoutType.Tabata:
-      return <TabataWorkoutPreview />;
-    default:
-      return <span />;
-    }
+  switch (workoutType) {
+  case WorkoutType.HIIT:
+    return <HIITWorkoutPreview />;
+  case WorkoutType.Tabata:
+    return <TabataWorkoutPreview />;
+  default:
+    return <span />;
   }
-
-  return getPreviewComponent(workoutType!);
 }
