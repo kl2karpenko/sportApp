@@ -9,10 +9,9 @@ import { exercises as abs_left_right } from "./abs_left_right";
 import { exercises as hands } from "./hands";
 import { exercises as back } from "./back";
 import { EBodyParts } from "../bodyPartsForWorkout";
-import IExercise from "../../models/Exercise/IExercise";
-import { TValues } from "../../interfaces/TValues";
+import { TAllExercises } from "../../interfaces/TAllExercises";
 
-const workoutTypes: { [key in TValues<typeof EBodyParts>]: IExercise[] } = {
+const workoutTypes: TAllExercises = {
   [EBodyParts.legsFront]: legsFront,
   [EBodyParts.legsRear]: legsRear,
   [EBodyParts.legsInside]: legsInside,

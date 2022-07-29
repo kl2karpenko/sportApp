@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
@@ -14,6 +14,7 @@ import NoMatch from "./components/NoMatch";
 import { CurrentWorkout } from "./components/Workout";
 import { IDialogProps } from "./interfaces/IDialogProps";
 import ModalDialog from "./components/Dialog";
+import SportAppMain from "./components/SportAppMain";
 
 export const defaultWorkoutSession = {
   round: 0,
@@ -25,12 +26,6 @@ export const defaultWorkoutSession = {
 
 function SportApp() {
   const [dialogProps, setDialogProps] = useState<IDialogProps>({ open: false });
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("/express_backend");
-  //     const body = await response.json();
-  //   })()
-  // }, []);
 
   return (
     <Provider store={store}>
@@ -41,15 +36,19 @@ function SportApp() {
             setDialogProps
           }}
         >
-          <Router>
-            <Routes>
-              <Route index element={<CreateWorkout key="startWorkout"/>} />
-              <Route path="workout" element={<CurrentWorkout key="currentWorkout" />} />
-              <Route path="done" element={<span key="workoutDone">Workout is DONE!!!! Congratulations!)</span>} />
-              <Route path="*" element={<NoMatch key="noMatch" />} />
-            </Routes>
-          </Router>
-          <ModalDialog />
+          <SportAppMain>
+            <>
+              <Router>
+                <Routes>
+                  <Route index element={<CreateWorkout key="startWorkout"/>} />
+                  <Route path="workout" element={<CurrentWorkout key="currentWorkout" />} />
+                  <Route path="done" element={<span key="workoutDone">Workout is DONE!!!! Congratulations!)</span>} />
+                  <Route path="*" element={<NoMatch key="noMatch" />} />
+                </Routes>
+              </Router>
+              <ModalDialog />
+            </>
+          </SportAppMain>
         </SportAppContext.Provider>
       </ThemeProvider>
     </Provider>

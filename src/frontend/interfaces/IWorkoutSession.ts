@@ -3,5 +3,5 @@ import { IWorkoutSettings } from "./IWorkoutSettings";
 
 export default interface IWorkoutSession extends IWorkoutSettings {
   includeCardio: boolean;
-  rounds: IRound[];
+  rounds: Partial<IRound>[];
 }

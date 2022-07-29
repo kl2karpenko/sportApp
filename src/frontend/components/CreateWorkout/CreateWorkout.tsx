@@ -9,7 +9,7 @@ import {
   FormLabel,
   Grid,
   MenuItem,
-  Select,
+  Select, SelectChangeEvent,
   Typography
 } from "@mui/material";
 import ShuffleIcon from "@material-ui/icons/Shuffle";
@@ -46,7 +46,7 @@ export default function CreateWorkout(): React.ReactElement {
   const bodyPartsLabels = useSelector((state: RootState) => getBodyPartsLabels(state.bodyParts));
   const workoutType = workoutSession.workoutType;
   const navigate = useNavigate();
-  const updateState = (stateName: WorkoutSessionFields, stateVal: number) =>
+  const updateState = (stateName: WorkoutSessionFields, stateVal: number | boolean) =>
     dispatch(updateWorkoutSessionValue({ field: stateName, value: stateVal }));
   const handleChangeBodyPartForTheRound = (roundIndex: number, fieldValue: TValues<typeof EBodyParts>) =>
     dispatch(updateWorkoutRoundByIndex({ roundIndex, fieldName: RoundFields.bodyId, fieldValue }));
@@ -68,7 +68,7 @@ export default function CreateWorkout(): React.ReactElement {
                     variant="contained"
                     color="secondary"
                     startIcon={<ShuffleIcon />}
-                    onClick={() => dispatch(generateWorkoutSession(workoutSession))}
+                    onClick={() => dispatch(generateWorkoutSession())}
                   >
                     Create!
                   </Button>
@@ -79,7 +79,7 @@ export default function CreateWorkout(): React.ReactElement {
                     color="error"
                     disabled={!workoutSession?.rounds.length}
                     startIcon={<ShuffleIcon />}
-                    onClick={() => dispatch(regenerateWorkoutSessionRounds(workoutSession))}
+                    onClick={() => dispatch(regenerateWorkoutSessionRounds())}
                   >
                     Regenerate
                   </Button>
@@ -121,7 +121,8 @@ export default function CreateWorkout(): React.ReactElement {
                     <Select
                       id="workoutType"
                       value={workoutType}
-                      onChange={(e: ChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => dispatch(changeWorkoutType(value))}
+                      // @ts-ignore
+                      onChange={(e: SelectChangeEvent, { props: { value } }: { props: { value: WorkoutType }}) => dispatch(changeWorkoutType(value))}
                     >
                       {WorkoutTypesList.map((workoutTypeInside: WorkoutType) => (
                         <MenuItem key={workoutTypeInside} value={workoutTypeInside}>{
@@ -136,7 +137,7 @@ export default function CreateWorkout(): React.ReactElement {
             </Grid>
             <Grid item xs={6}>
               <Grid container spacing={2} direction="column">
-                {workoutSession?.rounds?.map((round: IRound, index: number) => {
+                {workoutSession?.rounds?.map((round: Partial<IRound>, index: number) => {
                   const { bodyId } = round;
 
                   return (
@@ -148,6 +149,7 @@ export default function CreateWorkout(): React.ReactElement {
                             <Select
                               id={`workout_parts-${index}`}
                               defaultValue={bodyId}
+                              // @ts-ignore
                               onChange={(e: ChangeEvent, { props: { value } }: { props: { value: TValues<typeof EBodyParts> }}) =>
                                 handleChangeBodyPartForTheRound(index, value)
                               }

@@ -8,9 +8,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 import { getBodyPartLabel } from "../../../store/bodyParts";
 import { getRoundByIndex } from "../../../store/workoutSession";
+import { TValues } from "../../../interfaces/TValues";
+import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 
 interface IWorkoutRoundExercisesPreviewProps {
-  round: IRound;
+  round: Partial<IRound>;
   roundIndex: number;
   handleRandomChangeExerciseForRound: (round: number, exerciseNum: number, isCardio: boolean) => void;
   handleChangeExerciseForRound(roundIndex: number, exerciseIndex: number, value: string): void;
@@ -24,7 +26,7 @@ export default function HIITWorkoutPreviewRound({
 ) {
   const currentRound = useSelector((state: RootState) => getRoundByIndex(state.workoutSession, roundIndex));
   const bodyPartName = round.bodyId;
-  const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, bodyPartName));
+  const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, bodyPartName as TValues<typeof EBodyParts>));
 
   return (
     <Fragment key={round.bodyId}>
@@ -34,11 +36,12 @@ export default function HIITWorkoutPreviewRound({
       <Grid item xs={12}>
         <List>
           {(currentRound.exercisesList || []).map((exercise: Partial<IExercise>, index) => {
-            const isCardio = exercise.id.includes("cardio");
-            const chipLabel = exercise.id.replace(/-ex\d+/gi,"");
+            const exId = exercise.id || "";
+            const isCardio = exId.includes("cardio");
+            const chipLabel = exId.replace(/-ex\d+/gi,"");
 
             return (
-              <ListItem disableGutters divider key={`${roundIndex}-${index}-${exercise.id}`}
+              <ListItem disableGutters divider key={`${roundIndex}-${index}-${exId}`}
                 secondaryAction={
                   <Box
                     minWidth={15}
