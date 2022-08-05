@@ -20,7 +20,7 @@ export const updateWorkoutSessionValueForTabataAction = (state: IWorkoutSessionS
 
   if (field === WorkoutSessionFields.roundsLength) {
     workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
-    newRounds = workoutBuilderService?.generateWorkout(newState, allExercisesData, state.allExercises.cardio);
+    newRounds = workoutBuilderService?.generateWorkout(newState);
   }
 
   return {

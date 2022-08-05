@@ -21,7 +21,6 @@ export default function ExerciseDetail(props: IExerciseDetailProps): React.React
   const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, isCardio: boolean) =>
     dispatch(generateRandomWorkoutExerciseInRound({ roundIndex, exerciseIndex, isCardio }));
 
-
   if (workoutType === WorkoutType.Tabata) {
     return <TabataExerciseDetail {...props} handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound} />
   }

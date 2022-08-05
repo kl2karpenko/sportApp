@@ -9,16 +9,23 @@ export default class ActiveWorkoutManagerService {
     this.workoutSession = props.workoutSession;
   }
 
-  public moveToNextStep(activeWorkoutState: IActiveWorkoutState): IActiveWorkoutState {
+  private isWorkoutEnded(activeWorkoutState: IActiveWorkoutState): boolean {
     const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
     const { roundsLength, exercisesLength } = this.workoutSession;
+    return (roundsLength - 1) === activeRoundIndex && (activeExerciseIndex === (exercisesLength - 1)) && isResting;
+  }
+
+  public moveToNextStep(activeWorkoutState: IActiveWorkoutState): IActiveWorkoutState {
+    const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
+    const { exercisesLength } = this.workoutSession;
+    const isEnded = this.isWorkoutEnded(activeWorkoutState);
 
     // set to rest if it was not resting before
     if (!isResting) {
       return {
         ...activeWorkoutState,
         isResting: true,
-        isEnded: false
+        isEnded
       }
     }
 
@@ -30,7 +37,7 @@ export default class ActiveWorkoutManagerService {
         ...activeWorkoutState,
         activeExerciseIndex: activeExerciseIndex + 1,
         isResting: false,
-        isEnded: false
+        isEnded
       };
     }
 
@@ -40,18 +47,20 @@ export default class ActiveWorkoutManagerService {
       activeRoundIndex: activeRoundIndex + 1,
       activeExerciseIndex: 0,
       isResting: false,
-      isEnded: false
+      isEnded
     };
   }
 
   public moveToPreviousStep(activeWorkoutState: IActiveWorkoutState) {
     const { isResting, activeExerciseIndex, activeRoundIndex } = activeWorkoutState;
-    const { roundsLength, exercisesLength } = this.workoutSession;
+    const { exercisesLength } = this.workoutSession;
+    const isEnded = this.isWorkoutEnded(activeWorkoutState);
 
     if (isResting) {
       return {
         ...activeWorkoutState,
-        isResting: false
+        isResting: false,
+        isEnded
       };
     }
 
@@ -60,7 +69,8 @@ export default class ActiveWorkoutManagerService {
       return {
         ...activeWorkoutState,
         activeExerciseIndex: activeExerciseIndex - 1,
-        isResting: true
+        isResting: true,
+        isEnded
       };
     }
 
@@ -70,7 +80,8 @@ export default class ActiveWorkoutManagerService {
         ...activeWorkoutState,
         activeExerciseIndex: exercisesLength - 1,
         activeRoundIndex: activeRoundIndex - 1,
-        isResting: true
+        isResting: true,
+        isEnded
       }
     }
 
@@ -95,6 +106,7 @@ export default class ActiveWorkoutManagerService {
     const newInterval = this.getIntervalForTimer(activeWorkoutState);
     const time = new Date();
     time.setSeconds(time.getSeconds() + newInterval);
+
     return time;
   }
 
@@ -110,5 +122,11 @@ export default class ActiveWorkoutManagerService {
     const { roundsLength, exercisesLength } = this.workoutSession;
 
     return isResting && activeExerciseIndex === exercisesLength - 1 && activeRoundIndex !== roundsLength - 1;
+  }
+
+  public isWorkoutFinished = (activeWorkoutState: IActiveWorkoutState): boolean => {
+    const { isEnded } = activeWorkoutState;
+
+    return isEnded
   }
 }

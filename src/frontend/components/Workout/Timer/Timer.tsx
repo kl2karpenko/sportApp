@@ -10,6 +10,9 @@ export default function Timer({ activeWorkoutManager }: { activeWorkoutManager: 
   const dispatch = useDispatch();
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const expiryTimestamp = activeWorkoutManager.getDateForTimer(activeWorkout);
+  const isEnded = activeWorkout.isEnded;
+
+  if (activeWorkout.isEnded) return <span />;
 
   return (
     <CustomTimer
@@ -17,10 +20,16 @@ export default function Timer({ activeWorkoutManager }: { activeWorkoutManager: 
       // setNextStepInWorkout={() => activeWorkoutManager.moveToNextStep(activeWorkout)}
       expiryTimestamp={expiryTimestamp}
       isResting={activeWorkout.isResting}
+      isEnded={activeWorkout.isEnded}
       moveToNext={() => {
         // updated state
         const newActiveWorkoutState = activeWorkoutManager.moveToNextStep(activeWorkout);
+        const { isEnded } = newActiveWorkoutState;
         dispatch(updateWorkoutState(newActiveWorkoutState));
+
+        if (isEnded) {
+          return null;
+        }
 
         return activeWorkoutManager.getDateForTimer(newActiveWorkoutState);
       }}

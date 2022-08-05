@@ -11,7 +11,8 @@ let activeWorkoutState: IActiveWorkoutState = {
 };
 const workoutSession: IWorkoutSession = {
   ...hiitDefaultSettings,
-  rounds: []
+  rounds: [],
+  includeCardio: false
 };
 
 describe("ActiveWorkoutManagerService", function () {

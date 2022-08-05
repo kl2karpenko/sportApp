@@ -12,14 +12,20 @@ export default class HIITWorkoutBuilderService extends WorkoutBuilderService {
     return this.roundBuilder.generate(props);
   }
 
-  generateWorkout(workoutSession: IWorkoutSessionState, exercises: TAllExercises, cardioExercises: Partial<IExercise>[]): Partial<IRound>[] {
+  generateWorkout(workoutSession: IWorkoutSessionState): Partial<IRound>[] {
     const {
       roundsLength,
+      workoutType,
+      allExercises: {
+        cardio: cardioExercises
+      },
+      allExercises
     } = workoutSession;
     if (roundsLength === 0) throw new Error();
 
+    const exercises = allExercises[workoutType];
     const bodyPartsIdForEachRound = this.generateBodyParts(roundsLength);
 
-    return this.generateWorkoutRounds({ workoutSession, bodyPartsIdForEachRound, exercises, cardioExercises });
+    return this.generateWorkoutRounds({ workoutSession, bodyPartsIdForEachRound });
   }
 }

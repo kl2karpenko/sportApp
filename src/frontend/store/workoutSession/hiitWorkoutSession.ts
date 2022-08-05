@@ -27,7 +27,7 @@ export const updateWorkoutSessionForHiitValueAction = (state: IWorkoutSessionSta
   if (newState.rounds.length && state.rounds.length < newState.rounds.length && [WorkoutSessionFields.roundsLength, WorkoutSessionFields.exercisesLength, WorkoutSessionFields.cardioStep].includes(field)) {
     const workoutBuilderService = workoutBuilderServiceInstance.getService(newState.workoutType);
     const newRoundsVal = newRounds.map((round: Partial<IRound>) => round.bodyId) as TValues<typeof EBodyParts>[];
-    newRounds = workoutBuilderService?.generateWorkoutRounds({ workoutSession: newState, bodyPartsIdForEachRound: newRoundsVal, exercises: allExercisesData, cardioExercises: state.allExercises.cardio });
+    newRounds = workoutBuilderService?.generateWorkoutRounds({ workoutSession: newState, bodyPartsIdForEachRound: newRoundsVal });
   }
 
   return {

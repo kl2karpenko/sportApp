@@ -1,3 +1,11 @@
+export const defaultHiitSettings = {
+  roundsLength: 8,
+  exercisesLength: 8,
+  exerciseDuration: 40,
+  restDuration: 20,
+  betweenRoundsDuration: 60
+};
+
 export default {
   "legsFront": [
     {

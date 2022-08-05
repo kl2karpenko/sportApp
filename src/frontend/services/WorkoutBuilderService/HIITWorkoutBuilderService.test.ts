@@ -1,15 +1,12 @@
 import HIITWorkoutBuilderService from "./HIITWorkoutBuilderService";
 import { hiitDefaultSettings } from "../../data/workoutsDefaultSettings";
-import { mockedWorkoutTypes } from "../../mockedData/exercises";
+import { testHiitWorkoutSession } from "../../mockedData/testWorkoutSession";
 
 describe("HIITWorkoutBuilderService", () => {
   it("should be able to generate a workout and strre values in workoutSession", () => {
     const instHIITWorkoutService = new HIITWorkoutBuilderService();
 
-    const generatedRounds = instHIITWorkoutService.generateWorkout({
-      ...hiitDefaultSettings,
-      rounds: []
-    }, mockedWorkoutTypes, mockedWorkoutTypes.cardio);
+    const generatedRounds = instHIITWorkoutService.generateWorkout(testHiitWorkoutSession);
 
     expect(generatedRounds.length).toBe(hiitDefaultSettings.roundsLength);
   });

@@ -15,7 +15,7 @@ import { getBodyPartLabel } from "../../../store/bodyParts";
 import { TValues } from "../../../interfaces/TValues";
 import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 
-const isExerciseCardio = (ex: Partial<IExercise>): boolean => ex?.id!.includes("cardio");
+const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
 export default function CurrentWorkout(): React.ReactElement {
   const classes = useStyles();

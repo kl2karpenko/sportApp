@@ -19,21 +19,8 @@ export default class ExercisesList implements IExercisesList {
   private readonly cardioExercisesList: Partial<IExercise>[] = [];
 
   constructor(props: IExercisesListProps) {
-    const { workoutType = WorkoutType.HIIT, cardioExercises } = props;
-
-    switch (workoutType) {
-    case WorkoutType.HIIT:
-      this.exercisesList = props.exercises;
-      break;
-    case WorkoutType.Tabata:
-      this.exercisesList = props.exercises;
-      break;
-    default:
-      this.exercisesList = props.exercises;
-      break;
-    }
-
-    // TODO: change
+    const { cardioExercises } = props;
+    this.exercisesList = props.exercises;
     this.cardioExercisesList = cardioExercises;
     this.exercisesListAsArray = flatten(Object.values(this.exercisesList).map((exercisesList: Partial<IExercise>[]) => exercisesList, []));
   }

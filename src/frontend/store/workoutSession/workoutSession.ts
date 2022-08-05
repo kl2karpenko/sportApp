@@ -51,7 +51,7 @@ export const workoutSessionSlice = createSlice({
     generateWorkoutSession: (state: IWorkoutSessionState) => {
       const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
       const allExercisesData: TAllExercises = state.allExercises[state.workoutType];
-      const rounds = workoutBuilderService?.generateWorkout(state, allExercisesData, state.allExercises.cardio);
+      const rounds = workoutBuilderService?.generateWorkout(state);
 
       return {
         ...state,
@@ -60,9 +60,9 @@ export const workoutSessionSlice = createSlice({
     },
     regenerateWorkoutSessionRounds: (state: IWorkoutSessionState) => {
       const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
-      const allExercisesData: TAllExercises = state.allExercises[state.workoutType];
       const bodyPartsIdForEachRound: TValues<typeof EBodyParts>[] = state.rounds.map((round: Partial<IRound>) => round.bodyId) as TValues<typeof EBodyParts>[];
-      const rounds = workoutBuilderService?.generateWorkoutRounds({ workoutSession: state, bodyPartsIdForEachRound, exercises: allExercisesData, cardioExercises: state.allExercises.cardio });
+
+      const rounds = workoutBuilderService?.generateWorkoutRounds({ workoutSession: state, bodyPartsIdForEachRound });
 
       return {
         ...state,
@@ -108,7 +108,7 @@ export const workoutSessionSlice = createSlice({
 
       const workoutBuilderService = workoutBuilderServiceInstance.getService(newState.workoutType);
       const allExercisesData: TAllExercises = state.allExercises[state.workoutType];
-      const rounds = workoutBuilderService?.generateWorkout(newState, allExercisesData, state.allExercises.cardio);
+      const rounds = workoutBuilderService?.generateWorkout(newState);
 
       return {
         ...newState,

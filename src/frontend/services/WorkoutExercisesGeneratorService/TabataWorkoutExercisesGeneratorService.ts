@@ -20,7 +20,6 @@ export default class TabataWorkoutExercisesGeneratorService extends WorkoutExerc
 
   public getExercisesList(props: ITabataWorkoutGetExercisesListConfig = { includeCardio: true }): Partial<IExercise>[] {
     const { includeCardio } = props;
-    console.log(includeCardio, " includeCardio");
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
 
     const shuffledExercises = this.getShuffledList(listOfExercises);

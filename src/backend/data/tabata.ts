@@ -1,3 +1,11 @@
+export const defaultTabataSettings = {
+  roundsLength: 8,
+  exercisesLength: 8,
+  exerciseDuration: 30,
+  restDuration: 15,
+  betweenRoundsDuration: 90
+};
+
 export default {
   "legsFront": [
     {

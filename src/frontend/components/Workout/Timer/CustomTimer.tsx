@@ -12,9 +12,10 @@ const beepEndSound = require("../../../sounds/mixkit-repeating-arcade-beep-1084.
 interface IMyTimerProps {
   expiryTimestamp: Date;
   // setNextStepInWorkout: () => Date;
-  moveToNext: () => Date;
+  moveToNext: () => Date | null;
   moveToPrevious: () => Date;
   isResting: boolean;
+  isEnded: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function MyTimer({ expiryTimestamp, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
+export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNext, moveToPrevious }: IMyTimerProps) {
   const {
     minutes,
     seconds,
@@ -34,7 +35,15 @@ export default function MyTimer({ expiryTimestamp, isResting, moveToNext, moveTo
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
-      setTimeout(() => restart(moveToNext()), 0);
+      const newTime = moveToNext();
+
+      console.log(newTime, " newTime on expire");
+
+      if (newTime) {
+        setTimeout(() => restart(newTime), 0);
+      } else {
+        pause();
+      }
     }
   });
   const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.2 });
@@ -89,7 +98,13 @@ export default function MyTimer({ expiryTimestamp, isResting, moveToNext, moveTo
                     color="primary"
                     aria-label="pause"
                     component="span"
-                    onClick={() => restart(moveToNext())}
+                    disabled={isEnded}
+                    onClick={() => {
+                      const newTime = moveToNext();
+                      if (newTime && !isEnded) {
+                        restart(newTime);
+                      }
+                    }}
                   >
                     {<SkipNext className={classes.bigIcon} />}
                   </IconButton>

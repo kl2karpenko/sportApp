@@ -1,5 +1,5 @@
 import { NextFunction, RequestHandler, Response } from "express";
-import tabata from "../data/tabata";
+import tabata, { defaultTabataSettings } from "../data/tabata";
 
 const
   express = require("express"),
@@ -13,6 +13,12 @@ router.use(function timeLog(req: RequestHandler, res: Response, next: NextFuncti
 router.get("/", (req: RequestHandler, res: Response) => {
   res.send({
     data: tabata
+  });
+});
+
+router.get("/default", (req: RequestHandler, res: Response) => {
+  res.send({
+    data: defaultTabataSettings
   });
 });
 

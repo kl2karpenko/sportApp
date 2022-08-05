@@ -4,12 +4,11 @@ import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
 import TabataWorkoutExercisesGeneratorService from "../WorkoutExercisesGeneratorService/TabataWorkoutExercisesGeneratorService";
-import { TAllExercises } from "../../interfaces/TAllExercises";
 import { IWorkoutSessionState } from "../../store/workoutSession";
 
 export default class TabataRoundBuilderService extends RoundBuilderService {
   public generate(props: IRoundBuilderServiceConfig): Partial<IRound>[] {
-    const { workoutSession, bodyPartsIdForEachRound, exercises, cardioExercises } = props;
+    const { workoutSession, bodyPartsIdForEachRound } = props;
     const {
       roundsLength
     } = workoutSession;
@@ -19,28 +18,29 @@ export default class TabataRoundBuilderService extends RoundBuilderService {
 
     const allRounds: Partial<IRound>[] = [];
     for (let i = 0; i < roundsLength; i++) {
-      allRounds.push(this.generateRound(workoutSession, bodyPartsIdForEachRound[i], exercises, cardioExercises));
+      allRounds.push(this.generateRound(workoutSession, bodyPartsIdForEachRound[i]));
     }
 
     return allRounds;
   }
 
-  public generateRoundExercises(workoutSession: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>, exercises: TAllExercises, cardioExercises: Partial<IExercise>[]): Partial<IExercise>[] {
-    const { includeCardio } = workoutSession;
+  public generateRoundExercises(workoutSession: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>): Partial<IExercise>[] {
+    const { includeCardio, allExercises, allExercises: { cardio: cardioExercises }, workoutType } = workoutSession;
+    const exercises = allExercises[workoutType];
     const workoutExercisesGenerator: TabataWorkoutExercisesGeneratorService = new TabataWorkoutExercisesGeneratorService({ exercisesLength: 2, bodyPartName, exercises, cardioExercises });
 
     const [ ex1, ex2, cardio ] = workoutExercisesGenerator.getExercisesList({ includeCardio });
     return [ ex1, ex1, ex1, ex1, ex2, ex2, ex2, ex2, cardio ];
   }
 
-  public generateRound(workoutSession: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>, exercises: TAllExercises, cardioExercises: Partial<IExercise>[]): Partial<IRound> {
+  public generateRound(workoutSession: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>): Partial<IRound> {
     const { restDuration, exerciseDuration } = workoutSession;
 
     return {
       bodyId: bodyPartName,
       restDuration,
       workDuration: exerciseDuration,
-      exercisesList: this.generateRoundExercises(workoutSession, bodyPartName, exercises, cardioExercises),
+      exercisesList: this.generateRoundExercises(workoutSession, bodyPartName),
       isActive: false
     };
   }

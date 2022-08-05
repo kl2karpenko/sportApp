@@ -44,7 +44,7 @@
     "start:be": "node backend/server.js",
     "build": "npm run build:fe && npm run build:backend",
     "dev:server": "nodemon --watch 'src/backend/**/*.ts' --exec 'ts-node' src/backend/server.ts",
-    "test": "react-scripts src/test -- --config=jest.config.js",
+    "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "npm run lint -- --fix"

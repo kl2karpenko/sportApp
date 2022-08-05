@@ -11,14 +11,12 @@ import IExercise from "../../models/Exercise/IExercise";
 export interface IWorkoutBuilderServiceConfig {
   workoutSession: IWorkoutSessionState;
   bodyPartsIdForEachRound: TValues<typeof EBodyParts>[];
-  exercises: TAllExercises;
-  cardioExercises: Partial<IExercise>[];
 }
 
 export default class WorkoutBuilderService {
   private bodyParts: IBodyParts = new BodyParts();
 
-  generateWorkout(workoutSession: IWorkoutSession, exercises: TAllExercises, cardioExercises: Partial<IExercise>[]): Partial<IRound>[] {
+  generateWorkout(workoutSession: IWorkoutSession): Partial<IRound>[] {
     return [];
   }
   

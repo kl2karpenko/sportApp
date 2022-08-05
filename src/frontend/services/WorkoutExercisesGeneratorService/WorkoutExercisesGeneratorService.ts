@@ -13,7 +13,7 @@ export interface IWorkoutExercisesGeneratorServiceConfig {
 }
 
 export default class WorkoutExercisesGeneratorService {
-  protected listOfExercisesForCurrentBodyPart: Partial<IExercise>[];
+  protected listOfExercisesForCurrentBodyPart: Partial<IExercise>[] = [];
   protected bodyPartName: TValues<typeof EBodyParts>;
   protected exercisesInRoundLength: number;
   protected allExercisesData: IExercisesList;
