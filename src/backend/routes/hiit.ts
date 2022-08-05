@@ -6,7 +6,6 @@ const
   router = express.Router();
 
 router.use(function timeLog(req: RequestHandler, res: Response, next: NextFunction) {
-  console.log("Time: ", Date.now());
   next();
 });
 
