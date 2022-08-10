@@ -1,5 +1,5 @@
 import { NextFunction, RequestHandler, Response } from "express";
-import cardio from "../data/cardio";
+import cardio from "../data/shared/cardio";
 
 const
   express = require("express"),
