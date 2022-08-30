@@ -143,6 +143,8 @@ export const workoutSessionSlice = createSlice({
 
 // SELECTORS =======
 export const getAllRounds = (state: IWorkoutSessionState) => state.rounds;
+export const getAllExercises = (state: IWorkoutSessionState) => state.allExercises;
+export const getAllExercisesList = (state: IWorkoutSessionState) => state.allExercises[state.workoutType]
 export const getRoundByIndex = createSelector([
   getAllRounds,
   (state: IWorkoutSessionState, roundIndex: number) => roundIndex
@@ -151,6 +153,19 @@ export const getRoundExercisesListByIndex = createSelector([
   getRoundByIndex
 // @ts-ignore
 ], (roundByIndex): Partial<IExercise>[] => Array.from(roundByIndex.exercisesList));
+export const getAllExercisesForBodyPart = createSelector([
+  getAllExercisesList,
+  (state: IWorkoutSessionState, bodyPartName: TValues<typeof EBodyParts>) => bodyPartName
+// @ts-ignore
+], (allExercises, bodyPartName): Partial<IExercise>[] => {
+  console.log(allExercises, " allExercises ", bodyPartName);
+
+  return allExercises[bodyPartName];
+});
+export const getCardioExercisesList = createSelector([
+  getAllExercises
+// @ts-ignore
+], (allExercises): Partial<IExercise>[] => allExercises.cardio);
 
 // Action creators are generated for each case reducer function
 export const {

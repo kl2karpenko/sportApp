@@ -14,7 +14,7 @@ describe("TabataRoundBuilderService", () => {
         includeCardio: true
       }, EBodyParts.abs);
 
-      expect(resultsExercises.length).toBe(tabataDefaultSettings.exercisesLength + 1);
+      expect(resultsExercises.length).toBe(3);
     });
   });
 

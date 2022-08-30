@@ -12,16 +12,10 @@ export default class TabataWorkoutBuilderService extends WorkoutBuilderService {
 
   generateWorkout(workoutSession: IWorkoutSessionState): Partial<IRound>[] {
     const {
-      roundsLength,
-      workoutType,
-      allExercises: {
-        cardio: cardioExercises
-      },
-      allExercises
+      roundsLength
     } = workoutSession;
     if (roundsLength === 0) throw new Error();
 
-    const exercises = allExercises[workoutType];
     const bodyPartsIdForEachRound = this.generateBodyParts(roundsLength);
 
     return this.generateWorkoutRounds({ workoutSession, bodyPartsIdForEachRound });

@@ -37,8 +37,6 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
     onExpire: () => {
       const newTime = moveToNext();
 
-      console.log(newTime, " newTime on expire");
-
       if (newTime) {
         setTimeout(() => restart(newTime), 0);
       } else {

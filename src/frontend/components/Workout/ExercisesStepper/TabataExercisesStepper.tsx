@@ -14,24 +14,24 @@ export default function TabataExercisesStepper() {
   const { activeRoundIndex, activeExerciseIndex, isResting } = activeWorkout;
   const currentRound = allRounds[activeRoundIndex] || {};
   const allExercises = currentRound.exercisesList || [];
-  const cardioExercise = includeCardio ? allExercises[allExercises.length - 1] : {};
+  const cardioExercise = allExercises[2];
+
+  console.log(allExercises, ' allExercises');
 
   return (
     <Box ml={1} className={classes.stretchHeight}>
       <Stepper className={classes.stretchHeight} activeStep={activeExerciseIndex} orientation="vertical">
-        {[allExercises[0], allExercises[4]].map((exercise: Partial<IExercise>, exerciseIndex: number) => {
+        {[allExercises[0], allExercises[1]].map((exercise: Partial<IExercise>, exerciseIndex: number) => {
           const ifFirstSetOfExercises = activeExerciseIndex <= 3;
           const isActive = ifFirstSetOfExercises ? activeExerciseIndex <= 3 && exerciseIndex === 0 : exerciseIndex === 1 && activeExerciseIndex <= allExercises.length - 1 && activeExerciseIndex > 3;
           const isCompleted = exerciseIndex === 0 ? !ifFirstSetOfExercises : !ifFirstSetOfExercises && activeExerciseIndex === allExercises.length - 1;
           const isRestStep = isResting && isActive;
-          const isCardio = exercise?.id?.includes("cardio");
 
           return (
             <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={!isActive && isCompleted ? "secondary" : "primary"}>
               <StepLabel>
                 <Typography className={(isActive || isRestStep) && classes.bold || ""} variant={"caption"}>
-                  {isActive && !isRestStep ? exercise.label : (isRestStep ? cardioExercise.label : (isCompleted ? "DONE" : exercise.label))}
-                  {isCardio ? <Chip label="c" size="small" color="error" /> : ""}
+                  {isCompleted ? "DONE" : exercise.label}
                 </Typography>
               </StepLabel>
             </Step>

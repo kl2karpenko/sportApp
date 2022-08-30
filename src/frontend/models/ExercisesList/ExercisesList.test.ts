@@ -22,7 +22,6 @@ describe("ExercisesList", function () {
   describe("getExercisesListAsArray", () => {
     it("should have a list of all exercises flattened in exercisesListAsArray", () => {
       const list = testAllExercisesInstance.getExercisesListAsArray();
-      console.log(testAllExercisesInstance, " testAllExercisesInstance");
       let len = 0;
       Object.values(testAllExercisesInstance.getExercisesList()).map((values: IExercise[]) => {
         len += values.length;

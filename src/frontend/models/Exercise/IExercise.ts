@@ -4,4 +4,5 @@ export default interface IExercise {
   isCardio: boolean;
   pair?: string;
   video?: string;
+  description?: string;
 }
