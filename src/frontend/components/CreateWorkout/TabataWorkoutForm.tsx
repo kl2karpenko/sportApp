@@ -12,7 +12,9 @@ export default function TabataWorkoutForm({ updateState }: ITabataWorkoutFormPro
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   // @ts-ignore
   const WorkoutSessionFieldsPairs: { [key in WorkoutSessionFields]: number } = {
-    [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0
+    [WorkoutSessionFields.roundsLength]: workoutSession?.roundsLength || 0,
+    [WorkoutSessionFields.exerciseDuration]: workoutSession?.exerciseDuration || 0,
+    [WorkoutSessionFields.restDuration]: workoutSession?.restDuration || 0
   };
 
   return (

@@ -52,7 +52,7 @@
     "build:backend": "tsc src/backend/* --outDir backend/",
     "start:be": "node backend/server.js",
     "build": "npm run build:fe && npm run build:backend",
-    "dev:server": "nodemon --watch 'src/backend/**/*.ts' --exec 'ts-node' src/backend/server.ts",
+    "dev:server": "nodemon --watch 'src/backend' --exec 'ts-node' src/backend/server.ts",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts,.tsx",

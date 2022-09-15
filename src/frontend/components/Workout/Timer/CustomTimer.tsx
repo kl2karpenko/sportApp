@@ -7,7 +7,7 @@ import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@material-ui/icons";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
 import { makeStyles } from "@mui/styles";
 
-const beepEndSound = require("../../../sounds/mixkit-repeating-arcade-beep-1084.wav");
+const beepEndSound = require("../../../sounds/clock-countdown.wav");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
