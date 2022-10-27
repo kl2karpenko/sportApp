@@ -1,20 +1,21 @@
 import React, { useEffect } from "react";
 import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
-import { Box, Grid, Card, CardContent, Typography, IconButton, Theme } from "@mui/material";
+import { Box, Card, CardContent, Grid, IconButton, Theme, Typography } from "@mui/material";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@material-ui/icons";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
 import { makeStyles } from "@mui/styles";
 
-const beepEndSound = require("../../../sounds/mixkit-repeating-arcade-beep-1084.wav");
+const beepEndSound = require("../../../sounds/clock-countdown.wav");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
-  setNextStepInWorkout: () => Date;
-  moveToNext: () => Date;
+  // setNextStepInWorkout: () => Date;
+  moveToNext: () => Date | null;
   moveToPrevious: () => Date;
   isResting: boolean;
+  isEnded: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResting, moveToNext, moveToPrevious }: IMyTimerProps) {
+export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNext, moveToPrevious }: IMyTimerProps) {
   const {
     minutes,
     seconds,
@@ -34,10 +35,16 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResti
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
-      setTimeout(() => restart(setNextStepInWorkout()), 0);
+      const newTime = moveToNext();
+
+      if (newTime) {
+        setTimeout(() => restart(newTime), 0);
+      } else {
+        pause();
+      }
     }
   });
-  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.15 });
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.2 });
   const classes = useStyles();
   const totalTimerTime = minutes*60 + seconds;
 
@@ -89,7 +96,13 @@ export default function MyTimer({ expiryTimestamp, setNextStepInWorkout, isResti
                     color="primary"
                     aria-label="pause"
                     component="span"
-                    onClick={() => restart(moveToNext())}
+                    disabled={isEnded}
+                    onClick={() => {
+                      const newTime = moveToNext();
+                      if (newTime && !isEnded) {
+                        restart(newTime);
+                      }
+                    }}
                   >
                     {<SkipNext className={classes.bigIcon} />}
                   </IconButton>

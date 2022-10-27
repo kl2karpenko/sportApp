@@ -1,69 +1,45 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { SportAppContext } from "../../../SportAppContext";
-import {setNextStep, toNextExercise, toPreviousExercise} from "../../../helpers/workoutHelpers";
-import { IWorkoutSession } from "../../../interfaces/IWorkoutSession";
-import { IWorkoutType } from "../../../interfaces/IWorkoutType";
 import CustomTimer from "./CustomTimer";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store/main";
+import ActiveWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
+import { updateWorkoutState } from "../../../store/activeWorkout";
 
-const getIntervalForTimer = ({ currentWorkoutSession, workoutSettings }: { currentWorkoutSession: IWorkoutSession; workoutSettings: IWorkoutType }): Date => {
-  let interval = 0;
+export default function Timer({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
+  const dispatch = useDispatch();
+  const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
+  const expiryTimestamp = activeWorkoutManager.getDateForTimer(activeWorkout);
+  const isEnded = activeWorkout.isEnded;
 
-  if (currentWorkoutSession.isResting) {
-    if (currentWorkoutSession.exercise < workoutSettings.exercises) {
-      interval = workoutSettings.rest_duration;
-    } else {
-      interval = workoutSettings.rest_between_rounds;
-    }
-  }  else if (currentWorkoutSession.inProgress) {
-    interval = workoutSettings.exercise_duration;
-  }
-
-  const time = new Date();
-  time.setSeconds(time.getSeconds() + interval);
-  return time;
-};
-
-export default function Timer(): React.ReactElement {
-  const { workoutSettings, currentWorkoutSession, setCurrentWorkoutSession } = useContext(SportAppContext);
-  const expiryTimestamp = getIntervalForTimer({ currentWorkoutSession, workoutSettings });
-  const setNextStepInWorkout = () => {
-    const previousSessionValues = JSON.parse(JSON.stringify(currentWorkoutSession));
-    const updatedWorkoutState: IWorkoutSession = setNextStep({
-      currentWorkoutSession, workoutSettings, previousSessionValues
-    });
-    setCurrentWorkoutSession(updatedWorkoutState);
-
-    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
-  };
-  const moveToNext = (): Date => {
-    const previousSessionValues = JSON.parse(JSON.stringify(currentWorkoutSession));
-    const updatedWorkoutState: IWorkoutSession = setNextStep({
-      currentWorkoutSession, workoutSettings, previousSessionValues
-    });
-    setCurrentWorkoutSession(updatedWorkoutState);
-
-    console.log("moveToNext", updatedWorkoutState);
-
-    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
-  };
-  const moveToPrevious = (): Date => {
-    const updatedWorkoutState: IWorkoutSession = toPreviousExercise({
-      currentWorkoutSession, workoutSettings
-    });
-    setCurrentWorkoutSession(updatedWorkoutState);
-
-    return getIntervalForTimer({ currentWorkoutSession: updatedWorkoutState, workoutSettings });
-  };
+  if (activeWorkout.isEnded) return <span />;
 
   return (
     <CustomTimer
       key="customTimer"
-      setNextStepInWorkout={setNextStepInWorkout}
+      // setNextStepInWorkout={() => activeWorkoutManager.moveToNextStep(activeWorkout)}
       expiryTimestamp={expiryTimestamp}
-      isResting={currentWorkoutSession.isResting}
-      moveToNext={moveToNext}
-      moveToPrevious={moveToPrevious}
+      isResting={activeWorkout.isResting}
+      isEnded={activeWorkout.isEnded}
+      moveToNext={() => {
+        // updated state
+        const newActiveWorkoutState = activeWorkoutManager.moveToNextStep(activeWorkout);
+        const { isEnded } = newActiveWorkoutState;
+        dispatch(updateWorkoutState(newActiveWorkoutState));
+
+        if (isEnded) {
+          return null;
+        }
+
+        return activeWorkoutManager.getDateForTimer(newActiveWorkoutState);
+      }}
+      moveToPrevious={() => {
+        // updated state
+        const newActiveWorkoutState = activeWorkoutManager.moveToPreviousStep(activeWorkout);
+        dispatch(updateWorkoutState(newActiveWorkoutState));
+
+        return activeWorkoutManager.getDateForTimer(newActiveWorkoutState);
+      }}
     />
   )
 }

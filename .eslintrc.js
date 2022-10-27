@@ -34,7 +34,8 @@ module.exports = {
       "warn",
       "double"
     ],
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "object-curly-spacing": ["error", "always"]
   },
   settings: {
     react: {

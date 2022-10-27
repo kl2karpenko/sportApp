@@ -1,27 +1,29 @@
 import React from "react";
-
-import { Card, CardContent, Typography, Grid } from "@mui/material";
+import { generateRandomWorkoutExerciseInRound } from "../../../store/workoutSession";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store/main";
+import { WorkoutType } from "../../../interfaces/WorkoutType";
+import TabataExerciseDetail from "./TabataExerciseDetail";
+import HiitExerciseDetail from "./HiitExerciseDetail";
 
 interface IExerciseDetailProps {
   exerciseName?: string;
-  video?: string;
   description: string;
+  roundIndex: number;
+  exerciseIndex: number;
+  isCardio: boolean;
 }
 
-export default function ExerciseDetail({ description, video, exerciseName }: IExerciseDetailProps): React.ReactElement {
-  return (
-    <Card variant="outlined">
-      <CardContent>
-        <Grid container spacing={2} direction="column">
-          <Grid item xs={12}>
-            <Typography align="center" variant="h6">{description}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            {video ? <img src={video} alt="exerciseName" height={450} width={450} /> : ""}
-            {!video ? <Typography align="center" variant="h4">{exerciseName || "REST!"}</Typography> : ""}
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
-  );
+export default function ExerciseDetail(props: IExerciseDetailProps): React.ReactElement {
+  const dispatch = useDispatch();
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
+  const { workoutType } = workoutSession;
+  const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, isCardio: boolean) =>
+    dispatch(generateRandomWorkoutExerciseInRound({ roundIndex, exerciseIndex, isCardio }));
+
+  if (workoutType === WorkoutType.Tabata) {
+    return <TabataExerciseDetail {...props} handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound} />
+  }
+
+  return <HiitExerciseDetail {...props} handleRandomChangeExerciseForRound={handleRandomChangeExerciseForRound} />;
 }

@@ -3,10 +3,10 @@ import React from "react";
 import {
   Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogTitle
 } from "@mui/material";
 import { useContext } from "react";
 import { SportAppContext } from "../../SportAppContext";

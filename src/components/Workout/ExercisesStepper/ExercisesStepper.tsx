@@ -1,45 +1,18 @@
-import { Box, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import React from "react";
 
-import { useStyles } from "../styles";
-import {IWorkoutType} from "../../../interfaces/IWorkoutType";
-import {IWorkoutSession} from "../../../interfaces/IWorkoutSession";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/main";
+import { WorkoutType } from "../../../interfaces/WorkoutType";
+import TabataExercisesStepper from "./TabataExercisesStepper";
+import HiitExercisesStepper from "./HiitExercisesStepper";
 
-interface IExercisesStepperProps { workoutSettings: IWorkoutType; currentExercise: number; isResting: boolean; currentWorkoutSession: IWorkoutSession }
+export default function ExercisesStepper() {
+  const workoutSession = useSelector((state: RootState) => state.workoutSession);
+  const workoutType = workoutSession.workoutType;
 
-const ifCurrentStepIsRest = (isResting: boolean, exercise: number, currentExercise: number): boolean => isResting && (exercise + 1) === currentExercise;
-const ifCurrentStepIsCompleted = (isResting: boolean, exercise: number, currentExercise: number): boolean => (exercise + 1) < currentExercise;
+  if (workoutType === WorkoutType.Tabata) {
+    return <TabataExercisesStepper />;
+  }
 
-export default function ExercisesStepper({ workoutSettings, isResting, currentExercise, currentWorkoutSession }: IExercisesStepperProps) {
-  const classes = useStyles();
-  const { all_exercises_for_generated_list: allExercises } = workoutSettings;
-  const { round: currentRound } = currentWorkoutSession;
-  const exercisesForThisRound = allExercises && allExercises[currentRound - 1];
-
-  return (
-    <Box ml={1} className={classes.stretchHeight}>
-      <Stepper className={classes.stretchHeight} activeStep={currentExercise - 1} orientation="vertical">
-        {[...Array(workoutSettings.exercises).keys()].map((exercise: number) => {
-          const currentExerciseData = exercisesForThisRound?.exercises && exercisesForThisRound.exercises[exercise];
-          const currentExerciseName = currentExerciseData?.label;
-          const isRestStep = ifCurrentStepIsRest(isResting, exercise, currentExercise);
-          const isCompleted = ifCurrentStepIsCompleted(isResting, exercise, currentExercise);
-          return (
-            <Step key={`exercise-${exercise}`} completed={isCompleted} color={isCompleted ? "secondary" : "primary"}>
-              <StepLabel>
-                <Typography className={!isCompleted && !isRestStep && classes.bold || ""}>
-                  {currentExerciseName}
-                </Typography>
-              </StepLabel>
-              <StepLabel>
-                <Typography className={!isCompleted && isRestStep && classes.bold || ""}>
-                  Rest
-                </Typography>
-              </StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-    </Box>
-  );
+  return <HiitExercisesStepper />;
 }

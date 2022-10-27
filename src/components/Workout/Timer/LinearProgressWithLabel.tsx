@@ -1,6 +1,6 @@
 import { Box, LinearProgress, Theme, Typography } from "@mui/material";
 import React from "react";
-import {makeStyles} from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
