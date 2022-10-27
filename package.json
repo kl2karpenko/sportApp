@@ -47,12 +47,8 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "start:fe": "react-scripts start",
-    "build:fe": "react-scripts build",
-    "build:backend": "tsc src/backend/* --outDir backend/",
-    "start:be": "node backend/server.js",
-    "build": "npm run build:fe && npm run build:backend",
-    "dev:server": "nodemon --watch 'src/backend' --exec 'ts-node' src/backend/server.ts",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts,.tsx",

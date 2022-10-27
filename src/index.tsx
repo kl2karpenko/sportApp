@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import SportApp from "./frontend/SportApp";
+import SportApp from "./SportApp";
 import reportWebVitals from "./reportWebVitals";
 
 // @ts-ignore
