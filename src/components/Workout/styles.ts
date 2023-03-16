@@ -8,6 +8,14 @@ export const useStyles = makeStyles({
     alignItems: "stretch",
     padding: 20
   },
+  exercisesView: {
+    paddingBottom: 100
+  },
+  mainCard: {
+    height: "calc(100% - 160px)",
+    padding: 10,
+    border: "0 !important"
+  },
   bottom: {
     alignSelf: "bottom",
     width: "100%",
@@ -21,5 +29,13 @@ export const useStyles = makeStyles({
   },
   bold: {
     fontWeight: "bold"
+  },
+  chip: {
+    width: "10px",
+    height: "10px",
+    maxHeight: "10px",
+    lineHeight: "10px",
+    marginTop: "-20px",
+    marginLeft: "-13px"
   }
 });

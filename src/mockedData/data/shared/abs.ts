@@ -1,7 +1,8 @@
 export default [
   {
     "id": "abs-ex1",
-    "label": "На спине подъем ног вверх и вынос вперед",
+    "label": "Hip Lifts",
+    "img": "/assets/images/abs/abs-ex1.png",
     "isCardio": false
   },
   {
@@ -21,7 +22,7 @@ export default [
   },
   {
     "id": "abs-ex5",
-    "label": "Стоя подъем руки к противоположной руке, смена ",
+    "label": "Стоя подъем руки к противоположной руке, смена",
     "isCardio": false
   },
   {

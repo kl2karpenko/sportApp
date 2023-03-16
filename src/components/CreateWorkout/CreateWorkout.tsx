@@ -108,6 +108,19 @@ export default function CreateWorkout(): React.ReactElement {
                     Preview And Start
                   </Button>
                 </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    startIcon={<VisibilityIcon />}
+                    disabled={!workoutSession?.rounds?.length}
+                    onClick={() => {
+                      navigate("workout");
+                    }}
+                  >
+                    Start
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

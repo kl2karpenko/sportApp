@@ -40,10 +40,13 @@ export default function HiitWorkout(): React.ReactElement {
   const activeExercise = activeExercisesList[activeExerciseIndex] || {};
   const nextExercise = activeExercisesList[activeExerciseIndex + 1] || nextRoundExercisesList[0] || {};
   const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
+  const bodyPartImage: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
+
+  const isResting = activeWorkout.isResting;
 
   return (
     <Box p={2} minHeight="100%">
-      <Card variant="outlined" style={{ height: "calc(100% - 160px)", padding: 10 }}>
+      <Card variant="outlined" className={classes.mainCard}>
         <Grid container direction="column" alignContent="center" alignItems="stretch" className={classes.stretchHeight} spacing={2}>
           <Grid item xs={12} alignContent={"center"}>
             <Grid container>
@@ -61,55 +64,36 @@ export default function HiitWorkout(): React.ReactElement {
                 <Grid item xs={12} alignSelf={"flex-end"}>
                   <RoundsStepper />
                 </Grid>
-                <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
+                <Grid item xs={1} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
                   <ExercisesStepper />
                 </Grid>
-                <Grid item xs={10}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Grid container spacing={3} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
-                        <Grid item xs={8}>
-                          <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
-                            <Grid item xs={6}>
-                              <ExerciseDetail
-                                roundIndex={activeRoundIndex}
-                                exerciseIndex={activeExerciseIndex}
-                                isCardio={isExerciseCardio(activeExercise)}
-                                exerciseName={activeExercise.label}
-                                description={"Current exercise is:"}
-                              />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <ExerciseDetail
-                                roundIndex={activeRoundIndex}
-                                exerciseIndex={activeExerciseIndex + 1}
-                                isCardio={isExerciseCardio(nextExercise)}
-                                exerciseName={nextExercise.label}
-                                description={"Next exercise is:"}
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Timer activeWorkoutManager={activeWorkoutManager} />
-                        </Grid>
-                      </Grid>
+                <Grid item xs={11}>
+                  <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"} className={classes.exercisesView}>
+                    <Grid item xs={8}>
+                      <Timer activeWorkoutManager={activeWorkoutManager} />
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="url"
-                        label="Enter video source" value={url}
-                        variant="outlined"
-                        fullWidth={true}
-                        // @ts-ignore
-                        onChange={(e: ChangeEventHandler<HTMLTextAreaElement>) => setUrl(e.target?.value)}
+                    <Grid item xs={8}>
+                      <ExerciseDetail
+                        roundIndex={activeRoundIndex}
+                        exerciseIndex={!isResting ? activeExerciseIndex : activeExerciseIndex}
+                        isCardio={isExerciseCardio(!isResting ? activeExercise : nextExercise)}
+                        exerciseName={!isResting ? activeExercise?.label : nextExercise.label}
+                        exerciseImg={!isResting ? activeExercise?.img : nextExercise?.img}
+                        description={!isResting ? "In Progress:" : "Next:"}
                       />
-
-                      <iframe width="100%" height="600" src={url}
-                        title="YouTube video player" frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen></iframe>
                     </Grid>
+                    {!isResting && (
+                      <Grid item xs={4}>
+                        <ExerciseDetail
+                          roundIndex={activeRoundIndex}
+                          exerciseIndex={activeExerciseIndex + 1}
+                          isCardio={isExerciseCardio(nextExercise)}
+                          exerciseName={nextExercise.label}
+                          exerciseImg={nextExercise?.img}
+                          description={"Next:"}
+                        />
+                      </Grid>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

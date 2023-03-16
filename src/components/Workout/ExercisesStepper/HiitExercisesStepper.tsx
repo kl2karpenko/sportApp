@@ -29,8 +29,8 @@ export default function HiitExercisesStepper() {
             <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={!isActive && isCompleted ? "secondary" : "primary"}>
               <StepLabel>
                 <Typography className={(isActive || isRestStep) && classes.bold || ""} variant={"caption"}>
-                  {exercise.label}
-                  {isCardio ? <Chip label="c" size="small" color="error" /> : ""}
+                  {/*{exercise.label}*/}
+                  {isCardio ? <Chip className={classes.chip} size="small" color="error" /> : ""}
                 </Typography>
               </StepLabel>
             </Step>

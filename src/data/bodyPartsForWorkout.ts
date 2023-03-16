@@ -14,16 +14,16 @@ export const EBodyParts = {
 } as const;
 
 const bodyPartsForWorkout: { [key in TValues<typeof EBodyParts>]: string } = {
-  [EBodyParts.legsFront]: "Ноги передняя часть",
-  [EBodyParts.legsInside]: "Ноги внутренняя часть",
-  [EBodyParts.legsOutside]: "Ноги внешняя часть",
-  [EBodyParts.legsRear]: "Ноги задняя часть",
-  [EBodyParts.legsAss]: "Задница",
-  [EBodyParts.hands]: "Руки",
-  [EBodyParts.back]: "Спина",
-  [EBodyParts.abs]: "Пресс",
-  [EBodyParts.abs_left_right]: "Боковой пресс",
-  [EBodyParts.cardio]: "Кардио"
+  [EBodyParts.legsFront]: "Legs front",
+  [EBodyParts.legsInside]: "Legs inside",
+  [EBodyParts.legsOutside]: "Legs outside",
+  [EBodyParts.legsRear]: "Legs back",
+  [EBodyParts.legsAss]: "Nuts",
+  [EBodyParts.hands]: "Arms",
+  [EBodyParts.back]: "Back",
+  [EBodyParts.abs]: "Abs",
+  [EBodyParts.abs_left_right]: "Side abs",
+  [EBodyParts.cardio]: "Cardio"
 } as const;
 
 export default bodyPartsForWorkout;

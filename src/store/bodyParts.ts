@@ -32,7 +32,4 @@ export const getBodyPartLabel = createSelector([
   (state: IBodyPartsStateState, label: TValues<typeof EBodyParts>) => label
 ], (labels, label): string => labels[label]);
 
-// Action creators are generated for each case reducer function
-// export const {} = bodyPartsSlice.actions
-
 export default bodyPartsSlice.reducer;
