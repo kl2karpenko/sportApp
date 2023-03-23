@@ -1,30 +1,31 @@
-import React, { Dispatch } from "react";
+import React from "react";
 
 import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 import ShuffleIcon from "@material-ui/icons/Cached";
-import { RootState } from "../../../store/main";
+import useStyles from "./styles";
+import { IExerciseDetailProps } from "./ExerciseDetail";
 
-interface IExerciseDetailProps {
-  exerciseName?: string;
-  description: string;
-  roundIndex: number;
-  exerciseIndex: number;
-  isCardio: boolean;
+interface ITabataExerciseDetailProps extends IExerciseDetailProps {
   handleRandomChangeExerciseForRound: (roundIndex: number, exerciseIndex: number, isCardio: boolean) => { payload: any; type: string; };
 }
 
-export default function TabataExerciseDetail({ handleRandomChangeExerciseForRound, description, exerciseName, roundIndex, exerciseIndex, isCardio }: IExerciseDetailProps): React.ReactElement {
+export default function TabataExerciseDetail({ variant, handleRandomChangeExerciseForRound, description, exerciseName, exerciseImg, roundIndex, exerciseIndex, isCardio }: ITabataExerciseDetailProps): React.ReactElement {
+  const classes = useStyles();
+  const isSmall = variant === "cardSmall";
+
   return (
     <Card variant="outlined">
       <CardContent>
         <Grid container spacing={2} direction="column">
           <Grid item xs={12}>
-            <Typography align="center" variant={"h4"}>{description}</Typography>
+            <Typography align="center" variant={!isSmall ? "h4" : "h6"} className={!isSmall ? classes.textSecondary : classes.textPrimary}>{description}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography align="center" variant={"h3"}>{exerciseName || "COMPLETED WORKOUT!"}</Typography>
+            <Typography align="center" variant={!isSmall ? "h3" : "body1"}>{exerciseName || " - "}</Typography>
           </Grid>
+          {exerciseImg && (<Grid item xs={12}>
+            <img className={classes.img} src={exerciseImg} alt={exerciseName} />
+          </Grid>)}
           <Grid item xs={12} justifySelf={"flex-end"}>
             <Box
               minWidth={15}

@@ -6,7 +6,10 @@ import { WorkoutType } from "../../../interfaces/WorkoutType";
 import TabataExerciseDetail from "./TabataExerciseDetail";
 import HiitExerciseDetail from "./HiitExerciseDetail";
 
-interface IExerciseDetailProps {
+export type TExerciseDetailVariant = "cardSmall" | "cardBig"
+export interface IExerciseDetailProps {
+  variant?: TExerciseDetailVariant;
+  exerciseImg?: string;
   exerciseName?: string;
   description: string;
   roundIndex: number;

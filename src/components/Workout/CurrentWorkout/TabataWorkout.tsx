@@ -65,51 +65,43 @@ export default function TabataWorkout(): React.ReactElement {
                   <ExercisesStepper />
                 </Grid>
                 <Grid item xs={10}>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={2} className={classes.exercisesView}>
                     <Grid item xs={12}>
-                      <Grid container spacing={3} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
-                        <Grid item xs={8}>
-                          <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"}>
-                            <Grid item xs={includeCardio ? 6 : 12}>
-                              <ExerciseDetail
-                                roundIndex={activeRoundIndex}
-                                exerciseIndex={exerciseIndex}
-                                isCardio={isExerciseCardio(exercise)}
-                                exerciseName={exercise.label}
-                                description={"Current exercise:"}
-                              />
-                            </Grid>
-                            {includeCardio && (<Grid item xs={6}>
-                              <ExerciseDetail
-                                roundIndex={activeRoundIndex}
-                                exerciseIndex={2}
-                                isCardio={true}
-                                exerciseName={cardioExercise.label}
-                                description={"Cardio exercise:"}
-                              />
-                            </Grid>)}
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Timer activeWorkoutManager={activeWorkoutManager} />
-                        </Grid>
-                      </Grid>
+                      <Timer activeWorkoutManager={activeWorkoutManager} />
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        id="url"
-                        label="Enter video source" value={url}
-                        variant="outlined"
-                        fullWidth={true}
-                        // @ts-ignore
-                        onChange={(e: ChangeEventHandler<HTMLTextAreaElement>) => setUrl(e.target?.value)}
+                    <Grid item xs={includeCardio ? 6 : 12}>
+                      <ExerciseDetail
+                        roundIndex={activeRoundIndex}
+                        exerciseIndex={exerciseIndex}
+                        isCardio={isExerciseCardio(exercise)}
+                        exerciseName={exercise.label}
+                        description={"Current exercise:"}
                       />
-
-                      <iframe width="100%" height="600" src={url}
-                        title="YouTube video player" frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen></iframe>
                     </Grid>
+                    {includeCardio && (<Grid item xs={6}>
+                      <ExerciseDetail
+                        roundIndex={activeRoundIndex}
+                        exerciseIndex={2}
+                        isCardio={true}
+                        exerciseName={cardioExercise.label}
+                        description={"Cardio exercise:"}
+                      />
+                    </Grid>)}
+                    {/*<Grid item xs={12}>*/}
+                    {/*  <TextField*/}
+                    {/*    id="url"*/}
+                    {/*    label="Enter video source" value={url}*/}
+                    {/*    variant="outlined"*/}
+                    {/*    fullWidth={true}*/}
+                    {/*    // @ts-ignore*/}
+                    {/*    onChange={(e: ChangeEventHandler<HTMLTextAreaElement>) => setUrl(e.target?.value)}*/}
+                    {/*  />*/}
+
+                    {/*  <iframe width="100%" height="600" src={url}*/}
+                    {/*    title="YouTube video player" frameBorder="0"*/}
+                    {/*    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"*/}
+                    {/*    allowFullScreen></iframe>*/}
+                    {/*</Grid>*/}
                   </Grid>
                 </Grid>
               </Grid>

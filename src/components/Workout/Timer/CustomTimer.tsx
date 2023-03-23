@@ -16,6 +16,7 @@ interface IMyTimerProps {
   moveToPrevious: () => Date;
   isResting: boolean;
   isEnded: boolean;
+  className?: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNext, moveToPrevious }: IMyTimerProps) {
+export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNext, moveToPrevious, className }: IMyTimerProps) {
   const {
     minutes,
     seconds,
@@ -59,7 +60,7 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
   }, [isRunning, seconds]);
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" className={className}>
       <CardContent>
         <Box p={2}>
           <Grid container spacing={2} alignItems="center" justifyContent="center">
