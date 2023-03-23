@@ -1,8 +1,7 @@
 import React, { Dispatch } from "react";
 
-import { Box, Button, Card, CardContent, Grid, Theme, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import ShuffleIcon from "@material-ui/icons/Cached";
+import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
+import ShuffleIcon from "@mui/icons-material/Cached";
 import { IExerciseDetailProps } from "./ExerciseDetail";
 import useStyles from "./styles";
 
@@ -11,7 +10,7 @@ interface IHiitExerciseDetailProps extends IExerciseDetailProps {
 }
 
 export default function HiitExerciseDetail({ variant, handleRandomChangeExerciseForRound, description, exerciseName, exerciseImg, roundIndex, exerciseIndex, isCardio }: IHiitExerciseDetailProps): React.ReactElement {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const isSmall = variant === "cardSmall";
 
   return (

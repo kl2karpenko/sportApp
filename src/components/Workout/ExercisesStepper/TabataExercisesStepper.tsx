@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 
 export default function TabataExercisesStepper() {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const { rounds: allRounds } = workoutSession;

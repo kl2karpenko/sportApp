@@ -1,7 +1,9 @@
+import { PaletteMode } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
-export default createTheme({
+export default (mode: PaletteMode) => createTheme({
   palette: {
+    mode,
     primary: {
       main: "#07bf72",
     },
