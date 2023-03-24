@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
 import { Box, Card, CardContent, Grid, IconButton, Theme, Typography } from "@mui/material";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@material-ui/icons";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@mui/icons-material";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "tss-react/mui";
 
-const beepEndSound = require("../../../sounds/clock-countdown.wav");
+const beepEndSound = require("../../../sounds/beep.mp3");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
@@ -19,7 +19,7 @@ interface IMyTimerProps {
   className?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles()((theme: Theme) => ({
   bigIcon: {
     fontSize: "50px"
   }
@@ -45,8 +45,8 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
       }
     }
   });
-  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.2 });
-  const classes = useStyles();
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.5 });
+  const { classes } = useStyles();
   const totalTimerTime = minutes*60 + seconds;
 
   useEffect(() => {

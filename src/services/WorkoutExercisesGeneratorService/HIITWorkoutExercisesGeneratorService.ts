@@ -27,7 +27,7 @@ export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercis
     }
   }
 
-  protected getExercisesListForSimpleAlgorithm(props: IHiitWorkoutGetExercisesListConfig): Partial<IExercise>[] {
+  protected getExercisesListForSimpleAlgorithm(props?: IHiitWorkoutGetExercisesListConfig): Partial<IExercise>[] {
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
     if (listOfExercises.length === 0) return [];
 

@@ -38,7 +38,7 @@ export default class ExercisesList implements IExercisesList {
   }
 
   getExercisesForBodyPart(bodyPartName: TValues<typeof EBodyParts>): Partial<IExercise>[] {
-    return this.exercisesList[bodyPartName];
+    return this.exercisesList && this.exercisesList[bodyPartName];
   }
 
   findExerciseById(exId: string): Partial<IExercise> | null {
@@ -52,7 +52,7 @@ export default class ExercisesList implements IExercisesList {
   }
 
   getExerciseByIndex(index: number): Partial<IExercise> {
-    return this.exercisesListAsArray[index];
+    return this.exercisesListAsArray && this.exercisesListAsArray[index];
   }
 
   getRandomInt(min: number, max: number): number {

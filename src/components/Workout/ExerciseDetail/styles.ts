@@ -1,7 +1,8 @@
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "tss-react/mui";
+
 import { Theme } from "@mui/material";
 
-export default makeStyles((theme: Theme) => ({
+export default makeStyles()((theme: Theme) => ({
   img: {
     width: "100%"
   },

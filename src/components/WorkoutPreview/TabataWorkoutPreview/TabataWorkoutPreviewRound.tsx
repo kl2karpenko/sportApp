@@ -12,11 +12,11 @@ import {
   Typography
 } from "@mui/material";
 import IRound from "../../../models/Round/IRound";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 import { getBodyPartLabel } from "../../../store/bodyParts";
 import IExercise from "../../../models/Exercise/IExercise";
-import ShuffleIcon from "@material-ui/icons/Cached";
+import ShuffleIcon from "@mui/icons-material/Cached";
 import { TValues } from "../../../interfaces/TValues";
 import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 import { getAllExercisesForBodyPart, getCardioExercisesList } from "../../../store/workoutSession";

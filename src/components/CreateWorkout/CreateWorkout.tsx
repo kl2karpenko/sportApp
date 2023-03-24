@@ -12,13 +12,13 @@ import {
   Select, SelectChangeEvent,
   Typography
 } from "@mui/material";
-import ShuffleIcon from "@material-ui/icons/Shuffle";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import ShuffleIcon from "@mui/icons-material/Shuffle";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import { useNavigate } from "react-router-dom";
 
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
-import { SportAppContext } from "../../SportAppContext";
+import { SportAppContext } from "../SportAppContext";
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
 import { TValues } from "../../interfaces/TValues";
 import { WorkoutType, WorkoutTypesList } from "../../interfaces/WorkoutType";
@@ -52,7 +52,7 @@ export default function CreateWorkout(): React.ReactElement {
     dispatch(updateWorkoutRoundByIndex({ roundIndex, fieldName: RoundFields.bodyId, fieldValue }));
 
   return (
-    <Box p={10}>
+    <Box m={10}>
       <Card variant="outlined">
         <CardContent>
           <Grid container spacing={2}>
@@ -87,7 +87,7 @@ export default function CreateWorkout(): React.ReactElement {
                 <Grid item>
                   <Button
                     variant="contained"
-                    color="info"
+                    color="primary"
                     startIcon={<VisibilityIcon />}
                     disabled={!workoutSession?.rounds?.length}
                     onClick={() => {
@@ -111,7 +111,7 @@ export default function CreateWorkout(): React.ReactElement {
                 <Grid item>
                   <Button
                     variant="contained"
-                    color="info"
+                    color="primary"
                     startIcon={<VisibilityIcon />}
                     disabled={!workoutSession?.rounds?.length}
                     onClick={() => {

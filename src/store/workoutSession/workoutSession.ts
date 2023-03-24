@@ -17,9 +17,9 @@ import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import workoutBuilderServiceInstance from "../../services/WorkoutBuilderService/WorkoutBuilderServiceSingleton";
 import { TAllExercises } from "../../interfaces/TAllExercises";
-import hiitExercises from "../../mockedData/data/hiit";
-import tabataExercises from "../../mockedData/data/tabata";
-import cardioExercises from "../../mockedData/data/shared/cardio";
+import hiitExercises from "../../data/exercices/hiit";
+import tabataExercises from "../../data/exercices/tabata";
+import cardioExercises from "../../data/exercices/types/cardio";
 
 export type IWorkoutSessionState = IWorkoutSession & {
   workoutType: WorkoutType;
@@ -50,9 +50,8 @@ export const workoutSessionSlice = createSlice({
   name: "workoutSession",
   initialState,
   reducers: {
-    generateWorkoutSession: (state: IWorkoutSessionState) => {
+    generateWorkoutSession: (state) => {
       const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
-      const allExercisesData: TAllExercises = state.allExercises[state.workoutType];
       const rounds = workoutBuilderService?.generateWorkout(state);
 
       return {

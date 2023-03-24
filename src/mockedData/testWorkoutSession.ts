@@ -1,4 +1,4 @@
-import { mockedWorkoutTypes } from "./exercises";
+import { mockedWorkoutTypes } from "../data/exercices";
 import { WorkoutType } from "../interfaces/WorkoutType";
 import { IWorkoutSettings } from "../interfaces/IWorkoutSettings";
 

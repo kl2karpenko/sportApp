@@ -12,7 +12,7 @@ import {
   Select,
   SelectChangeEvent, MenuItem, FormControl
 } from "@mui/material";
-import ShuffleIcon from "@material-ui/icons/Cached";
+import ShuffleIcon from "@mui/icons-material/Cached";
 import IRound from "../../../models/Round/IRound";
 import IExercise from "../../../models/Exercise/IExercise";
 import { useSelector } from "react-redux";

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Box, Button, Card, CardContent, Grid, Typography } from "@mui/material";
-import ShuffleIcon from "@material-ui/icons/Cached";
+import ShuffleIcon from "@mui/icons-material/Cached";
 import useStyles from "./styles";
 import { IExerciseDetailProps } from "./ExerciseDetail";
 
@@ -10,7 +10,7 @@ interface ITabataExerciseDetailProps extends IExerciseDetailProps {
 }
 
 export default function TabataExerciseDetail({ variant, handleRandomChangeExerciseForRound, description, exerciseName, exerciseImg, roundIndex, exerciseIndex, isCardio }: ITabataExerciseDetailProps): React.ReactElement {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const isSmall = variant === "cardSmall";
 
   return (

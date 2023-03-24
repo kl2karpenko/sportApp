@@ -6,12 +6,12 @@ import { WorkoutAlgorithms } from "./WorkoutAlgorithms";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
 import { WorkoutType } from "../../interfaces/WorkoutType";
-import { mockedWorkoutTypes } from "../../mockedData/exercises";
+import { mockedWorkoutTypes } from "../../data/exercices";
 import IExercise from "../../models/Exercise/IExercise";
 
 interface ITEST_HIITWorkoutExercisesGeneratorService {
   getShuffledList(list: Partial<IExercise>[]): Partial<IExercise>[];
-  getExercisesListForSimpleAlgorithm(props: IHiitWorkoutGetExercisesListConfig): Partial<IExercise>[];
+  getExercisesListForSimpleAlgorithm(props?: IHiitWorkoutGetExercisesListConfig): Partial<IExercise>[];
   addCardioExercisesToList(exercisesList: Partial<IExercise>[], step: number): Partial<IExercise>[];
   getExerciseIndexInList(exercisesList: Partial<IExercise>[], findId: string): number;
 }

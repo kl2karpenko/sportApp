@@ -18,7 +18,7 @@ import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
 export default function HiitWorkout(): React.ReactElement {
-  const classes = useStyles();
+  const { classes } = useStyles();
   const [url, setUrl] = useState("https://www.youtube.com/embed/qsW5bCrv94s");
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
