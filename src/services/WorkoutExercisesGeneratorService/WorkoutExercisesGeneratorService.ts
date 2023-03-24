@@ -35,25 +35,37 @@ export default class WorkoutExercisesGeneratorService {
     return this.listOfExercisesForCurrentBodyPart;
   }
 
-  protected getShuffledList(list: Partial<IExercise>[]): Partial<IExercise>[] {
-    let currentIndex = list.length,  randomIndex;
-    let copyList = [...list];
+  // protected getShuffledList(list: Partial<IExercise>[]): Partial<IExercise>[] {
+  //   let currentIndex = list.length,  randomIndex;
+  //   let copyList = [...list];
+  //
+  //   // While there remain elements to shuffle.
+  //   while (currentIndex != 0) {
+  //
+  //     // Pick a remaining element.
+  //     randomIndex = Math.floor(Math.random() * currentIndex);
+  //     currentIndex--;
+  //
+  //     // And swap it with the current element.
+  //     [copyList[currentIndex], copyList[randomIndex]] = [
+  //       copyList[randomIndex], copyList[currentIndex]];
+  //   }
+  //
+  //   const newListWithoutRepeating = new Set([...copyList]);
+  //
+  //   return [...newListWithoutRepeating];
+  // }
 
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [copyList[currentIndex], copyList[randomIndex]] = [
-        copyList[randomIndex], copyList[currentIndex]];
+  protected getShuffledList = (list: Partial<IExercise>[]): Partial<IExercise>[] => {
+    const newList = [...list];
+    for (let i = newList.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = newList[i];
+      newList[i] = newList[j];
+      newList[j] = temp;
     }
 
-    const newListWithoutRepeating = new Set([...copyList]);
-
-    return [...newListWithoutRepeating];
+    return newList;
   }
 
   protected getRandomInt(min: number, max: number) {

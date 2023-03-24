@@ -18,7 +18,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router-dom";
 
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
-import { SportAppContext } from "../../SportAppContext";
+import { SportAppContext } from "../SportAppContext";
 import { WorkoutSessionFields } from "../../interfaces/WorkoutSessionFields";
 import { TValues } from "../../interfaces/TValues";
 import { WorkoutType, WorkoutTypesList } from "../../interfaces/WorkoutType";

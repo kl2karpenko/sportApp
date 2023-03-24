@@ -5,7 +5,7 @@ import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { IExercisesList } from "../../models/ExercisesList/IExercisesList";
 import ExercisesList from "../../models/ExercisesList/ExercisesList";
 import { WorkoutType } from "../../interfaces/WorkoutType";
-import { mockedWorkoutTypes } from "../../mockedData/exercises";
+import { mockedWorkoutTypes } from "../../data/exercices";
 import { tabataDefaultSettings } from "../../mockedData/testWorkoutSession";
 import IExercise from "../../models/Exercise/IExercise";
 

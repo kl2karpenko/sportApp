@@ -2,7 +2,7 @@ import ExercisesList from "./ExercisesList";
 import IExercise from "../Exercise/IExercise";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
 import { WorkoutType } from "../../interfaces/WorkoutType";
-import { mockedWorkoutTypes } from "../../mockedData/exercises";
+import { mockedWorkoutTypes } from "../../data/exercices";
 
 describe("ExercisesList", function () {
   let testAllExercisesInstance = new ExercisesList({

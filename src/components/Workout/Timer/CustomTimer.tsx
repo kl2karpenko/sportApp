@@ -7,7 +7,7 @@ import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@mui/icons-material"
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
 import { makeStyles } from "tss-react/mui";
 
-const beepEndSound = require("../../../sounds/clock-countdown.wav");
+const beepEndSound = require("../../../sounds/beep.mp3");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
@@ -45,7 +45,7 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
       }
     }
   });
-  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.2 });
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.5 });
   const { classes } = useStyles();
   const totalTimerTime = minutes*60 + seconds;
 

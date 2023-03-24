@@ -1,5 +1,5 @@
-import { TAllExercises } from "../interfaces/TAllExercises";
-import { EBodyParts } from "../data/bodyPartsForWorkout";
+import { TAllExercises } from "../../interfaces/TAllExercises";
+import { EBodyParts } from "../bodyPartsForWorkout";
 
 export const mockedWorkoutExercise = {
   id: "someMockedId",

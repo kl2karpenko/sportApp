@@ -9,7 +9,7 @@ import {
   DialogTitle
 } from "@mui/material";
 import { useContext } from "react";
-import { SportAppContext } from "../../SportAppContext";
+import { SportAppContext } from "../SportAppContext";
 
 export default function ModalDialog() {
   const { dialogProps, setDialogProps } = useContext(SportAppContext);
