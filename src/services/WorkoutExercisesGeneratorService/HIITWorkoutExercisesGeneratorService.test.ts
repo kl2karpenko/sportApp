@@ -47,12 +47,6 @@ describe("HIITWorkoutExercisesGeneratorService", () => {
 
       expect(list.length).toBe(len);
     });
-
-    test("should return list of exercises based on an algorithm: withPair", () => {
-      const list = testWorkoutExercisesGeneratorService.getExercisesList({ algorithm: WorkoutAlgorithms.simple });
-
-      expect(list.length).toBe(len);
-    });
   });
 
   describe("getExercisesListForSimpleAlgorithm", () => {
