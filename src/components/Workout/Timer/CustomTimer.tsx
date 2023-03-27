@@ -45,7 +45,7 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
       }
     }
   });
-  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.5 });
+  const [playBeep, { stop: stopBeep }] = useSound(beepEndSound, { volume: 0.3 });
   const { classes } = useStyles();
   const totalTimerTime = minutes*60 + seconds;
 
