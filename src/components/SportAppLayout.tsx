@@ -20,7 +20,7 @@ export default function SportAppLayout() {
 
   return (
     <Box key="sportMainApp" className={classes.root}>
-      <Box px={10} py={2}>
+      <Box p={2} className={classes.switcher}>
         <FormControlLabel
           control={<Switch
             {...({ inputProps: { "aria-label": "Theme switcher" } })}

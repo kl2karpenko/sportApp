@@ -27,6 +27,11 @@ export const useStyles = makeStyles()({
   stretchHeight: {
     minHeight: "100%"
   },
+  timer: {
+    position: 'absolute',
+    left: 0,
+    top: 0
+  },
   bold: {
     fontWeight: "bold"
   },

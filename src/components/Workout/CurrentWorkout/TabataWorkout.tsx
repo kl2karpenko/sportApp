@@ -41,20 +41,12 @@ export default function TabataWorkout(): React.ReactElement {
   const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
 
   return (
-    <Box p={2} minHeight="100%">
+    <Box p={20} minHeight="100%">
+      <Box className={classes.timer}>
+        <Timer activeWorkoutManager={activeWorkoutManager} />
+      </Box>
       <Card variant="outlined" style={{ height: "calc(100% - 160px)", padding: 10 }}>
         <Grid container direction="column" alignContent="center" alignItems="stretch" className={classes.stretchHeight} spacing={2}>
-          <Grid item xs={12} alignContent={"center"}>
-            <Grid container>
-              <Grid item>
-                <Typography align="center" variant="h5">Workout in Progress:&nbsp;</Typography>
-                <Typography align="center" variant="h3">{activeExerciseIndex + 1} of {8}</Typography>
-              </Grid>
-              <Grid item>
-                <Typography align="center" variant="h5">{bodyPartLabel}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
           <Grid item xs={12}>
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
@@ -66,16 +58,13 @@ export default function TabataWorkout(): React.ReactElement {
                 </Grid>
                 <Grid item xs={10}>
                   <Grid container spacing={2} className={classes.exercisesView}>
-                    <Grid item xs={12}>
-                      <Timer activeWorkoutManager={activeWorkoutManager} />
-                    </Grid>
                     <Grid item xs={includeCardio ? 6 : 12}>
                       <ExerciseDetail
                         roundIndex={activeRoundIndex}
                         exerciseIndex={exerciseIndex}
                         isCardio={isExerciseCardio(exercise)}
-                        exerciseName={exercise.label}
-                        description={"Current exercise:"}
+                        title={"Current exercise:"}
+                        {...exercise}
                       />
                     </Grid>
                     {includeCardio && (<Grid item xs={6}>
@@ -83,8 +72,8 @@ export default function TabataWorkout(): React.ReactElement {
                         roundIndex={activeRoundIndex}
                         exerciseIndex={2}
                         isCardio={true}
-                        exerciseName={cardioExercise.label}
-                        description={"Cardio exercise:"}
+                        title={"Next exercise:"}
+                        {...cardioExercise}
                       />
                     </Grid>)}
                     {/*<Grid item xs={12}>*/}

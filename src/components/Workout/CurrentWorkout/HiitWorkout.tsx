@@ -40,24 +40,15 @@ export default function HiitWorkout(): React.ReactElement {
   const activeExercise = activeExercisesList[activeExerciseIndex] || {};
   const nextExercise = activeExercisesList[activeExerciseIndex + 1] || nextRoundExercisesList[0] || {};
   const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
-  const bodyPartImage: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
-
   const isResting = activeWorkout.isResting;
 
   return (
-    <Box p={2} minHeight="100%">
+    <Box pt={20} minHeight="100%">
+      <Box className={classes.timer}>
+        <Timer activeWorkoutManager={activeWorkoutManager} />
+      </Box>
       <Card variant="outlined" className={classes.mainCard}>
         <Grid container direction="column" alignContent="center" alignItems="stretch" className={classes.stretchHeight} spacing={2}>
-          <Grid item xs={12} alignContent={"center"}>
-            <Grid container>
-              <Grid item>
-                <Typography align="center" variant="h5">Workout in Progress:&nbsp;</Typography>
-              </Grid>
-              <Grid item>
-                <Typography align="center" variant="h5">{bodyPartLabel}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
           <Grid item xs={12}>
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
@@ -69,17 +60,18 @@ export default function HiitWorkout(): React.ReactElement {
                 </Grid>
                 <Grid item xs={11}>
                   <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"} className={classes.exercisesView}>
-                    <Grid item xs={8}>
-                      <Timer activeWorkoutManager={activeWorkoutManager} />
-                    </Grid>
-                    <Grid item xs={8}>
+                    {/*<Grid item xs={12}>*/}
+                    {/*  <Timer activeWorkoutManager={activeWorkoutManager} />*/}
+                    {/*</Grid>*/}
+                    <Grid item xs={isResting ? 12 : 8}>
                       <ExerciseDetail
                         roundIndex={activeRoundIndex}
-                        exerciseIndex={!isResting ? activeExerciseIndex : activeExerciseIndex}
+                        exerciseIndex={!isResting ? activeExerciseIndex : activeExerciseIndex + 1}
                         isCardio={isExerciseCardio(!isResting ? activeExercise : nextExercise)}
-                        exerciseName={!isResting ? activeExercise?.label : nextExercise.label}
-                        exerciseImg={!isResting ? activeExercise?.img : nextExercise?.img}
-                        description={!isResting ? "In Progress:" : "Next:"}
+                        label={!isResting ? activeExercise?.label : nextExercise?.label}
+                        img={!isResting ? activeExercise?.img : nextExercise?.img}
+                        title={!isResting ? "In Progress:" : "Next:"}
+                        {...!isResting ? activeExercise : nextExercise}
                       />
                     </Grid>
                     {!isResting && (
@@ -88,9 +80,8 @@ export default function HiitWorkout(): React.ReactElement {
                           roundIndex={activeRoundIndex}
                           exerciseIndex={activeExerciseIndex + 1}
                           isCardio={isExerciseCardio(nextExercise)}
-                          exerciseName={nextExercise.label}
-                          exerciseImg={nextExercise?.img}
-                          description={"Next:"}
+                          title={"Next Exercise"}
+                          {...nextExercise}
                         />
                       </Grid>
                     )}
