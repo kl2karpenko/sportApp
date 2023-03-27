@@ -3,7 +3,9 @@ export default interface IExercise {
   label: string;
   isCardio: boolean;
   img?: string;
+  // TODO: remove
   pair?: string;
+  double?: boolean;
   video?: string;
   description?: string;
 }
