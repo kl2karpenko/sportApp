@@ -6,6 +6,7 @@ import { WorkoutType } from "../../interfaces/WorkoutType";
 import { RoundFields } from "../../models/Round/RoundFields";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
+import localStorageProxy from "../../services/LocalStorage";
 import {
   generateRandomWorkoutExerciseInRoundAction,
   IUpdateWorkoutSessionValuePayload,
@@ -50,6 +51,11 @@ export const workoutSessionSlice = createSlice({
   name: "workoutSession",
   initialState,
   reducers: {
+    setWorkoutSession: (state) => {
+      return {
+        ...state
+      };
+    },
     generateWorkoutSession: (state) => {
       const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
       const rounds = workoutBuilderService?.generateWorkout(state);
@@ -166,6 +172,7 @@ export const getCardioExercisesList = createSelector([
 
 // Action creators are generated for each case reducer function
 export const {
+  setWorkoutSession,
   updateWorkoutSessionValue,
   changeWorkoutType,
   updateWorkoutRoundByIndex,

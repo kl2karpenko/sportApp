@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Box, FormControlLabel, Switch, Typography } from "@mui/material";
 
@@ -11,12 +11,27 @@ import ModalDialog from "./Dialog";
 import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import { SportAppContext } from "./SportAppContext";
+import localStorageProxy from "../services/LocalStorage";
+import { setWorkoutSession } from "../store/workoutSession";
+import { useDispatch } from "react-redux";
 
 export default function SportAppLayout() {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const isLightMode = theme?.palette?.mode === "light";
   const { classes } = useStyles();
   const { setMode } = useContext(SportAppContext);
+
+  useEffect(() => {
+    let activeWorkoutSession = localStorageProxy.getActiveWorkoutSession();
+
+    // TODO
+    console.log(activeWorkoutSession,  "activeWorkoutSession");
+
+    if (activeWorkoutSession) {
+      dispatch(setWorkoutSession(activeWorkoutSession as any))
+    }
+  }, []);
 
   return (
     <Box key="sportMainApp" className={classes.root}>
