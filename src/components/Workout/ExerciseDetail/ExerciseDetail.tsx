@@ -45,13 +45,10 @@ export default function ExerciseDetail({ variant, description, title, label, img
           </Grid>)}
           <Grid item xs={12} justifySelf={"flex-end"}>
             <Box
-              minWidth={15}
-              pl={2}
-              pr={0.5}
+              className={classes.shuffle}
               component={Button}
-              color="secondary"
-              size="small"
-              startIcon={<ShuffleIcon fontSize="small" />}
+              size="large"
+              startIcon={<ShuffleIcon fontSize="small" color={"secondary"} />}
               variant={"outlined"}
               onClick={() => handleRandomChangeExerciseForRound(roundIndex, exerciseIndex, isCardio)}
             />

@@ -1,6 +1,7 @@
 import { makeStyles } from "tss-react/mui";
+import { Theme } from "@mui/material";
 
-export const useStyles = makeStyles()({
+export const useStyles = makeStyles()((theme: Theme) => ({
   root: {
     display: "flex",
     flexDirection: "row",
@@ -29,18 +30,20 @@ export const useStyles = makeStyles()({
   },
   timer: {
     position: 'absolute',
-    left: 0,
-    top: 0
+    left: '50%',
+    top: 0,
+    marginLeft: -210,
+    background: theme.palette.secondary.main
   },
   bold: {
     fontWeight: "bold"
   },
   chip: {
-    width: "10px",
-    height: "10px",
-    maxHeight: "10px",
-    lineHeight: "10px",
-    marginTop: "-20px",
-    marginLeft: "-13px"
+    width: '10px',
+    height: '10px',
+    maxHeight: '10px',
+    lineHeight: '10px',
+    marginTop: '-20px',
+    marginLeft: '-13px'
   }
-});
+}));

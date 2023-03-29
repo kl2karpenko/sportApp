@@ -52,7 +52,7 @@ export default function CreateWorkout(): React.ReactElement {
     dispatch(updateWorkoutRoundByIndex({ roundIndex, fieldName: RoundFields.bodyId, fieldValue }));
 
   return (
-    <Box m={10}>
+    <Box p={10}>
       <Card variant="outlined">
         <CardContent>
           <Grid container spacing={2}>

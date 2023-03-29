@@ -26,10 +26,9 @@ export default function HiitExercisesStepper() {
           const isCardio = exercise?.id?.includes("cardio");
 
           return (
-            <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={!isActive && isCompleted ? "secondary" : "primary"}>
-              <StepLabel>
+            <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={"secondary"}>
+              <StepLabel color={"secondary"}>
                 <Typography className={(isActive || isRestStep) && classes.bold || ""} variant={"caption"}>
-                  {/*{exercise.label}*/}
                   {isCardio ? <Chip className={classes.chip} size="small" color="error" /> : ""}
                 </Typography>
               </StepLabel>

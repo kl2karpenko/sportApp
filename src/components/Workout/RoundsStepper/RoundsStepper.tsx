@@ -7,6 +7,7 @@ import { RootState } from "../../../store/main";
 import { getBodyPartLabel } from "../../../store/bodyParts";
 import { TValues } from "../../../interfaces/TValues";
 import { EBodyParts } from "../../../data/bodyPartsForWorkout";
+import useStyles from './styles';
 
 export default function RoundsStepper() {
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
@@ -14,6 +15,7 @@ export default function RoundsStepper() {
   const bodyParts = useSelector((state: RootState) => state.bodyParts);
   const { rounds: allRounds } = workoutSession;
   const { activeRoundIndex } = activeWorkout;
+  const { classes } = useStyles();
 
   return (
     <Stepper activeStep={activeRoundIndex}>
@@ -23,7 +25,12 @@ export default function RoundsStepper() {
 
         return (
           <Step key={`round-${roundIndex}`} active={roundIndex === activeRoundIndex} completed={roundIndex < activeRoundIndex}>
-            <StepLabel>{bodyPartLabel}</StepLabel>
+            <StepLabel StepIconProps={{
+              classes: {
+                active: classes.icon,
+                text: classes.text,
+              }
+            }}>{bodyPartLabel}</StepLabel>
           </Step>
         );
       })}
