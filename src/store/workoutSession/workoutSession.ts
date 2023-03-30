@@ -16,6 +16,7 @@ import {
 import { updateWorkoutSessionValueForTabataAction } from "./tabataWorkoutSession";
 import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
+import timerService from "../../services/TimerService";
 import workoutBuilderServiceInstance from "../../services/WorkoutBuilderService/WorkoutBuilderServiceSingleton";
 import { TAllExercises } from "../../interfaces/TAllExercises";
 import hiitExercises from "../../data/exercices/hiit";
@@ -51,10 +52,14 @@ export const workoutSessionSlice = createSlice({
   name: "workoutSession",
   initialState,
   reducers: {
-    setWorkoutSession: (state) => {
-      return {
-        ...state
+    setWorkoutSession: (state, action: PayloadAction<IWorkoutSessionState>) => {
+      const newState = {
+        ...state,
+        ...action?.payload
       };
+
+      console.log(newState, "newState");
+      return newState
     },
     generateWorkoutSession: (state) => {
       const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);

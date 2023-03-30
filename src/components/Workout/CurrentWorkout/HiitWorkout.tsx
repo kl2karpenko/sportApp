@@ -17,7 +17,7 @@ import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
-export default function HiitWorkout(): React.ReactElement {
+export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
   const { classes } = useStyles();
   const [url, setUrl] = useState("https://www.youtube.com/embed/qsW5bCrv94s");
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
@@ -26,9 +26,6 @@ export default function HiitWorkout(): React.ReactElement {
     rounds
   } = workoutSession;
 
-  const activeWorkoutManager = useMemo(() => new ActiveWorkoutManagerService({
-    workoutSession
-  }), [workoutSession]);
   const {
     activeExerciseIndex,
     activeRoundIndex
@@ -44,9 +41,6 @@ export default function HiitWorkout(): React.ReactElement {
 
   return (
     <Box pt={20} minHeight="100%">
-      <Box className={classes.timer}>
-        <Timer activeWorkoutManager={activeWorkoutManager} />
-      </Box>
       <Card variant="outlined" className={classes.mainCard}>
         <Grid container direction="column" alignContent="center" alignItems="stretch" className={classes.stretchHeight} spacing={2}>
           <Grid item xs={12}>

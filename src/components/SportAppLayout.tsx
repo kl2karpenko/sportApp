@@ -12,8 +12,10 @@ import { useTheme } from "@mui/material/styles";
 import useStyles from "./styles";
 import { SportAppContext } from "./SportAppContext";
 import localStorageProxy from "../services/LocalStorage";
-import { setWorkoutSession } from "../store/workoutSession";
+import { IWorkoutSessionState, setWorkoutSession } from "../store/workoutSession";
 import { useDispatch } from "react-redux";
+import { updateWorkoutState } from "../store/activeWorkout";
+import { IActiveWorkoutState } from "../services/ActiveWorkoutManagerService/IActiveWorkoutState";
 
 export default function SportAppLayout() {
   const dispatch = useDispatch();
@@ -24,12 +26,13 @@ export default function SportAppLayout() {
 
   useEffect(() => {
     let activeWorkoutSession = localStorageProxy.getActiveWorkoutSession();
-
-    // TODO
-    console.log(activeWorkoutSession,  "activeWorkoutSession");
+    let activeWorkout = localStorageProxy.getActiveWorkout();
 
     if (activeWorkoutSession) {
-      dispatch(setWorkoutSession(activeWorkoutSession as any))
+      dispatch(setWorkoutSession(activeWorkoutSession as IWorkoutSessionState))
+    }
+    if (activeWorkout) {
+      dispatch(updateWorkoutState(activeWorkout as IActiveWorkoutState))
     }
   }, []);
 

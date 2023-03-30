@@ -29,21 +29,21 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     minHeight: "100%"
   },
   timer: {
-    position: 'absolute',
-    left: '50%',
+    minWidth: 800,
+    position: "absolute",
+    left: 10,
     top: 0,
-    marginLeft: -210,
     background: theme.palette.secondary.main
   },
   bold: {
     fontWeight: "bold"
   },
   chip: {
-    width: '10px',
-    height: '10px',
-    maxHeight: '10px',
-    lineHeight: '10px',
-    marginTop: '-20px',
-    marginLeft: '-13px'
+    width: "10px",
+    height: "10px",
+    maxHeight: "10px",
+    lineHeight: "10px",
+    marginTop: "-20px",
+    marginLeft: "-13px"
   }
 }));

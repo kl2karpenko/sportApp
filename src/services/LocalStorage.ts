@@ -1,17 +1,19 @@
 import { store } from "../store/main";
 import { IWorkoutSessionState } from "../store/workoutSession";
+import { IActiveWorkoutState } from "./ActiveWorkoutManagerService/IActiveWorkoutState";
 
 class LocalStorage {
   unsubscribeFromStore: Function = () => {};
 
   constructor() {
-    console.log(store, " store");
     if (store) {
-
       this.unsubscribeFromStore = store.subscribe(() => {
         const { workoutSession, activeWorkout } = store.getState();
 
-        this.setItem("workoutSession", JSON.stringify(workoutSession))
+        if (workoutSession && workoutSession?.rounds?.length) {
+          this.setItem("workoutSession", JSON.stringify(workoutSession))
+        }
+
         this.setItem("activeWorkout", JSON.stringify(activeWorkout))
       });
     }
@@ -26,11 +28,12 @@ class LocalStorage {
     }
     return value;
   }
+
   getActiveWorkoutSession(): IWorkoutSessionState | null {
     return LocalStorage.getItem<IWorkoutSessionState>("workoutSession");
   }
 
-  getActiveWorkout(): string | null {
+  getActiveWorkout(): IActiveWorkoutState | null {
     return LocalStorage.getItem("activeWorkout");
   }
 
