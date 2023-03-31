@@ -26,6 +26,7 @@ export default function HIITWorkoutPreview() {
             key={`${round.bodyId}-${roundIndex}`}
             round={round}
             roundIndex={roundIndex}
+            includeCardio={workoutSession.includeCardio}
           />
         )
       }

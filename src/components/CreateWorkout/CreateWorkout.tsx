@@ -88,7 +88,7 @@ export default function CreateWorkout(): React.ReactElement {
                       dispatch(cleanWorkoutState())
                     }}
                   >
-                    Regenerate
+                    Regenerate exersices
                   </Button>
                 </Grid>
                 <Grid item>
@@ -125,7 +125,7 @@ export default function CreateWorkout(): React.ReactElement {
                       navigate("workout");
                     }}
                   >
-                    Start
+                    Start Workout
                   </Button>
                 </Grid>
               </Grid>

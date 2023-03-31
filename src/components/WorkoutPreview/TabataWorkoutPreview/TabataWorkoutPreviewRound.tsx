@@ -20,20 +20,26 @@ import ShuffleIcon from "@mui/icons-material/Cached";
 import { TValues } from "../../../interfaces/TValues";
 import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 import { getAllExercisesForBodyPart, getCardioExercisesList } from "../../../store/workoutSession";
+import { TABATA_EXERCISES_INDEXES } from "../../../mockedData/testWorkoutSession";
 
 interface ITabataWorkoutPreviewRoundProps {
   round: Partial<IRound>;
   roundIndex: number;
+  includeCardio: boolean;
   handleChangeExerciseForRound(roundIndex: number, exerciseIndex: number, exerciseValue: any): void;
   handleRandomChangeExerciseForRound(roundIndex: number, exerciseIndex: number, isCardio: boolean): void;
 }
 
-export default function TabataWorkoutPreviewRound({ round, roundIndex, handleRandomChangeExerciseForRound, handleChangeExerciseForRound }: ITabataWorkoutPreviewRoundProps) {
+export default function TabataWorkoutPreviewRound({ round, includeCardio, roundIndex, handleRandomChangeExerciseForRound, handleChangeExerciseForRound }: ITabataWorkoutPreviewRoundProps) {
   const bodyPartName: TValues<typeof EBodyParts> = round.bodyId as TValues<typeof EBodyParts>;
   const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, bodyPartName));
   const exercisesInThisRound = round.exercisesList || [];
   const allExercises = useSelector((state: RootState) => getAllExercisesForBodyPart(state.workoutSession, bodyPartName)) || [];
   const cardioExercises = useSelector((state: RootState) => getCardioExercisesList(state.workoutSession)) || [];
+
+  const firstExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio;
+  const secondExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio;
+
 
   return (
     <Fragment key={round.bodyId}>
@@ -58,7 +64,7 @@ export default function TabataWorkoutPreviewRound({ round, roundIndex, handleRan
                         handleChangeExerciseForRound(roundIndex, index, value)
                       }
                     >
-                      {(index !== 2 ? allExercises : cardioExercises).map((exercise: Partial<IExercise>) => (
+                      {([firstExIndex,secondExIndex].includes(index) ? allExercises : cardioExercises).map((exercise: Partial<IExercise>) => (
                         <MenuItem key={exercise.id} value={exercise.id}>
                           {exercise?.label?.length! > 80 ? exercise.label?.substring(0,80) + "..." : exercise?.label}
                         </MenuItem>

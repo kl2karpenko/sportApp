@@ -2,6 +2,7 @@ import { store } from "../store/main";
 import { IWorkoutSessionState } from "../store/workoutSession";
 import { IActiveWorkoutState } from "./ActiveWorkoutManagerService/IActiveWorkoutState";
 
+// rename to session storage
 class LocalStorage {
   unsubscribeFromStore: Function = () => {};
 
@@ -22,7 +23,7 @@ class LocalStorage {
   private static getItem<T>(key: string): T | null {
     let value = null;
     try {
-      value = JSON.parse(localStorage.getItem(key)!);
+      value = JSON.parse(sessionStorage.getItem(key)!);
     } catch {
       // no-op
     }
@@ -37,8 +38,8 @@ class LocalStorage {
     return LocalStorage.getItem("activeWorkout");
   }
 
-  setItem(key: string, data: string): void { return localStorage.setItem(key, data); }
-  clear(): void { return localStorage.clear(); }
+  setItem(key: string, data: string): void { return sessionStorage.setItem(key, data); }
+  clear(): void { return sessionStorage.clear(); }
 }
 
 const localStorageProxy = new LocalStorage();

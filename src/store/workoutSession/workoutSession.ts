@@ -6,7 +6,6 @@ import { WorkoutType } from "../../interfaces/WorkoutType";
 import { RoundFields } from "../../models/Round/RoundFields";
 import IRound from "../../models/Round/IRound";
 import IExercise from "../../models/Exercise/IExercise";
-import localStorageProxy from "../../services/LocalStorage";
 import {
   generateRandomWorkoutExerciseInRoundAction,
   IUpdateWorkoutSessionValuePayload,
