@@ -25,14 +25,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     alignSelf: "flex-start",
     minHeight: "100%"
   },
-  activeRound: {
-    marginTop: 10,
-    marginBottom: 10,
-    textAlign: "center",
-    fondWeight: 800,
-    fontSize: 20,
-    color: theme.palette.primary.main
-  },
   stretchHeight: {
     minHeight: "100%"
   },

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 import ActiveWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
 import { updateWorkoutState } from "../../../store/activeWorkout";
-import { WorkoutTimerService } from "../../../services/TimerService";
+import { WorkoutTimerService } from "../../../services/WorkoutTimerService";
 
 interface ITimerProps {
   activeWorkoutManager: ActiveWorkoutManagerService;

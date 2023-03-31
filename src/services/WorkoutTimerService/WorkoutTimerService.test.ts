@@ -1,5 +1,5 @@
-import { IWorkoutSettings } from "../interfaces/IWorkoutSettings";
-import { IActiveWorkoutState } from "./ActiveWorkoutManagerService/IActiveWorkoutState";
+import { IWorkoutSettings } from "../../interfaces/IWorkoutSettings";
+import { IActiveWorkoutState } from "../ActiveWorkoutManagerService/IActiveWorkoutState";
 
 export interface IWorkoutTimerServiceProps { workoutSettings: IWorkoutSettings; activeWorkoutState: IActiveWorkoutState; substract?: number; }
 
@@ -13,8 +13,8 @@ export class WorkoutTimerService {
   calculateWorkoutDuration({ workoutSettings, activeWorkoutState, substract }: IWorkoutTimerServiceProps) {
     const singleExerciseDurationMs = (workoutSettings.exerciseDuration + workoutSettings.restDuration);
     const roundDurationMs = (workoutSettings.exercisesLength * singleExerciseDurationMs + workoutSettings.betweenRoundsDuration);
-    const timeLeftMs = (workoutSettings.roundsLength + 1) * roundDurationMs;
-    const secondToSubstract = singleExerciseDurationMs * (activeWorkoutState.activeExerciseIndex + 1) + roundDurationMs * (activeWorkoutState.activeRoundIndex + 1)
+    const timeLeftMs = workoutSettings.roundsLength * roundDurationMs;
+    const secondToSubstract = (singleExerciseDurationMs * (activeWorkoutState.activeExerciseIndex + 1)) + roundDurationMs * (activeWorkoutState.activeRoundIndex + 1)
 
     this.convertMillisecondsToHoursMinutesSeconds(timeLeftMs - secondToSubstract + (substract || 0));
   }

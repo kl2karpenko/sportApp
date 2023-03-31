@@ -1,13 +1,13 @@
-import { Box, StepContent, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 
-import { useStyles } from "../styles";
+import { useStyles } from "./styles";
 import IExercise from "../../../models/Exercise/IExercise";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
-import { TABATA_EXERCISES_INDEXES } from "../../../mockedData/testWorkoutSession";
+import TabataWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/TabataWorkoutManagerService";
 
-export default function TabataExercisesStepper() {
+export default function TabataExercisesStepper({ activeWorkoutManager }: { activeWorkoutManager: TabataWorkoutManagerService }) {
   const { classes } = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
@@ -17,12 +17,12 @@ export default function TabataExercisesStepper() {
   const allExercises = currentRound.exercisesList || [];
   // TODO: move to some service
   const exercisesForTabata = [
-    allExercises[includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio],
-    allExercises[includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio],
+    allExercises[includeCardio ? activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstExWithCardio : activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstExWithoutCardio],
+    allExercises[includeCardio ? activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondExWithCardio : activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondExWithoutCardio],
   ]
   const cardioExercisesForTabata = includeCardio ? [
-    allExercises[includeCardio && TABATA_EXERCISES_INDEXES.firstCardioExIndex],
-    allExercises[includeCardio && TABATA_EXERCISES_INDEXES.secondCardioExIndex],
+    allExercises[includeCardio && activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstCardioExIndex],
+    allExercises[includeCardio && activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondCardioExIndex],
   ] : [];
   const ifFirstSetOfExercises = activeExerciseIndex <= 3;
 
@@ -31,30 +31,28 @@ export default function TabataExercisesStepper() {
       <Box className={classes.activeRound}>
         Active round: {activeExerciseIndex + 1}
       </Box>
-      <Stepper activeStep={activeExerciseIndex} orientation="vertical" alternativeLabel>
-        {exercisesForTabata.map((exercise: Partial<IExercise>, exerciseIndex: number) => {
-          const isActive = exerciseIndex === 0 ? ifFirstSetOfExercises : true;
-          const isCompleted = exerciseIndex === 0 ? activeExerciseIndex >= 4 : activeExerciseIndex === exercisesLength - 1;
+      {exercisesForTabata.map((exercise: Partial<IExercise>, exerciseIndex: number) => {
+        const isActive = exerciseIndex === 0 ? ifFirstSetOfExercises : true;
+        const isCompleted = exerciseIndex === 0 ? activeExerciseIndex >= 4 : activeExerciseIndex === exercisesLength - 1;
 
-          return (
-            <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={!isActive && isCompleted ? "secondary" : "primary"}>
-              <StepLabel>
-                <Typography variant={"caption"}>
-                  {exercise?.label}
-                </Typography>
+        return (
+          <Box component={Grid} mt={5} key={exercise.id} container direction="column" spacing={3}>
+            <Grid item>
+              <Typography variant="h5">
+                {exercise?.label}
+              </Typography>
 
-                {includeCardio ? (
-                  <Box>
-                    <Typography variant={"caption"} className={classes.bold}>
+              {includeCardio ? (
+                <Box>
+                  <Typography variant="h6" className={classes.bold}>
                       Cardio: {cardioExercisesForTabata[exerciseIndex]?.label}
-                    </Typography>
-                  </Box>
-                ) : ""}
-              </StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
+                  </Typography>
+                </Box>
+              ) : ""}
+            </Grid>
+          </Box>
+        )
+      })}
     </Box>
   );
 }

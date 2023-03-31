@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
-import { Box, Card, CardContent, Grid, IconButton, Theme, Typography } from "@mui/material";
+import { Card, CardContent, Grid, IconButton, Theme, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Pause as PauseIcon, SkipNext, SkipPrevious } from "@mui/icons-material";
 import LinearProgressWithLabel from "./LinearProgressWithLabel";
 import { makeStyles } from "tss-react/mui";
-import { WorkoutTimerService } from "../../../services/TimerService";
+import { WorkoutTimerService } from "../../../services/WorkoutTimerService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 
@@ -75,13 +75,13 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
       <CardContent>
         <Grid container spacing={2} alignItems="center" justifyContent="center">
           <Grid item xs={3}>
-            <Typography align="center" color={isResting ? "primary" : "secondary"} variant="h5">
+            <Typography align="center" variant="h4">
               {timerServiceSingleton.timeLeft}
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <Typography align="center" color={isResting ? "secondary" : "primary"} variant="h5">
-              {isResting ? "REST: " : "WORK: "} <br /> {totalTimerTime}
+            <Typography align="center" variant="h4">
+              {isResting ? "REST: " : "WORK: "} {totalTimerTime}
             </Typography>
           </Grid>
           <Grid item xs={6}>

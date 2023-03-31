@@ -15,7 +15,7 @@ import {
 import { updateWorkoutSessionValueForTabataAction } from "./tabataWorkoutSession";
 import { TValues } from "../../interfaces/TValues";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
-import timerService from "../../services/TimerService";
+import timerService from "../../services/WorkoutTimerService";
 import workoutBuilderServiceInstance from "../../services/WorkoutBuilderService/WorkoutBuilderServiceSingleton";
 import { TAllExercises } from "../../interfaces/TAllExercises";
 import hiitExercises from "../../data/exercices/hiit";

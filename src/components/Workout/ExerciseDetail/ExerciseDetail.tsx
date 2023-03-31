@@ -27,13 +27,13 @@ export default function ExerciseDetail({ variant, description, title, label, img
 
   return (
     <Card variant="elevation" elevation={2} className={classes.exerciseCard}>
-      <CardContent>
+      <CardContent className={classes.stretchHeight}>
         <Grid container spacing={2} direction="column">
           <Grid item xs={12}>
-            <Typography align="center" variant={!isSmall ? "h4" : "h6"} className={!isSmall ? classes.textSecondary : classes.textPrimary}>{title}</Typography>
+            <Typography align="center" variant={!isSmall ? "h5" : "h6"} className={!isSmall ? classes.textSecondary : classes.textPrimary}>{title}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography align="center" variant={!isSmall ? "h3" : "body1"}>{label || " - "}</Typography>
+            <Typography align="center" variant={!isSmall ? "h5" : "body1"}>{label || " - "}</Typography>
           </Grid>
           {img && (<Grid item xs={12} className={classes.imgWrapper}>
             <img className={classes.img} src={img} alt={label} />

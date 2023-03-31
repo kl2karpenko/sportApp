@@ -18,6 +18,7 @@ export const hiitDefaultSettings: IWorkoutSettings = {
   betweenRoundsDuration: 60
 };
 
+// TODO: remove
 export const TABATA_EXERCISES_INDEXES = {
   firstExWithCardio: 0,
   firstExWithoutCardio: 0,

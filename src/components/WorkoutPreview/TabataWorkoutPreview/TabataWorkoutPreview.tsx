@@ -8,7 +8,7 @@ import { generateRandomWorkoutExerciseInRound, updateWorkoutExerciseInRound } fr
 
 import TabataWorkoutPreviewRound from "./TabataWorkoutPreviewRound";
 
-export default function HIITWorkoutPreview() {
+export default function TabataWorkoutPreview() {
   const dispatch = useDispatch();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const handleRandomChangeExerciseForRound = (roundIndex: number, exerciseIndex: number, isCardio: boolean) =>

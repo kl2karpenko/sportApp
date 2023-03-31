@@ -37,9 +37,9 @@ export default function TabataWorkoutPreviewRound({ round, includeCardio, roundI
   const allExercises = useSelector((state: RootState) => getAllExercisesForBodyPart(state.workoutSession, bodyPartName)) || [];
   const cardioExercises = useSelector((state: RootState) => getCardioExercisesList(state.workoutSession)) || [];
 
+  // TODO: get from class
   const firstExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio;
   const secondExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio;
-
 
   return (
     <Fragment key={round.bodyId}>

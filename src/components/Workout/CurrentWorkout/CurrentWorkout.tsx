@@ -6,10 +6,11 @@ import { RootState } from "../../../store/main";
 import { WorkoutType } from "../../../interfaces/WorkoutType";
 import HiitWorkout from "./HiitWorkout";
 import TabataWorkout from "./TabataWorkout";
-import timerService from "../../../services/TimerService";
+import timerService from "../../../services/WorkoutTimerService";
 import ActiveWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
 import { useStyles } from "../styles";
 import Timer from "../Timer";
+import TabataWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/TabataWorkoutManagerService";
 
 export default function CurrentWorkout(): React.ReactElement {
   const { classes } = useStyles();
@@ -18,9 +19,17 @@ export default function CurrentWorkout(): React.ReactElement {
   const workoutType = workoutSession.workoutType;
   const timerServiceSingleton = React.useMemo(() => timerService({ workoutSettings: workoutSession, activeWorkoutState }), [workoutSession, activeWorkoutState]);
 
-  const activeWorkoutManager = useMemo(() => new ActiveWorkoutManagerService({
-    workoutSession
-  }), [workoutSession]);
+  const activeWorkoutManager = useMemo(() => {
+    if (workoutType === WorkoutType.Tabata) {
+      return new TabataWorkoutManagerService({
+        workoutSession
+      })
+    }
+
+    return new ActiveWorkoutManagerService({
+      workoutSession
+    })
+  }, [workoutSession]);
   // stop reload the page
   useEffect(() => {
     window.onbeforeunload = (event) => {
@@ -40,10 +49,10 @@ export default function CurrentWorkout(): React.ReactElement {
 
   const getWorkoutByType = () => {
     if (workoutType === WorkoutType.HIIT) {
-      return <HiitWorkout />;
+      return <HiitWorkout activeWorkoutManager={activeWorkoutManager} />;
     }
 
-    return <TabataWorkout />;
+    return <TabataWorkout activeWorkoutManager={activeWorkoutManager as TabataWorkoutManagerService} />;
   }
 
   return (

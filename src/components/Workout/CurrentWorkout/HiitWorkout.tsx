@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
-import { Box, Card, CardContent, Grid, Typography, TextField } from "@mui/material";
+import { Box, Card, CardContent, Grid } from "@mui/material";
 
-import Timer from "../Timer";
 import ExercisesStepper from "../ExercisesStepper";
 import RoundsStepper from "../RoundsStepper";
 import { useStyles } from "../styles";
@@ -17,7 +16,7 @@ import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
-export default function HiitWorkout(): React.ReactElement {
+export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
   const { classes } = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
@@ -25,6 +24,7 @@ export default function HiitWorkout(): React.ReactElement {
     rounds
   } = workoutSession;
 
+  // TODO: create a HiitActiveWorkoutService and move all of this there
   const {
     activeExerciseIndex,
     activeRoundIndex
@@ -35,7 +35,6 @@ export default function HiitWorkout(): React.ReactElement {
   const nextRoundExercisesList = nextRound.exercisesList || [];
   const activeExercise = activeExercisesList[activeExerciseIndex] || {};
   const nextExercise = activeExercisesList[activeExerciseIndex + 1] || nextRoundExercisesList[0] || {};
-  const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
   const isResting = activeWorkout.isResting;
 
   return (
@@ -49,7 +48,7 @@ export default function HiitWorkout(): React.ReactElement {
                   <RoundsStepper />
                 </Grid>
                 <Grid item xs={1} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper />
+                  <ExercisesStepper activeWorkoutManager={activeWorkoutManager} />
                 </Grid>
                 <Grid item xs={11}>
                   <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"} className={classes.exercisesView}>

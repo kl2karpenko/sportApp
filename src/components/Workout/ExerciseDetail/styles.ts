@@ -47,5 +47,8 @@ export default makeStyles()((theme: Theme) => ({
     "& > span": {
       marginRight: -4
     }
-  }
+  },
+  stretchHeight: {
+    minHeight: "100%"
+  },
 }))
