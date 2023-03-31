@@ -18,6 +18,12 @@ export const activeWorkoutSlice = createSlice({
         ...state,
         ...action.payload
       };
+    },
+    cleanWorkoutState: (state: IActiveWorkoutState) => {
+      return {
+        ...state,
+        ...initialState
+      };
     }
   },
 });
@@ -26,7 +32,8 @@ export const activeWorkoutSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  updateWorkoutState
+  updateWorkoutState,
+  cleanWorkoutState
 } = activeWorkoutSlice.actions
 
 export default activeWorkoutSlice.reducer;

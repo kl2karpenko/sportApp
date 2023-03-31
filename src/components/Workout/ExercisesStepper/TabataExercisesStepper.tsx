@@ -1,35 +1,60 @@
-import { Box, Chip, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { Box, StepContent, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import React from "react";
 
 import { useStyles } from "../styles";
 import IExercise from "../../../models/Exercise/IExercise";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
+import { TABATA_EXERCISES_INDEXES } from "../../../mockedData/testWorkoutSession";
 
 export default function TabataExercisesStepper() {
   const { classes } = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
-  const { rounds: allRounds } = workoutSession;
+  const { rounds: allRounds, includeCardio, exercisesLength } = workoutSession;
   const { activeRoundIndex, activeExerciseIndex, isResting } = activeWorkout;
   const currentRound = allRounds[activeRoundIndex] || {};
   const allExercises = currentRound.exercisesList || [];
+  // TODO: move to some service
+  const exercisesForTabata = [
+    allExercises[includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio],
+    allExercises[includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio],
+  ]
+  const cardioExercisesForTabata = includeCardio ? [
+    allExercises[includeCardio && TABATA_EXERCISES_INDEXES.firstCardioExIndex],
+    allExercises[includeCardio && TABATA_EXERCISES_INDEXES.secondCardioExIndex],
+  ] : [];
+  const ifFirstSetOfExercises = activeExerciseIndex <= 3;
 
   return (
     <Box ml={1} className={classes.stretchHeight}>
-      <Stepper className={classes.stretchHeight} activeStep={activeExerciseIndex} orientation="vertical">
-        {[allExercises[0], allExercises[1]].map((exercise: Partial<IExercise>, exerciseIndex: number) => {
-          const ifFirstSetOfExercises = activeExerciseIndex <= 3;
-          const isActive = ifFirstSetOfExercises ? activeExerciseIndex <= 3 && exerciseIndex === 0 : exerciseIndex === 1 && activeExerciseIndex <= allExercises.length - 1 && activeExerciseIndex > 3;
-          const isCompleted = exerciseIndex === 0 ? !ifFirstSetOfExercises : !ifFirstSetOfExercises && activeExerciseIndex === allExercises.length - 1;
-          const isRestStep = isResting && isActive;
+      <Box className={classes.activeRound}>
+        Active round: {activeExerciseIndex + 1}
+      </Box>
+      <Stepper activeStep={activeExerciseIndex} orientation="vertical" alternativeLabel>
+        {exercisesForTabata.map((exercise: Partial<IExercise>, exerciseIndex: number) => {
+          // TODO: fix
+          const isActive = ifFirstSetOfExercises && !isResting;
+          const isCompleted = exerciseIndex === 0 ? activeExerciseIndex >= 3 : activeExerciseIndex === exercisesLength - 1;
+          console.log(ifFirstSetOfExercises, " ifFirstSetOfExercises");
+          console.log(activeExerciseIndex, " activeExerciseIndex");
+          console.log(isCompleted, " isCompleted");
 
           return (
             <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={!isActive && isCompleted ? "secondary" : "primary"}>
               <StepLabel>
-                <Typography className={(isActive || isRestStep) && classes.bold || ""} variant={"caption"}>
-                  {isCompleted ? "DONE" : exercise.label}
+                <Typography variant={"caption"}>
+                  {exercise.label}
                 </Typography>
+
+                {includeCardio ? (
+                  <Box>
+                    <Typography variant={"caption"} className={classes.bold}>
+                      Cardio:
+                      {cardioExercisesForTabata[exerciseIndex]?.label}
+                    </Typography>
+                  </Box>
+                ) : ""}
               </StepLabel>
             </Step>
           );

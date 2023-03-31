@@ -40,10 +40,10 @@ export default function CurrentWorkout(): React.ReactElement {
 
   const getWorkoutByType = () => {
     if (workoutType === WorkoutType.HIIT) {
-      return <HiitWorkout activeWorkoutManager={activeWorkoutManager} />;
+      return <HiitWorkout />;
     }
 
-    return <TabataWorkout activeWorkoutManager={activeWorkoutManager} />;
+    return <TabataWorkout />;
   }
 
   return (

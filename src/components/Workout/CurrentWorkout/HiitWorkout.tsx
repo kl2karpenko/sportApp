@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useState, useCallback, ChangeEventHandler } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Box, Card, CardContent, Grid, Typography, TextField } from "@mui/material";
@@ -17,9 +17,8 @@ import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
-export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
+export default function HiitWorkout(): React.ReactElement {
   const { classes } = useStyles();
-  const [url, setUrl] = useState("https://www.youtube.com/embed/qsW5bCrv94s");
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const {
@@ -54,9 +53,6 @@ export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutMan
                 </Grid>
                 <Grid item xs={11}>
                   <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"} className={classes.exercisesView}>
-                    {/*<Grid item xs={12}>*/}
-                    {/*  <Timer activeWorkoutManager={activeWorkoutManager} />*/}
-                    {/*</Grid>*/}
                     <Grid item xs={isResting ? 12 : 8}>
                       <ExerciseDetail
                         roundIndex={activeRoundIndex}

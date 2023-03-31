@@ -37,6 +37,7 @@ import {
 } from "../../store/workoutSession";
 import { RoundFields } from "../../models/Round/RoundFields";
 import { getBodyPartsLabels, getBodyPartsList } from "../../store/bodyParts";
+import { cleanWorkoutState } from "../../store/activeWorkout";
 
 export default function CreateWorkout(): React.ReactElement {
   const dispatch = useDispatch();
@@ -68,7 +69,10 @@ export default function CreateWorkout(): React.ReactElement {
                     variant="contained"
                     color="secondary"
                     startIcon={<ShuffleIcon />}
-                    onClick={() => dispatch(generateWorkoutSession())}
+                    onClick={() => {
+                      dispatch(generateWorkoutSession())
+                      dispatch(cleanWorkoutState())
+                    }}
                   >
                     Create!
                   </Button>
@@ -79,7 +83,10 @@ export default function CreateWorkout(): React.ReactElement {
                     color="error"
                     disabled={!workoutSession?.rounds.length}
                     startIcon={<ShuffleIcon />}
-                    onClick={() => dispatch(regenerateWorkoutSessionRounds())}
+                    onClick={() => {
+                      dispatch(regenerateWorkoutSessionRounds())
+                      dispatch(cleanWorkoutState())
+                    }}
                   >
                     Regenerate
                   </Button>

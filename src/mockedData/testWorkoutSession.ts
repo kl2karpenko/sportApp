@@ -18,13 +18,32 @@ export const hiitDefaultSettings: IWorkoutSettings = {
   betweenRoundsDuration: 60
 };
 
+export const TABATA_EXERCISES_INDEXES = {
+  firstExWithCardio: 0,
+  firstExWithoutCardio: 0,
+  secondExWithCardio: 2,
+  secondExWithoutCardio: 1,
+  firstRoundEndIndex: 3,
+  firstCardioExIndex: 1,
+  secondCardioExIndex: 3,
+};
+
 export const testHiitWorkoutSession = {
+  ...hiitDefaultSettings,
   rounds: [],
-  exerciseDuration: hiitDefaultSettings.exerciseDuration,
-  exercisesLength: hiitDefaultSettings.exercisesLength,
-  roundsLength: hiitDefaultSettings.roundsLength,
-  restDuration: hiitDefaultSettings.restDuration,
-  betweenRoundsDuration: hiitDefaultSettings.betweenRoundsDuration,
+  allExercises: {
+    cardio: mockedWorkoutTypes.cardio,
+    [WorkoutType.HIIT]: mockedWorkoutTypes,
+    [WorkoutType.Tabata]: mockedWorkoutTypes,
+  },
+  onlyCardio: false,
+  includeCardio: false,
+  workoutType: WorkoutType.Tabata
+};
+
+export const testTabataWorkoutSession = {
+  ...tabataDefaultSettings,
+  rounds: [],
   allExercises: {
     cardio: mockedWorkoutTypes.cardio,
     [WorkoutType.HIIT]: mockedWorkoutTypes,

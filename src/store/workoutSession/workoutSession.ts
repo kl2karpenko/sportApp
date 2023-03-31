@@ -52,15 +52,10 @@ export const workoutSessionSlice = createSlice({
   name: "workoutSession",
   initialState,
   reducers: {
-    setWorkoutSession: (state, action: PayloadAction<IWorkoutSessionState>) => {
-      const newState = {
-        ...state,
-        ...action?.payload
-      };
-
-      console.log(newState, "newState");
-      return newState
-    },
+    setWorkoutSession: (state, action: PayloadAction<IWorkoutSessionState>) => ({
+      ...state,
+      ...action?.payload
+    }),
     generateWorkoutSession: (state) => {
       const workoutBuilderService = workoutBuilderServiceInstance.getService(state.workoutType);
       const rounds = workoutBuilderService?.generateWorkout(state);

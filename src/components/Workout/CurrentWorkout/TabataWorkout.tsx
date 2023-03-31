@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useEffect, useMemo, useState, useCallback, ChangeEventHandler } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Box, Card, CardContent, Grid, Typography, TextField } from "@mui/material";
+import { Box, Card, CardContent, Grid } from "@mui/material";
 
-import Timer from "../Timer";
 import ExercisesStepper from "../ExercisesStepper";
 import RoundsStepper from "../RoundsStepper";
 import { useStyles } from "../styles";
@@ -11,15 +10,12 @@ import { RootState } from "../../../store/main";
 import ActiveWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/ActiveWorkoutManagerService";
 import ExerciseDetail from "../ExerciseDetail";
 import IExercise from "../../../models/Exercise/IExercise";
-import { getBodyPartLabel } from "../../../store/bodyParts";
-import { TValues } from "../../../interfaces/TValues";
-import { EBodyParts } from "../../../data/bodyPartsForWorkout";
+import { TABATA_EXERCISES_INDEXES } from "../../../mockedData/testWorkoutSession";
 
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
-export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
+export default function TabataWorkout(): React.ReactElement {
   const { classes } = useStyles();
-  const [url, setUrl] = useState("https://www.youtube.com/embed/qsW5bCrv94s");
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const {
@@ -28,14 +24,19 @@ export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutM
   } = workoutSession;
   const {
     activeExerciseIndex,
-    activeRoundIndex
+    activeRoundIndex,
+    isResting
   } = activeWorkout;
+  const firstExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio;
+  const secondExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio;
   const currentRound = rounds[activeRoundIndex] || {};
+  // TODO: get ex from next round
+  const nextRound = rounds[activeRoundIndex + 1] || {};
   const activeExercisesList = currentRound.exercisesList || [];
-  const exerciseIndex = activeExerciseIndex <= 3 ? 0 : 1;
-  const exercise = activeExerciseIndex <= 3 ? activeExercisesList[exerciseIndex] : activeExercisesList[exerciseIndex];
-  const cardioExercise = includeCardio ? activeExercisesList[2] : {};
-  const bodyPartLabel: string = useSelector((state: RootState) => getBodyPartLabel(state.bodyParts, currentRound.bodyId as TValues<typeof EBodyParts>));
+  const exerciseIndex = activeExerciseIndex <= TABATA_EXERCISES_INDEXES.firstRoundEndIndex ? firstExIndex : secondExIndex;
+  const isFirstExercise = exerciseIndex === 0;
+  const exercise = isFirstExercise ? activeExercisesList[exerciseIndex] : activeExercisesList[exerciseIndex];
+  const cardioExercise = includeCardio ? (isFirstExercise ? activeExercisesList[TABATA_EXERCISES_INDEXES.firstCardioExIndex] : activeExercisesList[TABATA_EXERCISES_INDEXES.secondCardioExIndex]) : {};
 
   return (
     <Box p={20} minHeight="100%">
@@ -70,21 +71,6 @@ export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutM
                         {...cardioExercise}
                       />
                     </Grid>)}
-                    {/*<Grid item xs={12}>*/}
-                    {/*  <TextField*/}
-                    {/*    id="url"*/}
-                    {/*    label="Enter video source" value={url}*/}
-                    {/*    variant="outlined"*/}
-                    {/*    fullWidth={true}*/}
-                    {/*    // @ts-ignore*/}
-                    {/*    onChange={(e: ChangeEventHandler<HTMLTextAreaElement>) => setUrl(e.target?.value)}*/}
-                    {/*  />*/}
-
-                    {/*  <iframe width="100%" height="600" src={url}*/}
-                    {/*    title="YouTube video player" frameBorder="0"*/}
-                    {/*    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"*/}
-                    {/*    allowFullScreen></iframe>*/}
-                    {/*</Grid>*/}
                   </Grid>
                 </Grid>
               </Grid>

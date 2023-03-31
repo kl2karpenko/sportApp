@@ -1,7 +1,9 @@
 import TabataRoundBuilderService from "./TabataRoundBuilderService";
 import TabataWorkoutBuilderService from "../WorkoutBuilderService/TabataWorkoutBuilderService";
 import { EBodyParts } from "../../data/bodyPartsForWorkout";
-import { testHiitWorkoutSession, tabataDefaultSettings } from "../../mockedData/testWorkoutSession";
+import {
+  testTabataWorkoutSession
+} from "../../mockedData/testWorkoutSession";
 
 describe("TabataRoundBuilderService", () => {
   const testTabataWB = new TabataWorkoutBuilderService();
@@ -10,7 +12,7 @@ describe("TabataRoundBuilderService", () => {
   describe("generateRoundExercises", () => {
     test("should return exercises for 1 round", () => {
       const resultsExercises = testTabataRB.generateRoundExercises({
-        ...testHiitWorkoutSession,
+        ...testTabataWorkoutSession,
         includeCardio: true
       }, EBodyParts.abs);
 
@@ -22,7 +24,7 @@ describe("TabataRoundBuilderService", () => {
     test("should return error when there is 0 rounds", () => {
       expect(() => testTabataRB.generate({
         workoutSession: {
-          ...testHiitWorkoutSession,
+          ...testTabataWorkoutSession,
           roundsLength: 0,
           includeCardio: true
         },
@@ -33,7 +35,7 @@ describe("TabataRoundBuilderService", () => {
     test("should return random body parts for number of rounds", () => {
       const results = testTabataRB.generate({
         workoutSession: {
-          ...testHiitWorkoutSession,
+          ...testTabataWorkoutSession,
           roundsLength: 3,
         },
         bodyPartsIdForEachRound: testTabataWB.generateBodyParts(3)

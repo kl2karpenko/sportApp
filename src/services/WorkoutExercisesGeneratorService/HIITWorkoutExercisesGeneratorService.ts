@@ -45,15 +45,13 @@ export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercis
 
   protected addCardioExercisesToList(exercisesList: Partial<IExercise>[], step: number = 2): Partial<IExercise>[] {
     const arrLen = exercisesList.length;
-    if (this.memoizedShuffledCardioList.length === 0) {
-      this.memoizedShuffledCardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
-    }
+    const cardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
 
     let addingToPosition = 0;
 
     for (let i = 0; i < arrLen + addingToPosition; i = i + step) {
       addingToPosition++;
-      exercisesList.splice(i, 0, this.memoizedShuffledCardioList[i]);
+      exercisesList.splice(i, 0, cardioList[i]);
     }
 
     return exercisesList.slice(0, arrLen);

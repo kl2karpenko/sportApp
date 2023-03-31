@@ -17,7 +17,6 @@ export default class WorkoutExercisesGeneratorService {
   protected bodyPartName: TValues<typeof EBodyParts>;
   protected exercisesInRoundLength: number;
   protected allExercisesData: IExercisesList;
-  protected memoizedShuffledCardioList: Partial<IExercise>[] = [];
 
   constructor(props: IWorkoutExercisesGeneratorServiceConfig) {
     const { exercisesLength, bodyPartName, exercises, cardioExercises } = props;

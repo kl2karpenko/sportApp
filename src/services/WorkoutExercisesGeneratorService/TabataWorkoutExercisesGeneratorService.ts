@@ -18,26 +18,20 @@ export default class TabataWorkoutExercisesGeneratorService extends WorkoutExerc
     this.allExercisesData = new ExercisesList({ workoutType: WorkoutType.HIIT, exercises, cardioExercises });
   }
 
-  public getExercisesList(props: ITabataWorkoutGetExercisesListConfig = { includeCardio: true }): Partial<IExercise>[] {
-    const { includeCardio } = props;
+  public getExercisesList(props?: ITabataWorkoutGetExercisesListConfig): Partial<IExercise>[] {
+    const { includeCardio = true } = props || {};
     const listOfExercises = this.listOfExercisesForCurrentBodyPart;
+    let cardioList = [];
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
+
     const exercisesList = [shuffledExercises[0], shuffledExercises[1]];
 
-    if (exercisesList[0].pair) {
-      exercisesList.length = 1;
-      exercisesList[1] = shuffledExercises[this.getExerciseIndexInList(shuffledExercises, exercisesList[0].pair)]
-    }
-
     if (includeCardio) {
-      if (this.memoizedShuffledCardioList.length === 0) {
-        this.memoizedShuffledCardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
-      }
-
-      exercisesList.push(this.memoizedShuffledCardioList[0]);
+      cardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
+      return [shuffledExercises[0], cardioList[0], shuffledExercises[1], cardioList[1]];
     }
 
-    return exercisesList;
+    return [shuffledExercises[0], shuffledExercises[1]];
   }
 }
