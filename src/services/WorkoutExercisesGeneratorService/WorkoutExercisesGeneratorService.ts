@@ -34,27 +34,6 @@ export default class WorkoutExercisesGeneratorService {
     return this.listOfExercisesForCurrentBodyPart;
   }
 
-  // protected getShuffledList(list: Partial<IExercise>[]): Partial<IExercise>[] {
-  //   let currentIndex = list.length,  randomIndex;
-  //   let copyList = [...list];
-  //
-  //   // While there remain elements to shuffle.
-  //   while (currentIndex != 0) {
-  //
-  //     // Pick a remaining element.
-  //     randomIndex = Math.floor(Math.random() * currentIndex);
-  //     currentIndex--;
-  //
-  //     // And swap it with the current element.
-  //     [copyList[currentIndex], copyList[randomIndex]] = [
-  //       copyList[randomIndex], copyList[currentIndex]];
-  //   }
-  //
-  //   const newListWithoutRepeating = new Set([...copyList]);
-  //
-  //   return [...newListWithoutRepeating];
-  // }
-
   protected getShuffledList = (list: Partial<IExercise>[]): Partial<IExercise>[] => {
     const newList = [...list];
     for (let i = newList.length - 1; i > 0; i--) {

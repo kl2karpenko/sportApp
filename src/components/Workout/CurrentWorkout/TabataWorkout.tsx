@@ -39,7 +39,7 @@ export default function TabataWorkout(): React.ReactElement {
   const cardioExercise = includeCardio ? (isFirstExercise ? activeExercisesList[TABATA_EXERCISES_INDEXES.firstCardioExIndex] : activeExercisesList[TABATA_EXERCISES_INDEXES.secondCardioExIndex]) : {};
 
   return (
-    <Box p={20} minHeight="100%">
+    <Box pt={20} px={2} minHeight="100%">
       <Card variant="outlined" style={{ height: "calc(100% - 160px)", padding: 10 }}>
         <Grid container direction="column" alignContent="center" alignItems="stretch" className={classes.stretchHeight} spacing={2}>
           <Grid item xs={12}>
@@ -48,10 +48,10 @@ export default function TabataWorkout(): React.ReactElement {
                 <Grid item xs={12} alignSelf={"flex-end"}>
                   <RoundsStepper />
                 </Grid>
-                <Grid item xs={2} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
+                <Grid item xs={4} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
                   <ExercisesStepper />
                 </Grid>
-                <Grid item xs={10}>
+                <Grid item xs={8}>
                   <Grid container spacing={2} className={classes.exercisesView}>
                     <Grid item xs={includeCardio ? 6 : 12}>
                       <ExerciseDetail
@@ -67,7 +67,7 @@ export default function TabataWorkout(): React.ReactElement {
                         roundIndex={activeRoundIndex}
                         exerciseIndex={2}
                         isCardio={true}
-                        title={"Next exercise:"}
+                        title={"Cardio exercise:"}
                         {...cardioExercise}
                       />
                     </Grid>)}

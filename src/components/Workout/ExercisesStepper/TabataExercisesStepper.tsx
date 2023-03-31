@@ -33,25 +33,20 @@ export default function TabataExercisesStepper() {
       </Box>
       <Stepper activeStep={activeExerciseIndex} orientation="vertical" alternativeLabel>
         {exercisesForTabata.map((exercise: Partial<IExercise>, exerciseIndex: number) => {
-          // TODO: fix
-          const isActive = ifFirstSetOfExercises && !isResting;
-          const isCompleted = exerciseIndex === 0 ? activeExerciseIndex >= 3 : activeExerciseIndex === exercisesLength - 1;
-          console.log(ifFirstSetOfExercises, " ifFirstSetOfExercises");
-          console.log(activeExerciseIndex, " activeExerciseIndex");
-          console.log(isCompleted, " isCompleted");
+          const isActive = exerciseIndex === 0 ? ifFirstSetOfExercises : true;
+          const isCompleted = exerciseIndex === 0 ? activeExerciseIndex >= 4 : activeExerciseIndex === exercisesLength - 1;
 
           return (
             <Step active={isActive} key={`exercise-${exerciseIndex}`} completed={!isActive && isCompleted} color={!isActive && isCompleted ? "secondary" : "primary"}>
               <StepLabel>
                 <Typography variant={"caption"}>
-                  {exercise.label}
+                  {exercise?.label}
                 </Typography>
 
                 {includeCardio ? (
                   <Box>
                     <Typography variant={"caption"} className={classes.bold}>
-                      Cardio:
-                      {cardioExercisesForTabata[exerciseIndex]?.label}
+                      Cardio: {cardioExercisesForTabata[exerciseIndex]?.label}
                     </Typography>
                   </Box>
                 ) : ""}

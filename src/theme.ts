@@ -1,6 +1,6 @@
 import { PaletteMode } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { purple } from '@mui/material/colors';
+import { purple } from "@mui/material/colors";
 
 export default (mode: PaletteMode) => createTheme({
   palette: {
@@ -9,7 +9,7 @@ export default (mode: PaletteMode) => createTheme({
       main: purple[500],
     },
     secondary: {
-      main: 'rgb(255, 196, 0)',
+      main: "rgb(255, 196, 0)",
     },
   },
 });
