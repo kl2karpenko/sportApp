@@ -33,6 +33,9 @@ export default [
     "label": "Гиперэкстензия с руками за головой, подьемы вверх",
   },
   {
+    "label": "Подъемы вытянутых рук в наклоне",
+  },
+  {
     "label": "Лодочка + разведения рук и ног",
     "img": "/assets/images/back/Superman_razvedenie_ruk_nog.gif"
   },

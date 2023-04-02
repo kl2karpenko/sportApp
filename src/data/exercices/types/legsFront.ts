@@ -1,72 +1,41 @@
 export default [
   {
-    "id": "legsFront-ex1",
-    "label": "Выпады вперед с гирями левой ногой",
-    "isCardio": false,
-    "pair": "legsFront-ex2"
+    "label": "Выпады вперед с гирями левой ногой"
   },
   {
-    "id": "legsFront-ex2",
-    "label": "Выпады вперед с гирями правой ногой",
-    "isCardio": false,
-    "pair": "legsFront-ex1"
+    "label": "Выпады вперед с гирями правой ногой"
   },
   {
-    "id": "legsFront-ex3",
-    "label": "Выпады вперед по очереди и назад",
-    "isCardio": false
+    "label": "Выпады вперед по очереди и назад"
   },
   {
-    "id": "legsFront-ex4",
-    "label": "Присед на левой ноге на стульчик",
-    "isCardio": false,
-    "pair": "legsFront-ex5"
+    "label": "Присед на левой ноге на стульчик"
   },
   {
-    "id": "legsFront-ex5",
-    "label": "Присед на правой ноге на стульчик",
-    "isCardio": false,
-    "pair": "legsFront-ex4"
+    "label": "Присед на правой ноге на стульчик"
   },
   {
-    "id": "legsFront-ex6",
-    "label": "Зашагивание на стул левой ногой",
-    "isCardio": false,
-    "pair": "legsFront-ex7"
+    "label": "Зашагивание на стул левой ногой"
   },
   {
-    "id": "legsFront-ex7",
-    "label": "Зашагивание на стул правой ногой",
-    "isCardio": false,
-    "pair": "legsFront-ex6"
+    "label": "Зашагивание на стул правой ногой"
   },
   {
-    "id": "legsFront-ex8",
-    "label": "Тяга левой ноги с эспандером",
-    "isCardio": false,
-    "pair": "legsFront-ex9"
+    "label": "Тяга левой ноги с эспандером"
   },
   {
-    "id": "legsFront-ex9",
-    "label": "Тяга правой ноги с эспандером",
-    "isCardio": false,
-    "pair": "legsFront-ex8"
+    "label": "Тяга правой ноги с эспандером"
   },
   {
-    "id": "legsFront-ex10",
-    "label": "Сплит-присед с левой ногой на лавке или в кольце",
-    "isCardio": false,
-    "pair": "legsFront-ex11"
+    "label": "Сплит-присед с левой ногой на лавке или в кольце"
   },
   {
-    "id": "legsFront-ex11",
-    "label": "Сплит-присед с правой ногой на лавке или в кольце",
-    "isCardio": false,
-    "pair": "legsFront-ex10"
+    "label": "Сплит-присед с правой ногой на лавке или в кольце"
   },
   {
-    "id": "legsFront-ex12",
-    "label": "Выпрыгивания из приседа",
-    "isCardio": true
+    "label": "Выпрыгивания из приседа"
   }
-]
+].map((ex, index) => ({
+  ...ex,
+  id: "legsFront-ex" + (index + 1)
+}));

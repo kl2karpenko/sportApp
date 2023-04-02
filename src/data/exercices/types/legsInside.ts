@@ -1,58 +1,41 @@
 export default [
   {
-    "id": "legsInside-ex1",
-    "isCardio": false,
-    "label": "На боку подъем левой ноги, правая нога стоит впереди",
-    "pair": "legsInside-ex2"
+    "label": "На боку подъем левой ноги, правая нога стоит впереди"
   },
   {
-    "id": "legsInside-ex2",
-    "isCardio": false,
-    "label": "На боку подъем правой ноги, левая нога стоит впереди",
-    "pair": "legsInside-ex1"
+    "label": "На боку подъем правой ноги, левая нога стоит впереди"
   },
   {
-    "id": "legsInside-ex3",
-    "isCardio": false,
     "label": "Приседания сумо"
   },
   {
-    "id": "legsInside-ex4",
-    "isCardio": false,
     "label": "Приседания сумо с выходом на носочки"
   },
   {
-    "id": "legsInside-ex5",
-    "isCardio": false,
-    "label": "На боку подъем левой ноги, правая нога стоит сзади",
-    "pair": "legsInside-ex6"
+    "label": "На боку подъем левой ноги, правая нога стоит сзади"
   },
   {
-    "id": "legsInside-ex6",
-    "isCardio": false,
-    "label": "На боку подъем правой ноги, левая нога стоит сзади",
-    "pair": "legsInside-ex5"
+    "label": "На боку подъем правой ноги, левая нога стоит сзади"
   },
   {
-    "id": "legsInside-ex7",
-    "isCardio": false,
     "label": "Мельница"
   },
   {
-    "id": "legsInside-ex8",
-    "isCardio": false,
     "label": "Лежим на спине, разводим ноги в стороны и сводим ноги в ножницы 3 раза"
   },
   {
-    "id": "legsInside-ex9",
-    "isCardio": false,
-    "label": "Стоя - подъем правой ноги к себе и в сторону",
-    "pair": "legsInside-ex10"
+    "label": "Стоя - подъем правой ноги к себе и в сторону"
   },
   {
-    "id": "legsInside-ex10",
-    "isCardio": false,
-    "label": "Стоя - подъем левой ноги к себе и в сторону",
-    "pair": "legsInside-ex9"
+    "label": "Стоя - подъем левой ноги к себе и в сторону"
+  },
+  {
+    "label": "Ноги расставляем широко, присаживаемся на 1 сторону с гантелей а потом вверх віходим и гантель в сторону"
+  },
+  {
+    "label": "Ноги расставляем широко, присаживаемся на 1 сторону с гантелей а потом вверх віходим и гантель в сторону"
   }
-];
+].map((ex, index) => ({
+  ...ex,
+  id: "legsInside-ex" + (index + 1)
+}));
