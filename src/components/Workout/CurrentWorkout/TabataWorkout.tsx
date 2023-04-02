@@ -25,16 +25,17 @@ export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutM
     activeExerciseIndex,
     activeRoundIndex
   } = activeWorkout;
-  const firstExIndex = activeWorkoutManager.getExerciseIndex(0, includeCardio);
-  const secondExIndex = activeWorkoutManager.getExerciseIndex(1, includeCardio);
-  const currentRound = rounds[activeRoundIndex] || {};
-  const nextRound = rounds[activeRoundIndex + 1] || {};
-  const activeExercisesList = currentRound.exercisesList || [];
-  const exerciseIndexInList = activeExerciseIndex <= activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstRoundEndIndex ? firstExIndex : secondExIndex;
-  const isFirstExercise = exerciseIndexInList === 0;
-  const currentExercise = isFirstExercise ? activeExercisesList[exerciseIndexInList] : activeExercisesList[exerciseIndexInList];
-  const currentCardioExercise = includeCardio ? (isFirstExercise ? activeExercisesList[activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstCardioExIndex] : activeExercisesList[activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondCardioExIndex]) : {};
+  const firstExIndex = activeWorkoutManager.getExercisePositionByIndex(0, includeCardio);
+  const firstCardExIndex = activeWorkoutManager.getCardioExercisePositionByIndex(0);
+  const secondExIndex = activeWorkoutManager.getExercisePositionByIndex(1, includeCardio);
+  const secondCardExIndex = activeWorkoutManager.getCardioExercisePositionByIndex(1);
+  const activeExercisesList = activeWorkoutManager.getCurrentRoundExercisesList(activeWorkout);
+  const isFirstExercise = activeExerciseIndex <= activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstRoundExIndexLimit;
+
+  const activeExerciseIndexInList = isFirstExercise ? firstExIndex : secondExIndex;
+  const activeCardioExercise = isFirstExercise ? activeExercisesList[firstCardExIndex] : activeExercisesList[secondCardExIndex];
   const isRestingBetweenRounds = activeWorkoutManager.isRestBetweenRounds(activeWorkout);
+  const activeExercise = !isRestingBetweenRounds ? activeExercisesList[activeExerciseIndexInList] : activeWorkoutManager.getNextExercise(activeWorkout);
 
   return (
     <Box pt={20} px={2} minHeight="100%">
@@ -53,20 +54,20 @@ export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutM
                   <Grid container spacing={2} className={classes.exercisesView}>
                     <Grid item xs={includeCardio ? 6 : 12}>
                       <ExerciseDetail
-                        roundIndex={activeRoundIndex}
-                        exerciseIndex={exerciseIndexInList}
-                        isCardio={isExerciseCardio(currentExercise)}
-                        title={"Current currentExercise:"}
-                        {...currentExercise}
+                        roundIndex={isRestingBetweenRounds ? activeRoundIndex + 1 : activeRoundIndex}
+                        exerciseIndex={isRestingBetweenRounds ? 0 : activeExerciseIndexInList}
+                        isCardio={isExerciseCardio(activeExercise)}
+                        title={"Current activeExercise:"}
+                        {...activeExercise}
                       />
                     </Grid>
-                    {includeCardio && (<Grid item xs={6}>
+                    {includeCardio && !isRestingBetweenRounds && (<Grid item xs={6}>
                       <ExerciseDetail
                         roundIndex={activeRoundIndex}
-                        exerciseIndex={exerciseIndexInList + 1}
+                        exerciseIndex={activeExerciseIndexInList + 1}
                         isCardio={true}
-                        title={"Cardio currentExercise:"}
-                        {...currentCardioExercise}
+                        title={"Cardio activeExercise:"}
+                        {...activeCardioExercise}
                       />
                     </Grid>)}
                   </Grid>

@@ -1,7 +1,8 @@
 import ActiveWorkoutManagerService from "./ActiveWorkoutManagerService";
 import { hiitDefaultSettings } from "../../data/workoutsDefaultSettings";
 import { IActiveWorkoutState } from "./IActiveWorkoutState";
-import IWorkoutSession from "../../interfaces/IWorkoutSession";
+import { testHiitWorkoutSession } from "../../mockedData/testWorkoutSession";
+import { IWorkoutSessionState } from "../../store/workoutSession";
 
 let activeWorkoutState: IActiveWorkoutState = {
   activeExerciseIndex: 0,
@@ -9,10 +10,8 @@ let activeWorkoutState: IActiveWorkoutState = {
   isResting: false,
   isEnded: false
 };
-const workoutSession: IWorkoutSession = {
-  ...hiitDefaultSettings,
-  rounds: [],
-  includeCardio: false
+const workoutSession: IWorkoutSessionState = {
+  ...testHiitWorkoutSession
 };
 
 describe("ActiveWorkoutManagerService", function () {
@@ -219,6 +218,167 @@ describe("ActiveWorkoutManagerService", function () {
       });
 
       expect(result).toBe(workoutSession.betweenRoundsDuration);
+    });
+  });
+
+  describe("isWorkoutFinished", () => {
+    test("should return true if isEnded === true", () => {
+      const result = activeWorkoutManager.isWorkoutFinished({
+        activeExerciseIndex: 1,
+        activeRoundIndex: 1,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toBe(true);
+    });
+
+    test("should return false if isEnded === false", () => {
+      const result = activeWorkoutManager.isWorkoutFinished({
+        activeExerciseIndex: 1,
+        activeRoundIndex: 1,
+        isResting: false,
+        isEnded: false
+      });
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("getCurrentRound", () => {
+    test("should return current active round or empty object", () => {
+      const result = activeWorkoutManager.getCurrentRound({
+        activeExerciseIndex: 1,
+        activeRoundIndex: 1,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toBe(testHiitWorkoutSession.rounds[1]);
+    });
+
+    test("should return false if isEnded === false", () => {
+      const result = activeWorkoutManager.getCurrentRound({
+        activeExerciseIndex: 1,
+        activeRoundIndex: 10,
+        isResting: false,
+        isEnded: false
+      });
+
+      expect(result).toEqual({});
+    });
+  });
+
+  describe("getCurrentRoundExercisesList", () => {
+    test("should return list of exercises for current round", () => {
+      const result = activeWorkoutManager.getCurrentRoundExercisesList({
+        activeExerciseIndex: 1,
+        activeRoundIndex: 1,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toBe(testHiitWorkoutSession.rounds[1]?.exercisesList);
+    });
+
+    test("should return empty array if round does not exist", () => {
+      const result = activeWorkoutManager.getCurrentRoundExercisesList({
+        activeExerciseIndex: 1,
+        activeRoundIndex: 10,
+        isResting: false,
+        isEnded: false
+      });
+
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe("getActiveExercise", () => {
+    test("should return current exercise for current round", () => {
+      const activeEx = 3;
+      const result = activeWorkoutManager.getActiveExercise({
+        activeExerciseIndex: activeEx,
+        activeRoundIndex: 1,
+        isResting: true,
+        isEnded: true
+      });
+
+      // @ts-ignore
+      expect(result).toBe(testHiitWorkoutSession.rounds[1]?.exercisesList[activeEx]!);
+    });
+  });
+
+  describe("getNextExercise", () => {
+    test("should return next exercise in current round", () => {
+      const result = activeWorkoutManager.getNextExercise({
+        activeExerciseIndex: 3,
+        activeRoundIndex: 2,
+        isResting: true,
+        isEnded: true
+      });
+
+      // @ts-ignore
+      expect(result).toBe(workoutSession?.rounds[2]?.exercisesList[4]);
+    });
+
+    test("should return first exercise in next round", () => {
+      const result = activeWorkoutManager.getNextExercise({
+        activeExerciseIndex: workoutSession.exercisesLength - 1,
+        activeRoundIndex: 2,
+        isResting: true,
+        isEnded: true
+      });
+
+      // @ts-ignore
+      expect(result).toBe(workoutSession?.rounds[3]?.exercisesList[0]);
+    });
+  });
+
+  describe("getNextRound", () => {
+    test("should return next round if exists", () => {
+      const result = activeWorkoutManager.getNextRound({
+        activeExerciseIndex: 3,
+        activeRoundIndex: 3,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toBe(workoutSession?.rounds[4]);
+    });
+
+    test("should return empty array if round does not exists", () => {
+      const result = activeWorkoutManager.getNextRound({
+        activeExerciseIndex: 3,
+        activeRoundIndex: workoutSession.roundsLength,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toStrictEqual([]);
+    });
+  });
+
+  describe("getNextRoundExercisesList", () => {
+    test("should return next round exercises list if round exists", () => {
+      const result = activeWorkoutManager.getNextRoundExercisesList({
+        activeExerciseIndex: 3,
+        activeRoundIndex: 3,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toBe(workoutSession?.rounds[4]?.exercisesList);
+    });
+
+    test("should return empty array if round does not exists", () => {
+      const result = activeWorkoutManager.getNextRoundExercisesList({
+        activeExerciseIndex: 3,
+        activeRoundIndex: workoutSession.roundsLength,
+        isResting: true,
+        isEnded: true
+      });
+
+      expect(result).toStrictEqual([]);
     });
   });
 });

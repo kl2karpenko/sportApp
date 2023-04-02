@@ -1,9 +1,12 @@
 import IWorkoutSession from "../../interfaces/IWorkoutSession";
 import { IActiveWorkoutManagerService } from "./IActiveWorkoutManagerService";
 import { IActiveWorkoutState } from "./IActiveWorkoutState";
+import IRound from "../../models/Round/IRound";
+import IExercise from "../../models/Exercise/IExercise";
+import { IWorkoutSessionState } from "../../store/workoutSession";
 
 export default class ActiveWorkoutManagerService {
-  private workoutSession: IWorkoutSession;
+  private workoutSession: IWorkoutSessionState;
 
   constructor(props: IActiveWorkoutManagerService) {
     this.workoutSession = props.workoutSession;
@@ -127,6 +130,41 @@ export default class ActiveWorkoutManagerService {
   public isWorkoutFinished = (activeWorkoutState: IActiveWorkoutState): boolean => {
     const { isEnded } = activeWorkoutState;
 
-    return isEnded
+    return isEnded;
+  }
+
+  public getCurrentRound = (activeWorkoutState: IActiveWorkoutState): Partial<IRound> => {
+    const { activeRoundIndex } = activeWorkoutState;
+
+    return this.workoutSession?.rounds[activeRoundIndex] || {};
+  }
+
+  public getCurrentRoundExercisesList = (activeWorkoutState: IActiveWorkoutState): Partial<IExercise>[] => {
+    return this.getCurrentRound(activeWorkoutState)?.exercisesList || [];
+  }
+
+  public getActiveExercise = (activeWorkoutState: IActiveWorkoutState): Partial<IExercise> => {
+    const exList = this.getCurrentRoundExercisesList(activeWorkoutState);
+    const { activeExerciseIndex } = activeWorkoutState;
+
+    return exList[activeExerciseIndex] || {};
+  }
+
+  public getNextExercise = (activeWorkoutState: IActiveWorkoutState): Partial<IExercise> => {
+    const exList = this.getCurrentRoundExercisesList(activeWorkoutState);
+    const nextExList = this.getNextRoundExercisesList(activeWorkoutState);
+    const { activeExerciseIndex } = activeWorkoutState;
+
+    return exList[activeExerciseIndex + 1] || nextExList[0];
+  }
+
+  public getNextRound = (activeWorkoutState: IActiveWorkoutState): Partial<IRound> => {
+    const { activeRoundIndex } = activeWorkoutState;
+
+    return this.workoutSession?.rounds[activeRoundIndex + 1] || [];
+  }
+
+  public getNextRoundExercisesList = (activeWorkoutState: IActiveWorkoutState): Partial<IExercise>[] => {
+    return this.getNextRound(activeWorkoutState)?.exercisesList || [];
   }
 }

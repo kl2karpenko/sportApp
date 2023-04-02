@@ -10,7 +10,7 @@ import { WorkoutTimerService } from "../../../services/WorkoutTimerService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 
-const beepEndSound = require("../../../sounds/clock-countdown.wav");
+const beepEndSound = require("../../../sounds/Sound.mp3");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;

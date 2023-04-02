@@ -1,5 +1,5 @@
-import IWorkoutSession from "../../interfaces/IWorkoutSession";
+import { IWorkoutSessionState } from "../../store/workoutSession";
 
 export interface IActiveWorkoutManagerService {
-  workoutSession: IWorkoutSession;
+  workoutSession: IWorkoutSessionState;
 }

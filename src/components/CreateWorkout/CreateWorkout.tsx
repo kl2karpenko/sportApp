@@ -74,7 +74,7 @@ export default function CreateWorkout(): React.ReactElement {
                       dispatch(cleanWorkoutState())
                     }}
                   >
-                    Create!
+                    Generate parts!
                   </Button>
                 </Grid>
                 <Grid item>

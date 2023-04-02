@@ -21,21 +21,18 @@ export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutMan
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const {
-    rounds
+    exercisesLength
   } = workoutSession;
 
-  // TODO: create a HiitActiveWorkoutService and move all of this there
   const {
     activeExerciseIndex,
-    activeRoundIndex
+    activeRoundIndex,
+    isResting
   } = activeWorkout;
-  const currentRound = rounds[activeRoundIndex] || {};
-  const nextRound = rounds[activeRoundIndex + 1] || {};
-  const activeExercisesList = currentRound.exercisesList || [];
-  const nextRoundExercisesList = nextRound.exercisesList || [];
-  const activeExercise = activeExercisesList[activeExerciseIndex] || {};
-  const nextExercise = activeExercisesList[activeExerciseIndex + 1] || nextRoundExercisesList[0] || {};
-  const isResting = activeWorkout.isResting;
+  const activeExercise = activeWorkoutManager.getActiveExercise(activeWorkout);
+  const nextExercise = activeWorkoutManager.getNextExercise(activeWorkout);
+
+  const isNextExerciseGetFromNextRound = activeExerciseIndex + 1 > exercisesLength;
 
   return (
     <Box pt={20} minHeight="100%">
@@ -66,8 +63,8 @@ export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutMan
                     {!isResting && (
                       <Grid item xs={4}>
                         <ExerciseDetail
-                          roundIndex={activeRoundIndex}
-                          exerciseIndex={activeExerciseIndex + 1}
+                          roundIndex={isNextExerciseGetFromNextRound ? activeRoundIndex + 1 : activeRoundIndex}
+                          exerciseIndex={isNextExerciseGetFromNextRound ?  0 : activeExerciseIndex + 1}
                           isCardio={isExerciseCardio(nextExercise)}
                           title={"Next Exercise"}
                           {...nextExercise}
