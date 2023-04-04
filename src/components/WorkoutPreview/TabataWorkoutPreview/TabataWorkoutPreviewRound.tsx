@@ -20,7 +20,7 @@ import ShuffleIcon from "@mui/icons-material/Cached";
 import { TValues } from "../../../interfaces/TValues";
 import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 import { getAllExercisesForBodyPart, getCardioExercisesList } from "../../../store/workoutSession";
-import { TABATA_EXERCISES_INDEXES } from "../../../mockedData/testWorkoutSession";
+import TabataWorkoutManagerService from "../../../services/ActiveWorkoutManagerService/TabataWorkoutManagerService";
 
 interface ITabataWorkoutPreviewRoundProps {
   round: Partial<IRound>;
@@ -36,10 +36,10 @@ export default function TabataWorkoutPreviewRound({ round, includeCardio, roundI
   const exercisesInThisRound = round.exercisesList || [];
   const allExercises = useSelector((state: RootState) => getAllExercisesForBodyPart(state.workoutSession, bodyPartName)) || [];
   const cardioExercises = useSelector((state: RootState) => getCardioExercisesList(state.workoutSession)) || [];
+  const tabataIndexes = TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES;
 
-  // TODO: get from class
-  const firstExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio;
-  const secondExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio;
+  const firstExIndex = includeCardio ? tabataIndexes.firstExWithCardio : tabataIndexes.firstExWithoutCardio;
+  const secondExIndex = includeCardio ? tabataIndexes.secondExWithCardio : tabataIndexes.secondExWithoutCardio;
 
   return (
     <Fragment key={round.bodyId}>

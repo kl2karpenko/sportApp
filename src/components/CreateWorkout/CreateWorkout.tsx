@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useMemo } from "react";
+import React, { ChangeEvent, useContext } from "react";
 
 import {
   Box,
@@ -84,8 +84,8 @@ export default function CreateWorkout(): React.ReactElement {
                     disabled={!workoutSession?.rounds.length}
                     startIcon={<ShuffleIcon />}
                     onClick={() => {
-                      dispatch(regenerateWorkoutSessionRounds())
                       dispatch(cleanWorkoutState())
+                      dispatch(regenerateWorkoutSessionRounds())
                     }}
                   >
                     Regenerate exersices

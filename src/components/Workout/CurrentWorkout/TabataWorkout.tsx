@@ -26,11 +26,11 @@ export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutM
     activeRoundIndex
   } = activeWorkout;
   const firstExIndex = activeWorkoutManager.getExercisePositionByIndex(0, includeCardio);
-  const firstCardExIndex = activeWorkoutManager.getCardioExercisePositionByIndex(0);
+  const firstCardExIndex = activeWorkoutManager.getCardioExercisePositionByCardioExIndex(0);
   const secondExIndex = activeWorkoutManager.getExercisePositionByIndex(1, includeCardio);
-  const secondCardExIndex = activeWorkoutManager.getCardioExercisePositionByIndex(1);
+  const secondCardExIndex = activeWorkoutManager.getCardioExercisePositionByCardioExIndex(1);
   const activeExercisesList = activeWorkoutManager.getCurrentRoundExercisesList(activeWorkout);
-  const isFirstExercise = activeExerciseIndex <= activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstRoundExIndexLimit;
+  const isFirstExercise = activeExerciseIndex <= activeWorkoutManager.indexes.firstRoundExIndexLimit;
 
   const activeExerciseIndexInList = isFirstExercise ? firstExIndex : secondExIndex;
   const activeCardioExercise = isFirstExercise ? activeExercisesList[firstCardExIndex] : activeExercisesList[secondCardExIndex];

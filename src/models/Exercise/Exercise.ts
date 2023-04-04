@@ -3,9 +3,9 @@ import IExercise from "./IExercise";
 export default class Exercise implements IExercise {
   id: string;
   label: string;
-  isCardio: boolean;
+  isCardio?: boolean;
   img?: string;
-  pair?: string;
+  double?: boolean;
   video?: string;
 
   constructor(props: Partial<IExercise>) {
@@ -13,7 +13,7 @@ export default class Exercise implements IExercise {
     this.label = props.label!;
     this.img = props.img!;
     this.isCardio = props.isCardio!;
-    this.pair = props.pair;
+    this.double = props.double;
     this.video = props.video;
   }
 }

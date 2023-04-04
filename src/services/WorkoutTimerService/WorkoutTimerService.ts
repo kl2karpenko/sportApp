@@ -14,7 +14,7 @@ export class WorkoutTimerService {
     const singleExerciseDurationMs = (workoutSettings.exerciseDuration + workoutSettings.restDuration);
     const roundDurationMs = (workoutSettings.exercisesLength * singleExerciseDurationMs + workoutSettings.betweenRoundsDuration);
     const timeLeftMs = workoutSettings.roundsLength * roundDurationMs;
-    const secondToSubstract = (singleExerciseDurationMs * (activeWorkoutState.activeExerciseIndex + 1)) + roundDurationMs * (activeWorkoutState.activeRoundIndex + 1)
+    const secondToSubstract = (singleExerciseDurationMs * activeWorkoutState.activeExerciseIndex) + roundDurationMs * activeWorkoutState.activeRoundIndex
 
     this.convertMillisecondsToHoursMinutesSeconds(timeLeftMs - secondToSubstract + (substract || 0) - workoutSettings.betweenRoundsDuration);
   }

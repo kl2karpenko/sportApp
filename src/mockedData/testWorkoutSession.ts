@@ -20,17 +20,6 @@ export const hiitDefaultSettings: IWorkoutSettings = {
   betweenRoundsDuration: 60
 };
 
-// TODO: remove
-export const TABATA_EXERCISES_INDEXES = {
-  firstExWithCardio: 0,
-  firstExWithoutCardio: 0,
-  secondExWithCardio: 2,
-  secondExWithoutCardio: 1,
-  firstRoundEndIndex: 3,
-  firstCardioExIndex: 1,
-  secondCardioExIndex: 3,
-};
-
 export const testHiitWorkoutSession: IWorkoutSessionState = {
   ...hiitDefaultSettings,
   rounds: [
@@ -180,13 +169,11 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsFront-ex2",
           "label": "Выпады вперед с гирями правой ногой",
           "isCardio": false,
-          "pair": "legsFront-ex1"
         },
         {
           "id": "legsFront-ex9",
           "label": "Тяга правой ноги с эспандером",
           "isCardio": false,
-          "pair": "legsFront-ex8"
         },
         {
           "id": "cardio-ex10",
@@ -196,14 +183,12 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
         {
           "id": "legsFront-ex6",
           "label": "Зашагивание на стул левой ногой",
-          "isCardio": false,
-          "pair": "legsFront-ex7"
+          "isCardio": false
         },
         {
           "id": "legsFront-ex10",
           "label": "Сплит-присед с левой ногой на лавке или в кольце",
           "isCardio": false,
-          "pair": "legsFront-ex11"
         },
         {
           "id": "cardio-ex36",
@@ -214,7 +199,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsFront-ex4",
           "label": "Присед на левой ноге на стульчик",
           "isCardio": false,
-          "pair": "legsFront-ex5"
         }
       ],
       "isActive": false
@@ -233,7 +217,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsInside-ex10",
           "isCardio": false,
           "label": "Стоя - подъем левой ноги к себе и в сторону",
-          "pair": "legsInside-ex9"
         },
         {
           "id": "legsInside-ex7",
@@ -254,7 +237,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsInside-ex6",
           "isCardio": false,
           "label": "На боку подъем правой ноги, левая нога стоит сзади",
-          "pair": "legsInside-ex5"
         },
         {
           "id": "cardio-ex28",
@@ -265,7 +247,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsInside-ex2",
           "isCardio": false,
           "label": "На боку подъем правой ноги, левая нога стоит впереди",
-          "pair": "legsInside-ex1"
         }
       ],
       "isActive": false
@@ -284,7 +265,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsAss-ex5",
           "label": "На спине лежа: левую ногу на правую, подъем таза вверх",
           "isCardio": false,
-          "pair": "legsAss-ex4"
         },
         {
           "id": "legsAss-ex17",
@@ -333,13 +313,11 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsOutside-ex7",
           "isCardio": false,
           "label": "Стоя в планке переводим правую ногу в левую сторону и в правую сторону",
-          "pair": "legsOutside-ex8"
         },
         {
           "id": "legsOutside-ex3",
           "isCardio": false,
           "label": "Стоя, резинку на ноги и поднимаем в сторону правую ногу",
-          "pair": "legsOutside-ex4"
         },
         {
           "id": "cardio-ex32",
@@ -355,7 +333,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsOutside-ex13",
           "isCardio": false,
           "label": "Стоя - левую ногу заводим назад в сторону за правую, и выносим ногу в сторону",
-          "pair": "legsOutside-ex12"
         },
         {
           "id": "cardio-ex40",
@@ -366,7 +343,6 @@ export const testHiitWorkoutSession: IWorkoutSessionState = {
           "id": "legsOutside-ex6",
           "isCardio": false,
           "label": "Лежа на левом боку подъем вверх правой ноги",
-          "pair": "legsOutside-ex5"
         }
       ],
       "isActive": false
@@ -494,7 +470,6 @@ export const testTabataWorkoutSession: IWorkoutSessionState = {
           "id": "legsOutside-ex1",
           "isCardio": false,
           "label": "Лежим на правом боку, ноги жабкой и поднимаемся с разводом ног",
-          "pair": "legsOutside-ex2"
         },
         {
           "id": "cardio-ex67",
@@ -505,7 +480,6 @@ export const testTabataWorkoutSession: IWorkoutSessionState = {
           "id": "legsOutside-ex13",
           "isCardio": false,
           "label": "Стоя - левую ногу заводим назад в сторону за правую, и выносим ногу в сторону",
-          "pair": "legsOutside-ex12"
         },
         {
           "id": "cardio-ex30",
@@ -534,7 +508,6 @@ export const testTabataWorkoutSession: IWorkoutSessionState = {
           "id": "legsFront-ex9",
           "label": "Тяга правой ноги с эспандером",
           "isCardio": false,
-          "pair": "legsFront-ex8"
         },
         {
           "id": "cardio-ex11",
@@ -553,7 +526,6 @@ export const testTabataWorkoutSession: IWorkoutSessionState = {
           "id": "legsRear-ex7",
           "label": "Наклон к правой ноге, резинка на 2 ноге и делаем наклоны",
           "isCardio": false,
-          "pair": "legsRear-ex6"
         },
         {
           "id": "cardio-ex17",
@@ -562,9 +534,8 @@ export const testTabataWorkoutSession: IWorkoutSessionState = {
         },
         {
           "id": "legsRear-ex5",
-          "label": "Наклоны с выносом правой ноги назад с гирями, вторая держит равновесие",
+          "label": "Наклоны с выносом 1 ноги назад с гирями, вторая держит равновесие",
           "isCardio": false,
-          "pair": "legsRear-ex4"
         },
         {
           "id": "cardio-ex54",

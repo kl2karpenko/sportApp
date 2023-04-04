@@ -232,6 +232,6 @@ export default [
   }
 ].map((item, index) => (  {
   "id": `cardio-ex${index + 1}`,
-  "label": item,
+  "label": item.label,
   "isCardio": true
 }));

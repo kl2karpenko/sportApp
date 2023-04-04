@@ -25,8 +25,6 @@ export default class TabataWorkoutExercisesGeneratorService extends WorkoutExerc
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
 
-    const exercisesList = [shuffledExercises[0], shuffledExercises[1]];
-
     if (includeCardio) {
       cardioList = this.getShuffledList(this.allExercisesData.getCardioExercisesList());
       return [shuffledExercises[0], cardioList[0], shuffledExercises[1], cardioList[1]];

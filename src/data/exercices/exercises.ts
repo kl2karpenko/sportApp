@@ -9,7 +9,8 @@ export const mockedWorkoutExercise = {
 
 const listOfExercises = Array.from(new Array(10)).map((_, index) => ({
   ...mockedWorkoutExercise,
-  id: mockedWorkoutExercise.id + index
+  id: mockedWorkoutExercise.id + index,
+  double: index % 3 === 0
 }));
 
 export const mockedWorkoutTypes: TAllExercises = {

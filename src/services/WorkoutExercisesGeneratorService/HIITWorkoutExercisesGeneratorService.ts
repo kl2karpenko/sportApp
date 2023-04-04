@@ -32,8 +32,20 @@ export default class HIITWorkoutExercisesGeneratorService extends WorkoutExercis
     if (listOfExercises.length === 0) return [];
 
     const shuffledExercises = this.getShuffledList(listOfExercises);
-    let allExercises = [ ...shuffledExercises ];
-    
+    let allExercises: Partial<IExercise>[] = [];
+    [ ...shuffledExercises ].reduce((acc: Partial<IExercise>[], exercise: Partial<IExercise>) => {
+      acc.push(exercise);
+
+      if (exercise.double) {
+        acc.push({
+          ...exercise,
+          label: exercise.label + " (2 part)"
+        });
+      }
+
+      return acc;
+    }, allExercises);
+
     if (props?.includeCardio) {
       allExercises = this.addCardioExercisesToList(allExercises, props?.cardioStep);
     }

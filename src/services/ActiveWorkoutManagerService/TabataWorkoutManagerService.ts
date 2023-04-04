@@ -1,8 +1,12 @@
 import ActiveWorkoutManagerService from "./ActiveWorkoutManagerService";
-import { TABATA_EXERCISES_INDEXES } from "../../mockedData/testWorkoutSession";
+import { IActiveWorkoutManagerService } from "./IActiveWorkoutManagerService";
 
 export default class TabataWorkoutManagerService extends ActiveWorkoutManagerService {
-  public TABATA_EXERCISES_INDEXES = {
+  public indexes: {
+    [key: string]: number;
+  };
+
+  public static TABATA_EXERCISES_INDEXES = {
     firstExWithCardio: 0,
     firstExWithoutCardio: 0,
     secondExWithCardio: 2,
@@ -12,9 +16,15 @@ export default class TabataWorkoutManagerService extends ActiveWorkoutManagerSer
     secondCardioExIndex: 3,
   };
 
+  constructor(props: IActiveWorkoutManagerService) {
+    super(props);
+
+    this.indexes = TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES;
+  }
+
   public getExercisePositionByIndex = (exInd: number, includeCardio: boolean): number => {
-    const firstExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.firstExWithCardio : TABATA_EXERCISES_INDEXES.firstExWithoutCardio;
-    const secondExIndex = includeCardio ? TABATA_EXERCISES_INDEXES.secondExWithCardio : TABATA_EXERCISES_INDEXES.secondExWithoutCardio;
+    const firstExIndex = includeCardio ? this.indexes.firstExWithCardio : this.indexes.firstExWithoutCardio;
+    const secondExIndex = includeCardio ? this.indexes.secondExWithCardio : this.indexes.secondExWithoutCardio;
 
     if (exInd === 0) {
       return firstExIndex;
@@ -23,14 +33,11 @@ export default class TabataWorkoutManagerService extends ActiveWorkoutManagerSer
     return secondExIndex;
   }
 
-  public getCardioExercisePositionByIndex = (exInd: number): number => {
-    const firstExIndex = TABATA_EXERCISES_INDEXES.firstCardioExIndex;
-    const secondExIndex = TABATA_EXERCISES_INDEXES.secondCardioExIndex;
-
+  public getCardioExercisePositionByCardioExIndex = (exInd: number): number => {
     if (exInd === 0) {
-      return firstExIndex;
+      return this.indexes.firstCardioExIndex;
     }
 
-    return secondExIndex;
+    return this.indexes.secondCardioExIndex;
   }
 }

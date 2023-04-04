@@ -12,6 +12,7 @@ export default class TabataRoundBuilderService extends RoundBuilderService {
     const {
       roundsLength
     } = workoutSession;
+
     if (roundsLength <= 0) {
       throw new Error();
     }

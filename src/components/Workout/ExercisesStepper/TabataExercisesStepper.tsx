@@ -17,12 +17,12 @@ export default function TabataExercisesStepper({ activeWorkoutManager }: { activ
   const allExercises = currentRound.exercisesList || [];
   // TODO: move to some service
   const exercisesForTabata = [
-    allExercises[includeCardio ? activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstExWithCardio : activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstExWithoutCardio],
-    allExercises[includeCardio ? activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondExWithCardio : activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondExWithoutCardio],
+    allExercises[includeCardio ? activeWorkoutManager.indexes.firstExWithCardio : activeWorkoutManager.indexes.firstExWithoutCardio],
+    allExercises[includeCardio ? activeWorkoutManager.indexes.secondExWithCardio : activeWorkoutManager.indexes.secondExWithoutCardio],
   ]
   const cardioExercisesForTabata = includeCardio ? [
-    allExercises[includeCardio && activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstCardioExIndex],
-    allExercises[includeCardio && activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondCardioExIndex],
+    allExercises[includeCardio && activeWorkoutManager.indexes.firstCardioExIndex],
+    allExercises[includeCardio && activeWorkoutManager.indexes.secondCardioExIndex],
   ] : [];
   const ifFirstSetOfExercises = activeExerciseIndex <= 3;
 
