@@ -43,6 +43,7 @@
     "@types/lodash-es": "^4.17.6",
     "babel-jest": "^27.5.1",
     "copyfiles": "^2.4.1",
+    "gh-pages": "^5.0.0",
     "jest-svg-transformer": "^1.0.0",
     "nodemon": "^2.0.19",
     "ts-node": "^10.9.1",
@@ -54,7 +55,9 @@
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts,.tsx",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
