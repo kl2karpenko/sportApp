@@ -3,7 +3,6 @@ import "./index.css";
 import SportApp from "./SportApp";
 import reportWebVitals from "./reportWebVitals";
 
-// @ts-ignore
 import { createRoot } from "react-dom/client";
 
 const container = document.getElementById("root");
