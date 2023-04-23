@@ -29,7 +29,7 @@ export default function CurrentWorkout(): React.ReactElement {
     return new ActiveWorkoutManagerService({
       workoutSession
     })
-  }, [workoutSession]);
+  }, [workoutSession, workoutType]);
   // stop reload the page
   useEffect(() => {
     window.onbeforeunload = (event) => {

@@ -34,7 +34,7 @@ export default function SportAppLayout() {
     if (activeWorkout) {
       dispatch(updateWorkoutState(activeWorkout as IActiveWorkoutState))
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box key="sportMainApp" className={classes.root}>

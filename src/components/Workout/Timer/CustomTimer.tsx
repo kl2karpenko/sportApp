@@ -58,6 +58,7 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
   // stop reload the page
   useEffect(() => {
     timerServiceSingleton.calculateWorkoutDuration({ workoutSettings: workoutSession, activeWorkoutState: activeWorkout, substract: totalTimerTime });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workoutSession, activeWorkout, totalTimerTime]);
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
     }
 
     return () => stopBeep();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRunning, seconds]);
 
   return (
