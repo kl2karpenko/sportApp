@@ -23,25 +23,25 @@ describe("TabataWorkoutManagerService", function () {
     test("should return 0 index for 1 exercise when there is cardio", () => {
       const result = activeWorkoutManager.getExercisePositionByIndex(0, true);
 
-      expect(result).toBe(activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstExWithCardio);
+      expect(result).toBe(TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES.firstExWithCardio);
     });
 
     test("should return 0 index for 1 exercise when there is no cardio", () => {
       const result = activeWorkoutManager.getExercisePositionByIndex(0, false);
 
-      expect(result).toBe(activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstExWithoutCardio);
+      expect(result).toBe(TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES.firstExWithoutCardio);
     });
 
     test("should return 2 index for 2 exercise when there is cardio", () => {
       const result = activeWorkoutManager.getExercisePositionByIndex(1, true);
 
-      expect(result).toBe(activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondExWithCardio);
+      expect(result).toBe(TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES.secondExWithCardio);
     });
 
     test("should return 2 index for 2 exercise when there is no cardio", () => {
       const result = activeWorkoutManager.getExercisePositionByIndex(1, false);
 
-      expect(result).toBe(activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondExWithoutCardio);
+      expect(result).toBe(TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES.secondExWithoutCardio);
     });
   });
 
@@ -49,13 +49,13 @@ describe("TabataWorkoutManagerService", function () {
     test("should return 1 index for 1 cardio exercise", () => {
       const result = activeWorkoutManager.getCardioExercisePositionByCardioExIndex(0);
 
-      expect(result).toBe(activeWorkoutManager.TABATA_EXERCISES_INDEXES.firstCardioExIndex);
+      expect(result).toBe(TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES.firstCardioExIndex);
     });
 
     test("should return 3 index for 2 cardio exercise", () => {
       const result = activeWorkoutManager.getCardioExercisePositionByCardioExIndex(1);
 
-      expect(result).toBe(activeWorkoutManager.TABATA_EXERCISES_INDEXES.secondCardioExIndex);
+      expect(result).toBe(TabataWorkoutManagerService.TABATA_EXERCISES_INDEXES.secondCardioExIndex);
     });
   });
 });

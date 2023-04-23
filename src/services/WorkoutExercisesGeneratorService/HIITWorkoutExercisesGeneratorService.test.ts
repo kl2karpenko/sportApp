@@ -53,7 +53,6 @@ describe("HIITWorkoutExercisesGeneratorService", () => {
     test("should return correct number of exercises", () => {
       const list = (testWorkoutExercisesGeneratorService as unknown as ITEST_HIITWorkoutExercisesGeneratorService).getExercisesListForSimpleAlgorithm();
 
-      console.log(list, " list");
       expect(list.length).toBe(len);
     });
 
