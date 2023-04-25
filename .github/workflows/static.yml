@@ -45,12 +45,6 @@ jobs:
           CI: true
       - name: Generate build
         run: npm run build
-#      - name: Deploy the app
-#        # This assumes that there is deploy script, change as required
-#        run: npm run deploy
-#        # Environment secrets, generally stored in Github Secrets (un-comment as required)
-#        env:
-#          deployment_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3.7.3
         with:

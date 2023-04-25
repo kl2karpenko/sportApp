@@ -58,7 +58,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "npm run lint -- --fix",
-    "serve": "serve -s docs",
+    "serve": "serve -s build -l 4000",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
