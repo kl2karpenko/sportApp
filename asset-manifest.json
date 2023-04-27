@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "./static/css/main.e6c13ad2.css",
-    "main.js": "./static/js/main.6b86a61b.js",
+    "main.js": "./static/js/main.c04114aa.js",
     "static/js/845.f80dbf53.chunk.js": "./static/js/845.f80dbf53.chunk.js",
     "static/js/787.621e0dee.chunk.js": "./static/js/787.621e0dee.chunk.js",
-    "static/media/beep.mp3": "./static/media/beep.641649085c370e5624a7.mp3",
+    "static/media/mixkit-repeating-arcade-beep-1084.wav": "./static/media/mixkit-repeating-arcade-beep-1084.502ff83e352f60bf565c.wav",
     "index.html": "./index.html",
     "main.e6c13ad2.css.map": "./static/css/main.e6c13ad2.css.map",
-    "main.6b86a61b.js.map": "./static/js/main.6b86a61b.js.map",
+    "main.c04114aa.js.map": "./static/js/main.c04114aa.js.map",
     "845.f80dbf53.chunk.js.map": "./static/js/845.f80dbf53.chunk.js.map",
     "787.621e0dee.chunk.js.map": "./static/js/787.621e0dee.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.6b86a61b.js"
+    "static/js/main.c04114aa.js"
   ]
 }
