@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
 
-import { Box, FormControlLabel, Switch, Typography } from "@mui/material";
+import { Box, Button, FormControlLabel, Switch, Typography } from "@mui/material";
 
 import { BrowserRouter as Router } from "react-router-dom";
 import { Route, Routes } from "react-router";
+import { Link } from "react-router-dom";
 import CreateWorkout from "./CreateWorkout";
 import { CurrentWorkout } from "./Workout";
 import NoMatch from "./NoMatch";
@@ -52,11 +53,12 @@ export default function SportAppLayout() {
           label={<Typography color={theme?.palette?.text?.primary} variant={"body1"}>{isLightMode ? "Switch to dark mode" : "Switch to light mode"}</Typography>}
         />
       </Box>
-      <Router>
+
+      <Router basename="sportApp">
         <Routes>
           <Route index element={<CreateWorkout key="startWorkout"/>} />
-          <Route path="workout" element={<CurrentWorkout key="currentWorkout" />} />
-          <Route path="done" element={<span key="workoutDone">Workout is DONE!!!! Congratulations!)</span>} />
+          <Route path="/workout" element={<CurrentWorkout key="currentWorkout" />} />
+          <Route path="/done" element={<span key="workoutDone">Workout is DONE!!!! Congratulations!)</span>} />
           <Route path="*" element={<NoMatch key="noMatch" />} />
         </Routes>
       </Router>
