@@ -26,7 +26,6 @@ export class WorkoutTimerService {
     const minutes = Math.floor((time % 3600) / 60);
     // @ts-ignore
     const seconds = Math.floor(((time % 360) % 60));
-    console.log("console.log()");
     this.timeLeft = `${hours}h ${minutes}m ${seconds}s`;
   }
 }

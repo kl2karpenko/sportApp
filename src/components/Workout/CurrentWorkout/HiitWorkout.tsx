@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 
 import { Box, Card, CardContent, Grid } from "@mui/material";
@@ -16,7 +16,7 @@ import { EBodyParts } from "../../../data/bodyPartsForWorkout";
 
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
-export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutManager: ActiveWorkoutManagerService }): React.ReactElement {
+export default function HiitWorkout({ activeWorkoutManager, setRestart }: { activeWorkoutManager: ActiveWorkoutManagerService; setRestart: Function }): React.ReactElement {
   const { classes } = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
@@ -42,10 +42,10 @@ export default function HiitWorkout({ activeWorkoutManager }: { activeWorkoutMan
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
                 <Grid item xs={12} alignSelf={"flex-end"}>
-                  <RoundsStepper />
+                  <RoundsStepper setRestart={setRestart} activeWorkoutManager={activeWorkoutManager} />
                 </Grid>
                 <Grid item xs={1} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper activeWorkoutManager={activeWorkoutManager} />
+                  <ExercisesStepper setRestart={setRestart} activeWorkoutManager={activeWorkoutManager} />
                 </Grid>
                 <Grid item xs={11}>
                   <Grid container spacing={2} alignContent={"center"} justifyContent={"center"} alignItems={"center"} className={classes.exercisesView}>

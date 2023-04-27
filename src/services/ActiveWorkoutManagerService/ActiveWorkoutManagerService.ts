@@ -91,6 +91,26 @@ export default class ActiveWorkoutManagerService {
     return activeWorkoutState;
   }
 
+  public moveToStep(exIndex: number, activeWorkoutState: IActiveWorkoutState) {
+    const { activeRoundIndex } = activeWorkoutState;
+
+    return {
+      ...activeWorkoutState,
+      activeExerciseIndex: exIndex,
+      activeRoundIndex: activeRoundIndex,
+      isResting: false
+    }
+  }
+
+  public moveToRound(exRound: number, activeWorkoutState: IActiveWorkoutState) {
+    return {
+      ...activeWorkoutState,
+      activeExerciseIndex: 0,
+      activeRoundIndex: exRound,
+      isResting: false
+    }
+  }
+
   public getIntervalForTimer(activeWorkoutState: IActiveWorkoutState) {
     const { exerciseDuration, betweenRoundsDuration, restDuration } = this.workoutSession;
 

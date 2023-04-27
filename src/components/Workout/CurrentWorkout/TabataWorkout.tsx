@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Box, Card, CardContent, Grid } from "@mui/material";
@@ -13,7 +13,7 @@ import TabataWorkoutManagerService from "../../../services/ActiveWorkoutManagerS
 
 const isExerciseCardio = (ex: Partial<IExercise>): boolean => (ex?.id || "").includes("cardio");
 
-export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutManager: TabataWorkoutManagerService }): React.ReactElement {
+export default function TabataWorkout({ activeWorkoutManager, setRestart }: { activeWorkoutManager: TabataWorkoutManagerService, setRestart: Function }): React.ReactElement {
   const { classes } = useStyles();
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
@@ -45,10 +45,10 @@ export default function TabataWorkout({ activeWorkoutManager }: { activeWorkoutM
             <CardContent className={classes.stretchHeight}>
               <Grid container spacing={5} className={classes.stretchHeight}>
                 <Grid item xs={12} alignSelf={"flex-end"}>
-                  <RoundsStepper />
+                  <RoundsStepper setRestart={setRestart} activeWorkoutManager={activeWorkoutManager} />
                 </Grid>
                 <Grid item xs={4} alignItems="stretch" alignContent="center" style={{ height: "calc(100% - 60px)" }}>
-                  <ExercisesStepper activeWorkoutManager={activeWorkoutManager} />
+                  <ExercisesStepper setRestart={setRestart} activeWorkoutManager={activeWorkoutManager} />
                 </Grid>
                 <Grid item xs={8}>
                   <Grid container spacing={2} className={classes.exercisesView}>

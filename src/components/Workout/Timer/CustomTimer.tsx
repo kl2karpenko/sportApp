@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { SetStateAction, useEffect } from "react";
 import useSound from "use-sound";
 import { useTimer } from "react-timer-hook";
 import { Card, CardContent, Grid, IconButton, Theme, Typography } from "@mui/material";
@@ -10,7 +10,7 @@ import { WorkoutTimerService } from "../../../services/WorkoutTimerService";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/main";
 
-const beepEndSound = require("../../../sounds/beep.mp3");
+const beepEndSound = require("../../../sounds/mixkit-repeating-arcade-beep-1084.wav");
 
 interface IMyTimerProps {
   expiryTimestamp: Date;
@@ -21,6 +21,7 @@ interface IMyTimerProps {
   isEnded: boolean;
   timerServiceSingleton: WorkoutTimerService;
   className?: string;
+  restart: Date;
 }
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   }
 }));
 
-export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNext, moveToPrevious, className, timerServiceSingleton }: IMyTimerProps) {
+export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNext, moveToPrevious, className, timerServiceSingleton, restart: restartTime }: IMyTimerProps) {
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const {
@@ -61,8 +62,15 @@ export default function MyTimer({ expiryTimestamp, isResting, isEnded, moveToNex
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workoutSession, activeWorkout, totalTimerTime]);
 
+  // restart the timer
   useEffect(() => {
-    if (isRunning && (totalTimerTime) <= 2) {
+    console.log("restartTime");
+    restart(restartTime);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restartTime]);
+
+  useEffect(() => {
+    if (isRunning && totalTimerTime <= 1) {
       playBeep();
     } else {
       stopBeep();

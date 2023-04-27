@@ -127,6 +127,42 @@ describe("ActiveWorkoutManagerService", function () {
     });
   });
 
+  describe("moveToStep", () => {
+    test("it should move to step by index", () => {
+      const result = activeWorkoutManager.moveToStep(2, {
+        activeExerciseIndex: 3,
+        activeRoundIndex: 2,
+        isResting: true,
+        isEnded: false
+      });
+
+      expect(result).toMatchObject({
+        activeExerciseIndex: 2,
+        activeRoundIndex: 2,
+        isResting: false,
+        isEnded: false
+      });
+    });
+  });
+
+  describe("moveToRound", () => {
+    test("it should move to round by index", () => {
+      const result = activeWorkoutManager.moveToRound(2, {
+        activeExerciseIndex: 3,
+        activeRoundIndex: 1,
+        isResting: true,
+        isEnded: false
+      });
+
+      expect(result).toMatchObject({
+        activeExerciseIndex: 0,
+        activeRoundIndex: 2,
+        isResting: false,
+        isEnded: false
+      });
+    });
+  });
+
   describe("isRestBetweenExercises", () => {
     test("should return true if rest is true and not last exercise", () => {
       const result = activeWorkoutManager.isRestBetweenExercises({

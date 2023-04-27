@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { SetStateAction, useEffect } from "react";
 
 import { Box } from "@mui/material";
 import CustomTimer from "./CustomTimer";
@@ -12,9 +12,10 @@ interface ITimerProps {
   activeWorkoutManager: ActiveWorkoutManagerService;
   timerServiceSingleton: WorkoutTimerService;
   className?: string;
+  restart: Date;
 }
 
-export default function Timer({ activeWorkoutManager, className, timerServiceSingleton }: ITimerProps): React.ReactElement {
+export default function Timer({ activeWorkoutManager, className, timerServiceSingleton, restart }: ITimerProps): React.ReactElement {
   const dispatch = useDispatch();
   const activeWorkout = useSelector((state: RootState) => state.activeWorkout);
   const expiryTimestamp = activeWorkoutManager.getDateForTimer(activeWorkout);
@@ -25,6 +26,7 @@ export default function Timer({ activeWorkoutManager, className, timerServiceSin
   return (
     <Box>
       <CustomTimer
+        restart={restart}
         timerServiceSingleton={timerServiceSingleton}
         className={className}
         key="customTimer"

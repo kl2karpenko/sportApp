@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 
@@ -14,6 +14,7 @@ import TabataWorkoutManagerService from "../../../services/ActiveWorkoutManagerS
 
 export default function CurrentWorkout(): React.ReactElement {
   const { classes } = useStyles();
+  const [restart, setRestart] = useState<Date>(new Date());
   const workoutSession = useSelector((state: RootState) => state.workoutSession);
   const activeWorkoutState = useSelector((state: RootState) => state.activeWorkout);
   const workoutType = workoutSession.workoutType;
@@ -47,20 +48,20 @@ export default function CurrentWorkout(): React.ReactElement {
     }
   }, []);
 
-  const getWorkoutByType = () => {
+  const getWorkoutByType = ({ setRestart }: { setRestart: Function}) => {
     if (workoutType === WorkoutType.HIIT) {
-      return <HiitWorkout activeWorkoutManager={activeWorkoutManager} />;
+      return <HiitWorkout activeWorkoutManager={activeWorkoutManager} setRestart={setRestart} />;
     }
 
-    return <TabataWorkout activeWorkoutManager={activeWorkoutManager as TabataWorkoutManagerService} />;
+    return <TabataWorkout activeWorkoutManager={activeWorkoutManager as TabataWorkoutManagerService} setRestart={setRestart} />;
   }
 
   return (
     <Box>
       <Box className={classes.timer}>
-        <Timer activeWorkoutManager={activeWorkoutManager} timerServiceSingleton={timerServiceSingleton} />
+        <Timer activeWorkoutManager={activeWorkoutManager} timerServiceSingleton={timerServiceSingleton} restart={restart} />
       </Box>
-      {getWorkoutByType()}
+      {getWorkoutByType({ setRestart })}
     </Box>
   )
 }
